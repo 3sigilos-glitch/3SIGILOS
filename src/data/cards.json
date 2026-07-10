@@ -1,0 +1,1829 @@
+{
+ "suits": {
+  "major": {
+   "label": "Arcanos Maiores",
+   "en": "",
+   "color": "var(--gold)",
+   "hex": "#b89344",
+   "el": ""
+  },
+  "wands": {
+   "label": "Paus",
+   "en": "Wands",
+   "color": "var(--w-wands)",
+   "hex": "#c8702f",
+   "el": "Fogo"
+  },
+  "cups": {
+   "label": "Copas",
+   "en": "Cups",
+   "color": "var(--w-cups)",
+   "hex": "#3f86ad",
+   "el": "Água"
+  },
+  "swords": {
+   "label": "Espadas",
+   "en": "Swords",
+   "color": "var(--w-swords)",
+   "hex": "#93a7bf",
+   "el": "Ar"
+  },
+  "pentacles": {
+   "label": "Ouros",
+   "en": "Pentacles",
+   "color": "var(--w-pent)",
+   "hex": "#6a9a52",
+   "el": "Terra"
+  }
+ },
+ "rankLabel": {
+  "1": "Ás",
+  "2": "2",
+  "3": "3",
+  "4": "4",
+  "5": "5",
+  "6": "6",
+  "7": "7",
+  "8": "8",
+  "9": "9",
+  "10": "10",
+  "11": "Valete",
+  "12": "Cavaleiro",
+  "13": "Rainha",
+  "14": "Rei"
+ },
+ "rankShort": {
+  "1": "Ás",
+  "2": "2",
+  "3": "3",
+  "4": "4",
+  "5": "5",
+  "6": "6",
+  "7": "7",
+  "8": "8",
+  "9": "9",
+  "10": "10",
+  "11": "Vt",
+  "12": "Cv",
+  "13": "Rn",
+  "14": "Ri"
+ },
+ "roman2nn": {
+  "0": "00",
+  "I": "01",
+  "II": "02",
+  "III": "03",
+  "IV": "04",
+  "V": "05",
+  "VI": "06",
+  "VII": "07",
+  "VIII": "08",
+  "IX": "09",
+  "X": "10",
+  "XI": "11",
+  "XII": "12",
+  "XIII": "13",
+  "XIV": "14",
+  "XV": "15",
+  "XVI": "16",
+  "XVII": "17",
+  "XVIII": "18",
+  "XIX": "19",
+  "XX": "20",
+  "XXI": "21"
+ },
+ "suitImg": {
+  "wands": "Wands",
+  "cups": "Cups",
+  "swords": "Swords",
+  "pentacles": "Pentacles"
+ },
+ "guideSuits": [
+  {
+   "name": "Paus",
+   "en": "Wands",
+   "el": "Fogo",
+   "hex": "#c8702f",
+   "body": "Rege a ação, a energia, a criatividade, a paixão e a vontade. É o naipe dos projetos, da carreira, da inspiração e do impulso que nos move. Quando dominam os Paus, a leitura fala do que arde em ti: o que queres fazer, criar e conquistar. Energia em movimento, espírito, entusiasmo."
+  },
+  {
+   "name": "Copas",
+   "en": "Cups",
+   "el": "Água",
+   "hex": "#3f86ad",
+   "body": "Rege as emoções, as relações, o amor e a intuição. É o naipe dos afetos, da vida interior, da sensibilidade e das ligações. Quando dominam as Copas, a leitura fala do que sentes: vínculos, coração, sonhos, a corrente emocional que atravessa a situação."
+  },
+  {
+   "name": "Espadas",
+   "en": "Swords",
+   "el": "Ar",
+   "hex": "#93a7bf",
+   "body": "Rege o intelecto, o pensamento, a comunicação e a verdade. É o naipe das ideias, das decisões, dos conflitos e da clareza, mas também da angústia mental. Quando dominam as Espadas, a leitura fala do que pensas e dizes: a mente, as palavras, os desafios que se travam na cabeça."
+  },
+  {
+   "name": "Ouros",
+   "en": "Pentacles",
+   "el": "Terra",
+   "hex": "#6a9a52",
+   "body": "Rege o material, o dinheiro, o trabalho, o corpo e a saúde. É o naipe da segurança, da casa, dos recursos e da concretização. Quando dominam os Ouros, a leitura fala do que tens e constróis: o concreto, o tangível, aquilo que se planta e se colhe no mundo físico."
+  }
+ ],
+ "guideNums": [
+  {
+   "n": "Ás",
+   "body": "O início puro. A semente, o potencial máximo do naipe no seu estado mais essencial, um dom oferecido pelo elemento. Toda a força do naipe concentrada num ponto de partida."
+  },
+  {
+   "n": "2",
+   "body": "A dualidade. Equilíbrio, escolha, o primeiro encontro de forças. É a relação, a parceria, a decisão inicial. Onde havia uma energia, surgem duas que se atraem ou se opõem."
+  },
+  {
+   "n": "3",
+   "body": "O crescimento. O primeiro fruto, a criação que nasce da união do dois. Expansão inicial, colaboração, o resultado que começa a tomar forma."
+  },
+  {
+   "n": "4",
+   "body": "A estabilidade. Estrutura, fundação, consolidação. É a solidez que se instala depois do crescimento, uma pausa segura, mas que pode virar estagnação se se prolongar."
+  },
+  {
+   "n": "5",
+   "body": "A crise. Conflito, rutura, instabilidade, perda. É a quebra do quatro, a mudança que chega pela tensão. O número mais desafiante, aquele em que o equilíbrio se parte para poder evoluir."
+  },
+  {
+   "n": "6",
+   "body": "A harmonia. Resolução, reciprocidade, reequilíbrio depois da crise do cinco. Ajuda, fluxo restaurado, o regresso da ordem e da troca justa."
+  },
+  {
+   "n": "7",
+   "body": "A prova. Reflexão, avaliação, perseverança. Um desafio mais interior: momento de decidir se se resiste, se se reavalia, se se persiste. O elemento posto à prova."
+  },
+  {
+   "n": "8",
+   "body": "O poder. Movimento, domínio, ação acelerada. É aplicar o que se aprendeu, a força em marcha, a mestria que se põe em prática. O elemento em plena potência."
+  },
+  {
+   "n": "9",
+   "body": "A quase-plenitude. Intensidade, fruto maduro, o culminar iminente. É o número da realização prestes a completar-se, levado ao extremo, para o melhor ou para o pior do naipe."
+  },
+  {
+   "n": "10",
+   "body": "A conclusão. Fim de ciclo, plenitude ou sobrecarga máxima. O naipe levado ao limite: ou a sua realização completa, ou o seu peso no extremo. E já a semente do ciclo seguinte."
+  },
+  {
+   "n": "Valete",
+   "body": "O aprendiz. Curiosidade, energia nova e terrena do naipe, o mensageiro. É o estudante do elemento, quem o explora com olhos frescos e ainda sem mestria."
+  },
+  {
+   "n": "Cavaleiro",
+   "body": "O agente. Ação, movimento, ímpeto. É o naipe em marcha, levado ao extremo e posto em perseguição. Quem avança e faz acontecer, por vezes em excesso."
+  },
+  {
+   "n": "Rainha",
+   "body": "A mestria interior. Receptividade, maturidade, o domínio do elemento por dentro. Quem compreende, nutre e habita a energia do naipe com profundidade."
+  },
+  {
+   "n": "Rei",
+   "body": "A mestria exterior. Autoridade, comando, a projeção do elemento no mundo. Quem domina plenamente a energia do naipe e a exerce com poder e responsabilidade."
+  }
+ ],
+ "cards": [
+  {
+   "pt": "O Louco",
+   "en": "The Fool",
+   "cat": "major",
+   "roman": "0",
+   "kw": [
+    "início",
+    "fé",
+    "espontaneidade",
+    "liberdade",
+    "salto no desconhecido"
+   ],
+   "up": "Marca o começo absoluto, o primeiro passo dado com o coração leve e os olhos postos no horizonte. Representa a fé no percurso mesmo sem garantias, a espontaneidade de quem parte sem mapa. Convida-te a abraçar o novo com inocência e confiança, a arriscar sem excesso de cálculo. Há aqui liberdade, potencial puro e a coragem tranquila de saltar.",
+   "rev": "O salto torna-se imprudência: decisões precipitadas, ignorar avisos, atirar-se sem discernimento. Ou o oposto, a paralisia de quem tem medo de avançar e deixa passar a oportunidade. Ingenuidade que traz consequências, distração, recusa em assumir responsabilidade pelo caminho.",
+   "slug": "the-fool",
+   "sym": "O jovem caminha à beira do precipício de olhos no céu, com a rosa branca da pureza numa mão e a trouxa das experiências na outra. O cão branco é o instinto que avisa e acompanha, e o sol nasce sobre tudo: a viagem começa protegida.",
+   "q": [
+    "Que salto estou a adiar por excesso de cálculo?",
+    "Onde posso voltar a agir com mais leveza e confiança?"
+   ]
+  },
+  {
+   "pt": "O Mago",
+   "en": "The Magician",
+   "cat": "major",
+   "roman": "I",
+   "kw": [
+    "manifestação",
+    "vontade",
+    "recursos",
+    "talento",
+    "iniciativa"
+   ],
+   "up": "Tens à tua frente todos os recursos de que precisas, os quatro naipes sobre a mesa, e o poder de os transformar em realidade. É a carta da manifestação: intenção focada, talento aplicado, alinhamento entre o que idealizas e o que crias. És o canal entre o alto e o baixo. Momento de agir com confiança, sabendo que tens as ferramentas.",
+   "rev": "O poder desvia-se: manipulação, embuste, talento desperdiçado ou usado para enganar. Energia dispersa, promessas vazias, potencial que não se concretiza por falta de foco ou de honestidade. Pode indicar insegurança sobre as próprias capacidades, ou truque em vez de substância.",
+   "slug": "the-magician",
+   "sym": "Sobre a mesa estão os quatro naipes, todos os recursos disponíveis. Uma mão aponta ao céu e a outra à terra, com o infinito sobre a cabeça: o Mago é canal entre os planos. As rosas e os lírios do jardim falam de desejo e pureza a trabalhar juntos.",
+   "q": [
+    "Que recursos já tenho e ainda não estou a usar?",
+    "O que quero manifestar de forma concreta esta semana?"
+   ]
+  },
+  {
+   "pt": "A Sacerdotisa",
+   "en": "The High Priestess",
+   "cat": "major",
+   "roman": "II",
+   "kw": [
+    "intuição",
+    "mistério",
+    "subconsciente",
+    "saber oculto",
+    "silêncio"
+   ],
+   "up": "A guardiã dos mistérios, sentada entre os dois pilares, entre o visível e o invisível. Fala da sabedoria que não passa pela razão, do saber que emerge no silêncio e nos sonhos. Convida-te a confiar na intuição, a ler os sinais, a respeitar o que ainda está velado e não se deixa forçar. Receptividade, profundidade, o conhecimento interior que dispensa palavras.",
+   "rev": "Desconexão da voz interior, ignorar a intuição que insiste. Segredos que pesam, informação retida, superfícies que escondem o essencial. Pode indicar confusão entre o que se sente e o que se racionaliza, ou saber algo e recusar-se a ouvi-lo.",
+   "slug": "the-high-priestess",
+   "sym": "Sentada entre o pilar negro e o branco (Boaz e Jachin), guarda o véu bordado de romãs que separa o visível do oculto. A lua aos pés e o rolo da Torá semiencoberto dizem que nem todo o saber se entrega de imediato.",
+   "q": [
+    "Que sinal subtil tenho vindo a ignorar?",
+    "Onde preciso de mais silêncio para ouvir a minha intuição?"
+   ]
+  },
+  {
+   "pt": "A Imperatriz",
+   "en": "The Empress",
+   "cat": "major",
+   "roman": "III",
+   "kw": [
+    "abundância",
+    "fertilidade",
+    "criação",
+    "cuidado",
+    "natureza"
+   ],
+   "up": "A mãe fértil, a natureza em plena floração, a abundância que nasce do cuidado. Fala de criatividade que dá fruto, de projetos que crescem, de sensualidade e prazer do corpo. É acolhimento, nutrição, generosidade materna. Convida-te a criar, a cuidar, a desfrutar do que os sentidos e a terra oferecem.",
+   "rev": "Bloqueio criativo, projetos que não vingam, criação estagnada. Excesso de cuidado que sufoca, ou negligência de si em nome dos outros. Desligamento do corpo e da natureza, carência afetiva, dependência.",
+   "slug": "the-empress",
+   "sym": "Rodeada de trigo maduro e de um bosque com cascata, usa a coroa de doze estrelas e recosta-se em almofadas com o símbolo de Vénus. Tudo na cena é fertilidade em acto: a natureza a dar fruto sem esforço aparente.",
+   "q": [
+    "O que estou a criar que precisa de mais cuidado para florescer?",
+    "Como posso dar mais espaço ao prazer e ao corpo?"
+   ]
+  },
+  {
+   "pt": "O Imperador",
+   "en": "The Emperor",
+   "cat": "major",
+   "roman": "IV",
+   "kw": [
+    "estrutura",
+    "autoridade",
+    "ordem",
+    "estabilidade",
+    "disciplina"
+   ],
+   "up": "O pai, o construtor, a autoridade que protege ao impor ordem. Fala de estrutura, disciplina, fundações sólidas e liderança firme. É a capacidade de organizar o caos, de assumir responsabilidade e de construir com método e persistência. Convida-te a tomar as rédeas, a definir limites, a liderar com estabilidade.",
+   "rev": "A autoridade corrompe-se em autoritarismo, rigidez, controlo que asfixia. Teimosia, abuso de poder, incapacidade de ceder. Ou o oposto: falta de estrutura, liderança fraca, ausência de disciplina para sustentar o que se começou.",
+   "slug": "the-emperor",
+   "sym": "O trono de pedra é decorado com cabeças de carneiro, símbolo de Marte. Segura o ceptro e o orbe, com armadura sob o manto: o poder que protege. As montanhas áridas atrás falam de autoridade conquistada em terreno duro.",
+   "q": [
+    "Onde falta estrutura na minha vida neste momento?",
+    "Estou a liderar ou apenas a controlar?"
+   ]
+  },
+  {
+   "pt": "O Hierofante",
+   "en": "The Hierophant",
+   "cat": "major",
+   "roman": "V",
+   "kw": [
+    "tradição",
+    "ensino",
+    "instituição",
+    "fé",
+    "pertença"
+   ],
+   "up": "O guardião da tradição, o mestre que transmite o saber pelos canais estabelecidos. Fala de aprendizagem formal, de valores partilhados, de instituições e rituais. É o mentor espiritual, a orientação moral, o sentido de pertença a algo maior. Convida-te a honrar o que foi transmitido, a procurar um guia, a inserir-te numa linhagem.",
+   "rev": "Ruptura com a tradição, questionar dogmas, recusar o caminho já traçado para encontrar o teu. Rebeldia sã, ou hipocrisia institucional que se desmascara. Liberdade face às convenções, procura de uma espiritualidade própria fora das estruturas.",
+   "slug": "the-hierophant",
+   "sym": "Entre dois pilares, abençoa dois acólitos com a mão em gesto ritual. A tripla coroa e o triplo ceptro marcam os três mundos, e as chaves cruzadas aos pés abrem o conhecimento guardado pela tradição.",
+   "q": [
+    "Que ensinamento recebido merece ser honrado, ou questionado?",
+    "Onde procuro pertença, e a que preço?"
+   ]
+  },
+  {
+   "pt": "Os Enamorados",
+   "en": "The Lovers",
+   "cat": "major",
+   "roman": "VI",
+   "kw": [
+    "união",
+    "escolha",
+    "valores",
+    "harmonia",
+    "amor"
+   ],
+   "up": "A união de opostos que se completam, o amor que alinha corpo, coração e valores. Fala de parceria profunda, de atração, de harmonia entre duas forças. Mas é também a carta da escolha: uma decisão importante feita com consciência, que define um caminho e exige compromisso com aquilo em que se acredita.",
+   "rev": "Desalinhamento de valores, conflito na relação, tentação que desvia. Escolha mal feita ou adiada, indecisão que corrói. Desarmonia, ruptura, atração que já não assenta em base sólida.",
+   "slug": "the-lovers",
+   "sym": "O anjo Rafael abençoa o casal sob o sol. Atrás da mulher, a árvore do conhecimento com a serpente; atrás do homem, a árvore de doze chamas. A escolha entre consciência e desejo faz-se à vista do céu.",
+   "q": [
+    "Esta escolha está alinhada com os meus valores?",
+    "O que é que eu e o outro vemos um no outro de essencial?"
+   ]
+  },
+  {
+   "pt": "O Carro",
+   "en": "The Chariot",
+   "cat": "major",
+   "roman": "VII",
+   "kw": [
+    "vontade",
+    "controlo",
+    "direção",
+    "vitória",
+    "determinação"
+   ],
+   "up": "O condutor que domina duas esfinges de forças opostas e as faz avançar na mesma direção. Fala de determinação, de vitória conquistada pela força de vontade, de foco que vence obstáculos. É controlo, disciplina, ímpeto canalizado para um objetivo claro. Convida-te a assumir o comando e a avançar decidido.",
+   "rev": "Perda de direção, forças que puxam para lados opostos e paralisam. Falta de controlo, agressividade, avançar sem rumo. Obstáculos que travam, dispersão, vontade que se descontrola ou se apaga.",
+   "slug": "the-chariot",
+   "sym": "O condutor não segura rédeas: guia as duas esfinges, uma negra e uma branca, apenas pela vontade. O dossel de estrelas e as luas nos ombros ligam a vitória ao céu, com a cidade conquistada já para trás.",
+   "q": [
+    "Para onde estou realmente a dirigir a minha energia?",
+    "Que forças opostas em mim precisam de seguir na mesma direcção?"
+   ]
+  },
+  {
+   "pt": "A Força",
+   "en": "Strength",
+   "cat": "major",
+   "roman": "VIII",
+   "kw": [
+    "coragem",
+    "domínio interior",
+    "paciência",
+    "compaixão",
+    "serenidade"
+   ],
+   "up": "A donzela que fecha a boca do leão, não pela violência mas pela suavidade. Fala da força interior que dispensa a força bruta, da coragem serena, do domínio das paixões pela paciência e pela compaixão. É autoconfiança tranquila, ternura firme, a capacidade de domar o instinto com amor em vez de repressão.",
+   "rev": "Dúvida, insegurança, sentir que falta coragem. Tentação de resolver pela força bruta o que só a suavidade resolve. Impaciência, medo, perda de autocontrolo, a fera interior que ganha a mão.",
+   "slug": "strength",
+   "sym": "A donzela fecha a boca do leão com mãos nuas e serenas, coroada de flores e com a lemniscata do infinito sobre a cabeça. Não há luta na cena: há confiança, paciência e uma força que vem de dentro.",
+   "q": [
+    "Que instinto meu pede ternura em vez de repressão?",
+    "Onde estou a confundir dureza com força?"
+   ]
+  },
+  {
+   "pt": "O Eremita",
+   "en": "The Hermit",
+   "cat": "major",
+   "roman": "IX",
+   "kw": [
+    "introspecção",
+    "procura",
+    "solidão",
+    "sabedoria",
+    "orientação"
+   ],
+   "up": "O ancião que se retira com a sua lanterna para procurar a verdade no silêncio. Fala de introspecção, de recolhimento necessário, de sabedoria conquistada longe do ruído. A luz que ele carrega é interior e serve de guia. Convida-te a parar, a olhar para dentro, a procurar sentido sem pressa e a confiar na tua própria luz.",
+   "rev": "Isolamento que já não cura mas pesa, solidão imposta ou excessiva. Recusar o conselho, fechar-se demais, perder-se em si. Ou o oposto: evitar o recolhimento que seria necessário, distrair-se para não olhar para dentro.",
+   "slug": "the-hermit",
+   "sym": "No cume nevado, o ancião ergue a lanterna onde brilha uma estrela de seis pontas: a luz interior que orienta os outros. O bastão sustenta o caminho e o manto cinzento fala de recolhimento voluntário.",
+   "q": [
+    "De que preciso de me afastar para ver com clareza?",
+    "Que verdade só encontro no silêncio?"
+   ]
+  },
+  {
+   "pt": "A Roda da Fortuna",
+   "en": "Wheel of Fortune",
+   "cat": "major",
+   "roman": "X",
+   "kw": [
+    "ciclos",
+    "destino",
+    "mudança",
+    "viragem",
+    "sorte"
+   ],
+   "up": "A roda que gira e faz subir o que estava em baixo. Fala de ciclos, de viragens do destino, de mudanças que vêm das forças maiores da vida. Um novo capítulo abre-se, a maré muda a teu favor. Convida-te a aceitar o movimento, a fluir com a mudança em vez de resistir, sabendo que tudo gira.",
+   "rev": "A roda desce, ciclo em baixa, sensação de azar ou de forças fora do teu controlo. Resistência à mudança inevitável, sentir-se preso num momento adverso. Atrasos, reviravoltas indesejadas, aprender a lição antes de a roda voltar a subir.",
+   "slug": "wheel-of-fortune",
+   "sym": "A roda gira com as letras TARO e os símbolos alquímicos; a esfinge domina o topo, a serpente desce e Anúbis sobe. Nos cantos, as quatro criaturas aladas estudam os seus livros: o destino move-se, a sabedoria observa.",
+   "q": [
+    "Que ciclo está a virar na minha vida?",
+    "Como posso fluir com esta mudança em vez de resistir?"
+   ]
+  },
+  {
+   "pt": "A Justiça",
+   "en": "Justice",
+   "cat": "major",
+   "roman": "XI",
+   "kw": [
+    "verdade",
+    "equilíbrio",
+    "causa-efeito",
+    "responsabilidade",
+    "lei"
+   ],
+   "up": "A balança e a espada: pesar com verdade, decidir com clareza. Fala de justiça, de equilíbrio, de consequências que decorrem dos atos. É honestidade, responsabilidade, contratos e acordos, a lei do que se colhe daquilo que se semeou. Convida-te a agir com integridade e a assumir as consequências com lucidez.",
+   "rev": "Injustiça, desonestidade, decisões enviesadas. Fugir à responsabilidade, negar a verdade, desequilíbrio na balança. Consequências evitadas que se acumulam, tratamento parcial, falta de prestação de contas.",
+   "slug": "justice",
+   "sym": "Sentada entre pilares, segura a espada erguida numa mão e a balança na outra: decidir e pesar são um só gesto. A coroa e o manto vermelho falam de autoridade lúcida, sem venda nos olhos.",
+   "q": [
+    "Que consequência dos meus actos estou a evitar encarar?",
+    "Onde preciso de repor equilíbrio ou verdade?"
+   ]
+  },
+  {
+   "pt": "O Enforcado",
+   "en": "The Hanged Man",
+   "cat": "major",
+   "roman": "XII",
+   "kw": [
+    "suspensão",
+    "entrega",
+    "nova perspectiva",
+    "sacrifício",
+    "pausa"
+   ],
+   "up": "O homem suspenso de cabeça para baixo, que vê o mundo de outro ângulo e nisso encontra iluminação. Fala de pausa voluntária, de entrega, de render-se ao momento para compreender. É o sacrifício que traz visão, a suspensão que precede a mudança interior. Convida-te a parar de lutar contra a corrente e a olhar tudo de novo.",
+   "rev": "Resistência inútil, agarrar-se ao que já não serve, adiar o que teria de mudar. Sacrifício em vão ou martírio desnecessário. Estagnação por medo de largar, ver o mundo do mesmo ângulo esperando resultados diferentes.",
+   "slug": "the-hanged-man",
+   "sym": "Suspenso por um pé numa árvore viva em forma de T, cruza a perna livre num quatro e mantém o rosto sereno, com uma auréola em volta da cabeça. A rendição, aqui, ilumina em vez de humilhar.",
+   "q": [
+    "O que ganho se parar de forçar esta situação?",
+    "Que perspectiva nova surge se eu virar tudo ao contrário?"
+   ]
+  },
+  {
+   "pt": "A Morte",
+   "en": "Death",
+   "cat": "major",
+   "roman": "XIII",
+   "kw": [
+    "fim",
+    "transformação",
+    "transição",
+    "renovação",
+    "libertação"
+   ],
+   "up": "Raramente literal: fala do fim de um ciclo para que outro possa nascer. É transformação profunda, metamorfose inevitável, a libertação de deixar ir o que já cumpriu o seu tempo. Tão certa e tão natural como a mudança das estações. Convida-te a aceitar o fim com dignidade, sabendo que abre espaço ao novo.",
+   "rev": "Resistência à mudança, agarrar-se ao passado, prolongar o que devia terminar. Medo do fim que trava a renovação. Transição bloqueada, estagnação, uma morte simbólica adiada que só faz sofrer mais.",
+   "slug": "death",
+   "sym": "O esqueleto em armadura negra monta um cavalo branco e ergue a bandeira com a rosa de cinco pétalas: a vida que renasce do fim. O rei jaz, o bispo reza, a criança oferece flores; ao fundo, o sol desponta entre duas torres.",
+   "q": [
+    "O que precisa de terminar para eu poder renascer?",
+    "A que me estou a agarrar por medo do vazio?"
+   ]
+  },
+  {
+   "pt": "A Temperança",
+   "en": "Temperance",
+   "cat": "major",
+   "roman": "XIV",
+   "kw": [
+    "equilíbrio",
+    "moderação",
+    "integração",
+    "paciência",
+    "harmonia"
+   ],
+   "up": "O anjo que verte a água entre duas taças, misturando o que parecia inconciliável. Fala de equilíbrio, de moderação, de alquimia interior. É a paciência de encontrar o meio-termo, a serenidade de integrar opostos, a fluidez de quem não força. Convida-te a temperar os excessos e a procurar a justa medida.",
+   "rev": "Desequilíbrio, excesso, extremos que se chocam. Impaciência, falta de moderação, dificuldade em conciliar forças internas. Conflito por não integrar, dispersão, a mistura que não se consegue fazer.",
+   "slug": "temperance",
+   "sym": "O anjo verte a água entre duas taças num fluxo que parece impossível, com um pé na terra e outro na água. O triângulo no peito e o caminho que sobe até ao sol falam de alquimia paciente entre matéria e espírito.",
+   "q": [
+    "Que extremos em mim pedem mistura e medida?",
+    "Onde tenho de trocar a pressa pela paciência?"
+   ]
+  },
+  {
+   "pt": "O Diabo",
+   "en": "The Devil",
+   "cat": "major",
+   "roman": "XV",
+   "kw": [
+    "apego",
+    "vício",
+    "materialismo",
+    "sombra",
+    "ilusão"
+   ],
+   "up": "As correntes que prendem os dois cativos estão largas: podiam sair, mas não saem. Fala de apego, de vício, das prisões que criamos para nós mesmos. Materialismo, tentação, desejo que domina, dependências que se disfarçam de escolha. Convida-te a olhar de frente a tua sombra e a reconhecer onde te acorrentas por vontade própria.",
+   "rev": "Quebrar as correntes, libertar-se de um vício ou de uma relação tóxica, recuperar o poder que se tinha entregue. Enfrentar a sombra e sair da ilusão. Consciência que desperta, o momento em que se vê a jaula e se decide sair.",
+   "slug": "the-devil",
+   "sym": "Uma paródia sombria dos Enamorados: o casal acorrentado ao bloco negro, sob o pentagrama invertido e a tocha que aponta para baixo. As correntes estão largas: sairiam, se quisessem.",
+   "q": [
+    "Que corrente estou a manter por escolha própria?",
+    "Que desejo meu se transformou em prisão?"
+   ]
+  },
+  {
+   "pt": "A Torre",
+   "en": "The Tower",
+   "cat": "major",
+   "roman": "XVI",
+   "kw": [
+    "ruptura",
+    "revelação",
+    "colapso",
+    "choque",
+    "verdade súbita"
+   ],
+   "up": "O raio que atinge a torre e faz cair tudo o que estava mal fundado. Fala de rutura súbita, de revelação que abala, de estruturas falsas que desmoronam de um golpe. É doloroso mas libertador: a verdade que destrói a ilusão, o choque que limpa o terreno. Convida-te a deixar cair o que não se sustentava e a reconstruir sobre a verdade.",
+   "rev": "Adiar o inevitável, resistir ao colapso que teria de vir, agarrar-se aos escombros. Um desastre atenuado ou evitado à justa, ou uma queda que se prolonga por medo de a enfrentar. Mudança necessária que se recusa, revelação que se ignora.",
+   "slug": "the-tower",
+   "sym": "O raio arranca a coroa do topo da torre construída no pico. Duas figuras caem entre línguas de fogo na noite fechada: tudo o que assentava em ilusão vem abaixo de um só golpe.",
+   "q": [
+    "Que estrutura da minha vida assenta em bases falsas?",
+    "O que ficaria de pé em mim se tudo o resto caísse?"
+   ]
+  },
+  {
+   "pt": "A Estrela",
+   "en": "The Star",
+   "cat": "major",
+   "roman": "XVII",
+   "kw": [
+    "esperança",
+    "fé",
+    "renovação",
+    "inspiração",
+    "cura"
+   ],
+   "up": "Depois da tempestade da Torre, a figura nua ajoelha-se junto à água e derrama-a serenamente sob as estrelas. Fala de esperança, de fé renovada, de cura e serenidade. É inspiração, propósito, a sensação de estar de novo ligado a algo maior. Convida-te a confiar que tudo se recompõe, a curar as feridas e a seguir a tua estrela.",
+   "rev": "Desânimo, perda de fé, desconexão do que dava sentido. Desespero, sentir-se sem norte, esperança abalada. Pode indicar que a luz continua lá, apenas toldada por cansaço ou desilusão, à espera de ser reencontrada.",
+   "slug": "the-star",
+   "sym": "Nua e sem defesas, a figura ajoelha com um pé na água e verte dois jarros, um na terra e outro no lago. Sobre ela, uma grande estrela de oito pontas e sete menores; na árvore, o íbis do pensamento pousa tranquilo.",
+   "q": [
+    "O que me devolve esperança depois da queda?",
+    "Como posso nutrir-me e nutrir o que me rodeia?"
+   ]
+  },
+  {
+   "pt": "A Lua",
+   "en": "The Moon",
+   "cat": "major",
+   "roman": "XVIII",
+   "kw": [
+    "ilusão",
+    "medo",
+    "intuição",
+    "subconsciente",
+    "incerteza"
+   ],
+   "up": "O caminho que atravessa a água escura sob uma lua ambígua, entre o cão e o lobo, o domesticado e o selvagem. Fala de ilusão, de incerteza, do que não se vê com clareza. É o território dos medos, dos sonhos, do subconsciente e da intuição. Convida-te a atravessar a névoa confiando no instinto, sem exigir certezas que ainda não existem.",
+   "rev": "A névoa dissipa-se, os medos revelam-se exagerados, a verdade começa a emergir. Clareza que regressa depois da confusão. Ou, no sentido inverso, autoengano que se aprofunda, ilusões a que se decide não renunciar.",
+   "slug": "the-moon",
+   "sym": "O caminho atravessa entre o cão e o lobo, o domesticado e o selvagem, e segue entre duas torres até às montanhas. Do lago sobe o lagostim, o medo antigo, e a lua goteja um orvalho ambíguo sobre tudo.",
+   "q": [
+    "Que medo cresce no escuro e diminui à luz?",
+    "Onde estou a confundir o que sinto com o que imagino?"
+   ]
+  },
+  {
+   "pt": "O Sol",
+   "en": "The Sun",
+   "cat": "major",
+   "roman": "XIX",
+   "kw": [
+    "alegria",
+    "sucesso",
+    "vitalidade",
+    "clareza",
+    "verdade"
+   ],
+   "up": "A criança que cavalga sob um sol pleno, num jardim de girassóis. É uma das cartas mais luminosas do baralho: alegria, sucesso, vitalidade, clareza. Tudo se ilumina, a verdade brilha, a confiança regressa. Fala de realização, de calor, de felicidade simples e genuína. Convida-te a celebrar e a deixar-te iluminar.",
+   "rev": "A alegria fica toldada, o sucesso adia-se, a vitalidade quebra. Otimismo excessivo ou ingénuo, entusiasmo que ignora sinais. Ainda assim o sol continua lá, apenas velado por nuvens passageiras, a felicidade a exigir um pequeno reajuste.",
+   "slug": "the-sun",
+   "sym": "A criança nua cavalga o cavalo branco de braços abertos, sem sela nem medo, com a bandeira vermelha da vitalidade. Atrás do muro, os girassóis voltam-se para o grande sol de rosto humano: nada aqui se esconde.",
+   "q": [
+    "O que me dá alegria simples e genuína?",
+    "Onde posso mostrar-me sem máscara?"
+   ]
+  },
+  {
+   "pt": "O Julgamento",
+   "en": "Judgement",
+   "cat": "major",
+   "roman": "XX",
+   "kw": [
+    "despertar",
+    "chamado",
+    "renascimento",
+    "avaliação",
+    "absolvição"
+   ],
+   "up": "O anjo que toca a trombeta e os mortos que se erguem: um chamado interior a que não se pode ficar indiferente. Fala de despertar, de renascimento, de resposta a uma vocação. É o momento de avaliar um ciclo com honestidade, de perdoar e perdoar-se, de se elevar a um novo nível de consciência. Convida-te a ouvir a convocação e a responder.",
+   "rev": "Ignorar o chamado interior, autocrítica dura que paralisa, dúvida que trava o renascimento. Medo de se julgar ou de ser julgado. Recusar a convocação por insegurança, ficar preso a um ciclo que já pedia encerramento.",
+   "slug": "judgement",
+   "sym": "O anjo Gabriel toca a trombeta com a bandeira da cruz e os mortos erguem-se dos túmulos de braços abertos: adultos e crianças respondem ao chamado. As montanhas ao fundo dizem que a convocação não se pode ignorar.",
+   "q": [
+    "Que chamado interior estou a adiar responder?",
+    "O que preciso de perdoar, em mim ou nos outros, para encerrar este ciclo?"
+   ]
+  },
+  {
+   "pt": "O Mundo",
+   "en": "The World",
+   "cat": "major",
+   "roman": "XXI",
+   "kw": [
+    "conclusão",
+    "plenitude",
+    "realização",
+    "integração",
+    "ciclo completo"
+   ],
+   "up": "A figura que dança dentro da coroa de louros, rodeada pelos quatro elementos: o ciclo completou-se com sucesso. Fala de plenitude, de realização, de integração de todas as partes. É a sensação de totalidade, de estar no lugar certo do percurso, de conquista que se celebra. Fecha um ciclo em glória e prepara o próximo.",
+   "rev": "Um ciclo que falta fechar, uma conclusão adiada, o último passo que não se dá. Sensação de incompletude, objetivo quase alcançado mas não selado. Atalhos que deixam algo por resolver, a plenitude à espera de um remate.",
+   "slug": "the-world",
+   "sym": "Dentro da coroa oval de louros, atada por fitas vermelhas em forma de infinito, a figura dança com dois bastões: o domínio tornado leveza. Nos quatro cantos, as criaturas do zodíaco fixo testemunham a obra completa.",
+   "q": [
+    "O que estou prestes a concluir e merece celebração?",
+    "Que aprendizagem levo deste ciclo para o próximo?"
+   ]
+  },
+  {
+   "pt": "Ás de Paus",
+   "en": "Ace of Wands",
+   "cat": "wands",
+   "rank": 1,
+   "kw": [
+    "inspiração",
+    "início",
+    "energia",
+    "criatividade",
+    "impulso"
+   ],
+   "up": "A mão que surge da nuvem oferece um bastão a rebentar em folhas: a faísca criativa no seu estado puro. Fala de inspiração súbita, de um novo projeto, de energia e paixão a nascer. É o impulso de começar, o entusiasmo que pede movimento. Convida-te a pegar na ideia enquanto arde e a dar-lhe corpo.",
+   "rev": "A faísca não pega: falta de energia, arranque adiado, inspiração que não descola. Ideias que ficam na cabeça, hesitação, projetos que não saem do papel. Entusiasmo bloqueado ou mal dirigido.",
+   "slug": "ace-of-wands",
+   "sym": "A mão surge da nuvem a segurar um bastão vivo, ainda a rebentar folhas que caem como pequenas chamas. Ao longe, um castelo no monte: a promessa daquilo em que a faísca se pode tornar.",
+   "q": [
+    "Que ideia me está a pedir corpo agora?",
+    "Onde sinto entusiasmo genuíno, sem obrigação?"
+   ]
+  },
+  {
+   "pt": "2 de Paus",
+   "en": "Two of Wands",
+   "cat": "wands",
+   "rank": 2,
+   "kw": [
+    "planeamento",
+    "visão",
+    "decisão",
+    "expansão",
+    "futuro"
+   ],
+   "up": "A figura que segura o mundo na mão e olha para lá do horizonte, entre o que já construiu e o que ainda pode conquistar. Fala de planeamento, de visão de longo prazo, de uma decisão sobre que caminho seguir. É o momento de sair da zona de conforto e de projetar o futuro com ambição.",
+   "rev": "Medo do desconhecido que trava a expansão, indecisão, planos que ficam por fazer. Preferir o seguro por receio de arriscar, visão limitada, oportunidade adiada por falta de coragem.",
+   "slug": "two-of-wands",
+   "sym": "Do alto das ameias, a figura segura o globo do mundo na mão enquanto contempla o mar. Um bastão está fixo ao muro, o outro na sua mão: entre o conquistado e o possível, decide-se o rumo.",
+   "q": [
+    "Que horizonte maior estou a evitar olhar?",
+    "O que faria se não tivesse medo de sair do seguro?"
+   ]
+  },
+  {
+   "pt": "3 de Paus",
+   "en": "Three of Wands",
+   "cat": "wands",
+   "rank": 3,
+   "kw": [
+    "expansão",
+    "progresso",
+    "previsão",
+    "comércio",
+    "oportunidade"
+   ],
+   "up": "A figura no alto vê os seus barcos partir e regressar: os primeiros resultados de um plano em marcha. Fala de progresso, de expansão, de olhar longe. É comércio, colaboração, oportunidades para além do horizonte conhecido. Convida-te a confiar no que puseste em movimento e a preparar-te para crescer.",
+   "rev": "Atrasos, planos que não avançam como esperado, obstáculos na expansão. Visão curta, falta de preparação, barcos que tardam. Expansão travada por má previsão ou por circunstâncias externas.",
+   "slug": "three-of-wands",
+   "sym": "De costas, no promontório, a figura observa os barcos que enviou. Os três bastões firmes no chão sustentam a espera: o plano já navega, os resultados começam a chegar ao porto.",
+   "q": [
+    "O que pus em movimento que ainda não colhi?",
+    "Que próximo passo prepara a expansão?"
+   ]
+  },
+  {
+   "pt": "4 de Paus",
+   "en": "Four of Wands",
+   "cat": "wands",
+   "rank": 4,
+   "kw": [
+    "celebração",
+    "harmonia",
+    "lar",
+    "comunidade",
+    "marco"
+   ],
+   "up": "Os quatro bastões formam um pórtico festivo: um marco alcançado que se celebra em comunidade. Fala de harmonia, de estabilidade alegre, de lar e pertença. É casamento, festa, reunião, o prazer de partilhar uma conquista. Convida-te a celebrar o que construíste e a saborear as raízes.",
+   "rev": "Harmonia frágil, celebração adiada ou sem brilho, tensão no lar. Falta de raízes, transição que desassossega, um marco que se atinge mas não se desfruta plenamente.",
+   "slug": "four-of-wands",
+   "sym": "Quatro bastões erguem uma grinalda de flores e frutos, como um pórtico de festa. Duas figuras erguem ramos em celebração diante do castelo: a estrutura mínima que basta para haver alegria e pertença.",
+   "q": [
+    "Que conquista minha ainda não celebrei?",
+    "Onde está o meu verdadeiro sentido de casa?"
+   ]
+  },
+  {
+   "pt": "5 de Paus",
+   "en": "Five of Wands",
+   "cat": "wands",
+   "rank": 5,
+   "kw": [
+    "conflito",
+    "competição",
+    "tensão",
+    "rivalidade",
+    "desafio"
+   ],
+   "up": "Cinco figuras agitam bastões numa confusão sem líder: choque de egos, de ideias, de vontades. Fala de conflito, de competição, de tensão desordenada. Nem sempre é grave, muitas vezes é a fricção necessária para afinar posições. Convida-te a afirmar-te no meio do ruído e a escolher se vale a pena entrar na contenda.",
+   "rev": "Fim de um conflito, evitar a discórdia, procurar acordo. Ou tensão reprimida que não se resolve, competição interior, rivalidade que se disfarça em vez de se enfrentar.",
+   "slug": "five-of-wands",
+   "sym": "Cinco jovens agitam bastões em direcções cruzadas, sem ordem nem líder. Ninguém sangra: é mais treino e fricção do que guerra, o choque de vontades a testar posições.",
+   "q": [
+    "Este conflito vale a energia que me consome?",
+    "O que estou a tentar provar, e a quem?"
+   ]
+  },
+  {
+   "pt": "6 de Paus",
+   "en": "Six of Wands",
+   "cat": "wands",
+   "rank": 6,
+   "kw": [
+    "vitória",
+    "reconhecimento",
+    "sucesso",
+    "orgulho",
+    "confiança"
+   ],
+   "up": "O cavaleiro regressa coroado de louros, aclamado pela multidão: a vitória reconhecida publicamente. Fala de sucesso, de reconhecimento merecido, de orgulho sadio. É o aplauso pelo esforço, a confiança que vem de ter vencido. Convida-te a receber o mérito sem falsa modéstia e a deixar-te ver.",
+   "rev": "Vitória que tarda, reconhecimento que não chega, ego ferido pela falta de aplauso. Ou o oposto: orgulho excessivo, arrogância que precede a queda, sucesso que sobe à cabeça.",
+   "slug": "six-of-wands",
+   "sym": "O cavaleiro avança no cavalo branco com o louro da vitória no bastão e na fronte, saudado pela multidão. O reconhecimento é público: o mérito viu-se e aplaudiu-se.",
+   "q": [
+    "Que vitória minha merece ser reconhecida, por mim primeiro?",
+    "Como recebo o aplauso sem depender dele?"
+   ]
+  },
+  {
+   "pt": "7 de Paus",
+   "en": "Seven of Wands",
+   "cat": "wands",
+   "rank": 7,
+   "kw": [
+    "defesa",
+    "perseverança",
+    "posição",
+    "coragem",
+    "resistência"
+   ],
+   "up": "A figura no alto defende a sua posição contra vários bastões que sobem de baixo. Fala de defender o que é teu, de resistir à pressão, de coragem sob ataque. Tens a vantagem do terreno elevado, mas exige-se firmeza e persistência. Convida-te a manter a posição e a provar o teu valor.",
+   "rev": "Sentir-se sobrecarregado, ceder à pressão, esgotamento na defesa. Dúvida sobre se vale a pena continuar a lutar, render-se cedo demais, perder a posição por cansaço.",
+   "slug": "seven-of-wands",
+   "sym": "Do terreno elevado, a figura defende-se de seis bastões que sobem de baixo. Os sapatos desirmanados denunciam a pressa com que teve de se pôr de pé: a posição é boa, mas exige vigilância.",
+   "q": [
+    "O que estou a defender, e porque vale a pena?",
+    "A pressão vem de fora ou também de dentro?"
+   ]
+  },
+  {
+   "pt": "8 de Paus",
+   "en": "Eight of Wands",
+   "cat": "wands",
+   "rank": 8,
+   "kw": [
+    "rapidez",
+    "movimento",
+    "notícias",
+    "ação",
+    "fluxo"
+   ],
+   "up": "Oito bastões voam pelo ar sem obstáculos: tudo se acelera. Fala de rapidez, de acontecimentos que se precipitam, de notícias e mensagens que chegam. É o fluxo desimpedido, o momento em que as coisas finalmente se movem depressa. Convida-te a agir com prontidão e a acompanhar o ritmo.",
+   "rev": "Atrasos, precipitação, comunicação truncada. Energia dispersa em várias direções, frustração com a lentidão, mensagens que se cruzam ou não chegam. Falta de coordenação no meio da pressa.",
+   "slug": "eight-of-wands",
+   "sym": "Oito bastões atravessam o céu limpo em pleno voo, paralelos e desimpedidos, sobre o rio e a colina. Não há figuras humanas: só movimento puro, a caminho de aterrar.",
+   "q": [
+    "O que se está a acelerar na minha vida?",
+    "Estou pronto para responder quando a notícia chegar?"
+   ]
+  },
+  {
+   "pt": "9 de Paus",
+   "en": "Nine of Wands",
+   "cat": "wands",
+   "rank": 9,
+   "kw": [
+    "resiliência",
+    "persistência",
+    "defesa",
+    "cansaço",
+    "quase lá"
+   ],
+   "up": "A figura ferida apoia-se no bastão, vigilante, pronta para mais uma investida. Fala de resiliência, de aguentar apesar do cansaço, da última defesa antes da vitória. Traz as marcas de batalhas anteriores mas não desiste. Convida-te a persistir quando falta pouco, mesmo exausto.",
+   "rev": "Esgotamento total, defesas em excesso, paranoia de quem já não confia em ninguém. Desistir por fadiga a poucos passos da meta, ou rigidez defensiva que já não protege, só isola.",
+   "slug": "nine-of-wands",
+   "sym": "Com a cabeça ligada e o olhar desconfiado, a figura apoia-se no seu bastão diante da paliçada dos outros oito. Ferido mas de pé: a experiência tornou-o vigilante, talvez demasiado.",
+   "q": [
+    "Que batalha antiga ainda me faz estar em guarda?",
+    "Falta pouco: o que me ajuda a aguentar este último troço?"
+   ]
+  },
+  {
+   "pt": "10 de Paus",
+   "en": "Ten of Wands",
+   "cat": "wands",
+   "rank": 10,
+   "kw": [
+    "sobrecarga",
+    "peso",
+    "responsabilidade",
+    "dever",
+    "exaustão"
+   ],
+   "up": "A figura curva-se sob o peso de dez bastões que mal consegue carregar. Fala de sobrecarga, de responsabilidades acumuladas, de dever que esmaga. Chegaste perto da meta, mas levas tudo às costas e isso esgota. Convida-te a perguntar o que é realmente teu para carregar e a largar o resto.",
+   "rev": "Libertar o fardo, delegar, aliviar o peso que não tinhas de levar sozinho. Ou o oposto: recusar-se a largar e colapsar sob a carga, teimar em fazer tudo até à exaustão.",
+   "slug": "ten-of-wands",
+   "sym": "A figura curva-se sob o feixe de dez bastões que carrega contra o peito, tapando a própria visão do caminho. A cidade está perto: o fardo é real, mas o destino também.",
+   "q": [
+    "O que carrego que não é meu para carregar?",
+    "O que posso delegar ou largar já esta semana?"
+   ]
+  },
+  {
+   "pt": "Valete de Paus",
+   "en": "Page of Wands",
+   "cat": "wands",
+   "rank": 11,
+   "kw": [
+    "entusiasmo",
+    "exploração",
+    "novidade",
+    "curiosidade",
+    "mensagem"
+   ],
+   "up": "O jovem contempla o seu bastão florido com curiosidade e sede de aventura. Fala de entusiasmo, de vontade de explorar, de ideias novas que pedem experiência. É o mensageiro de oportunidades criativas, a energia fresca de quem quer tentar. Convida-te a seguir a curiosidade e a atrever-te a experimentar.",
+   "rev": "Entusiasmo que não concretiza, falta de direção, projetos abandonados a meio. Impaciência, dispersão, ideias que se acendem e apagam sem produzir nada.",
+   "slug": "page-of-wands",
+   "sym": "Em pleno deserto, com pirâmides ao fundo, o jovem contempla o rebento no topo do seu bastão. As salamandras na túnica, criaturas do fogo, dizem que o entusiasmo é a sua natureza.",
+   "q": [
+    "Que curiosidade quero seguir sem garantias?",
+    "O que gostava de experimentar só pelo gosto de tentar?"
+   ]
+  },
+  {
+   "pt": "Cavaleiro de Paus",
+   "en": "Knight of Wands",
+   "cat": "wands",
+   "rank": 12,
+   "kw": [
+    "ação",
+    "impulso",
+    "aventura",
+    "paixão",
+    "ímpeto"
+   ],
+   "up": "O cavaleiro lança-se para a frente sobre o cavalo empinado, movido pela paixão. Fala de ação impulsiva, de aventura, de energia ardente. É coragem, carisma, ousadia de avançar de rompante rumo ao desejo. Convida-te a agir com ímpeto, sem deixar que o entusiasmo se apague na hesitação.",
+   "rev": "Impulsividade que descontrola, precipitação, fúria. Projetos deixados a meio quando o fogo esmorece, imprudência, energia sem foco que se gasta em arranques sem chegada.",
+   "slug": "knight-of-wands",
+   "sym": "O cavalo empina-se e o cavaleiro inclina-se para a frente, com o penacho e a túnica de salamandras a arder de movimento. Tudo na carta quer partir já.",
+   "q": [
+    "Onde é que o meu ímpeto ajuda, e onde atropela?",
+    "Que aventura me pede coragem agora?"
+   ]
+  },
+  {
+   "pt": "Rainha de Paus",
+   "en": "Queen of Wands",
+   "cat": "wands",
+   "rank": 13,
+   "kw": [
+    "confiança",
+    "carisma",
+    "calor",
+    "independência",
+    "determinação"
+   ],
+   "up": "Senta-se com o girassol e o gato negro: confiante, magnética, dona de si. Fala de carisma, de calor humano com força, de independência determinada. É a criatividade que irradia, a presença que atrai e inspira sem esforço. Convida-te a habitar a tua confiança e a brilhar sem pedir licença.",
+   "rev": "Insegurança escondida sob a máscara de força, ciúme, exigência excessiva. Energia consumida, dispersão, dúvida que mina o carisma. Fogo que se vira contra si em vez de aquecer.",
+   "slug": "queen-of-wands",
+   "sym": "No trono guardado por leões, segura o bastão e um girassol virado para a luz. Aos pés, o gato preto: o instinto e a sombra domesticados, ao serviço do seu magnetismo.",
+   "q": [
+    "Onde brilho naturalmente quando não me contenho?",
+    "Que parte de mim pede mais confiança pública?"
+   ]
+  },
+  {
+   "pt": "Rei de Paus",
+   "en": "King of Wands",
+   "cat": "wands",
+   "rank": 14,
+   "kw": [
+    "liderança",
+    "visão",
+    "carisma",
+    "ousadia",
+    "empreendedorismo"
+   ],
+   "up": "O rei domina o fogo e coloca-o ao serviço de uma visão. Fala de liderança carismática, de ousadia, de espírito empreendedor. É quem inspira os outros a segui-lo, quem abre caminho com determinação e propósito. Convida-te a liderar com visão e a transformar a paixão em direção.",
+   "rev": "Autoritarismo, impulsividade na liderança, arrogância. Promessas grandiosas sem substância, intolerância, decisões precipitadas que arrastam os outros. Poder que se torna tirania ou fanfarronice.",
+   "slug": "king-of-wands",
+   "sym": "O rei senta-se na ponta do trono, pronto a levantar-se, com o bastão florido na mão. Leões e salamandras decoram o trono e o manto; uma salamandra viva passa aos seus pés: o fogo obedece-lhe.",
+   "q": [
+    "Que visão minha merece liderança a sério?",
+    "Como inspiro sem impor?"
+   ]
+  },
+  {
+   "pt": "Ás de Copas",
+   "en": "Ace of Cups",
+   "cat": "cups",
+   "rank": 1,
+   "kw": [
+    "amor",
+    "emoção",
+    "abundância emocional",
+    "intuição",
+    "início"
+   ],
+   "up": "A mão oferece uma taça a transbordar, regada pela pomba do espírito. Fala de um novo amor, de abertura emocional, de um coração que se enche. É compaixão, intuição, ligação espiritual, o dom de sentir plenamente. Convida-te a receber o afeto que se oferece e a deixar o coração transbordar.",
+   "rev": "Emoções bloqueadas, coração fechado, amor que não se deixa entrar nem sair. Vazio afetivo, dificuldade em dar ou receber, a taça que se entornou. Sentimentos reprimidos que pedem espaço.",
+   "slug": "ace-of-cups",
+   "sym": "A pomba desce com a hóstia até à taça que jorra cinco correntes de água sobre o lago de lótus. A mão oferece-a da nuvem: o coração recebe mais do que consegue conter.",
+   "q": [
+    "A que amor, novo ou renovado, me quero abrir?",
+    "O que faria transbordar o meu coração neste momento?"
+   ]
+  },
+  {
+   "pt": "2 de Copas",
+   "en": "Two of Cups",
+   "cat": "cups",
+   "rank": 2,
+   "kw": [
+    "união",
+    "parceria",
+    "atração",
+    "reciprocidade",
+    "harmonia"
+   ],
+   "up": "Duas figuras trocam as suas taças num pacto de igualdade: o encontro de duas almas. Fala de união amorosa, de parceria equilibrada, de atração mútua e reciprocidade. É a conexão profunda em que cada um vê e é visto. Convida-te a honrar o vínculo e a construir a dois em harmonia.",
+   "rev": "Desequilíbrio na relação, desentendimento, atração que esfria. Ruptura, falta de reciprocidade, o brinde que não se concretiza. Um dos lados dá mais do que recebe.",
+   "slug": "two-of-cups",
+   "sym": "O homem e a mulher trocam taças sob o caduceu alado com cabeça de leão: paixão e entendimento a selar o pacto. O gesto é de igualdade: cada um dá e recebe na mesma medida.",
+   "q": [
+    "Esta relação assenta em reciprocidade real?",
+    "O que tenho eu para oferecer a esta união?"
+   ]
+  },
+  {
+   "pt": "3 de Copas",
+   "en": "Three of Cups",
+   "cat": "cups",
+   "rank": 3,
+   "kw": [
+    "amizade",
+    "celebração",
+    "comunidade",
+    "alegria",
+    "partilha"
+   ],
+   "up": "Três figuras erguem as taças numa dança de celebração. Fala de amizade, de comunidade, de alegria partilhada. É o convívio, o apoio dos que te querem bem, a gratidão que se festeja em conjunto. Convida-te a celebrar com os teus e a valorizar os laços que te sustentam.",
+   "rev": "Excessos, festa que cansa, isolamento social. Fofoca, grupo que se desfaz, amizades superficiais que não seguram. O convívio que passou a peso ou a máscara.",
+   "slug": "three-of-cups",
+   "sym": "Três mulheres dançam em círculo com as taças erguidas, entre frutos e flores da colheita. A roda fechada entre elas é o próprio símbolo: a alegria multiplica-se quando é partilhada.",
+   "q": [
+    "Que amizades me sustentam de verdade?",
+    "O que tenho para celebrar com os meus?"
+   ]
+  },
+  {
+   "pt": "4 de Copas",
+   "en": "Four of Cups",
+   "cat": "cups",
+   "rank": 4,
+   "kw": [
+    "apatia",
+    "tédio",
+    "introspecção",
+    "reavaliação",
+    "desinteresse"
+   ],
+   "up": "A figura de braços cruzados ignora a taça que uma mão lhe oferece, absorta na sua insatisfação. Fala de apatia, de tédio, de desligamento do que rodeia. É o momento de reavaliar, mas também o risco de não ver a oportunidade por estar fechado. Convida-te a olhar para cima e a perguntar o que andas a recusar.",
+   "rev": "Despertar do tédio, nova motivação, aceitar finalmente o que se oferece. Sair da apatia, reencontrar o interesse, dizer sim à taça que se estendia.",
+   "slug": "four-of-cups",
+   "sym": "Sentado sob a árvore, de braços e pernas cruzados, o jovem ignora as três taças à sua frente e a quarta que uma mão lhe estende da nuvem. O fechamento é corporal: a oportunidade está literalmente à vista.",
+   "q": [
+    "Que oferta estou a recusar sem sequer olhar?",
+    "O meu tédio é cansaço, ou é defesa?"
+   ]
+  },
+  {
+   "pt": "5 de Copas",
+   "en": "Five of Cups",
+   "cat": "cups",
+   "rank": 5,
+   "kw": [
+    "perda",
+    "luto",
+    "arrependimento",
+    "desilusão",
+    "foco no que falta"
+   ],
+   "up": "A figura de manto negro chora as três taças entornadas e não repara nas duas que continuam de pé atrás de si. Fala de luto, de perda, de desilusão, do foco naquilo que se derramou. É a tristeza que clarifica, mas também o convite a virar-se para o que resta. Nem tudo se perdeu.",
+   "rev": "Aceitação, superação do luto, virar-se para as taças que ficaram. Perdão, recuperação, largar o arrependimento e seguir. A dor que se dissolve e liberta.",
+   "slug": "five-of-cups",
+   "sym": "O manto negro cobre a figura que fixa as três taças entornadas, de costas para as duas que continuam de pé. A ponte sobre o rio conduz ao castelo: o caminho de regresso existe, basta virar-se.",
+   "q": [
+    "O que perdi e ainda não chorei até ao fim?",
+    "Que duas taças continuam de pé atrás de mim?"
+   ]
+  },
+  {
+   "pt": "6 de Copas",
+   "en": "Six of Cups",
+   "cat": "cups",
+   "rank": 6,
+   "kw": [
+    "nostalgia",
+    "infância",
+    "memória",
+    "inocência",
+    "reencontro"
+   ],
+   "up": "Uma criança oferece a outra uma taça florida num pátio antigo: a doçura da memória. Fala de nostalgia, de infância, de inocência e ternura. É o reencontro com pessoas ou lugares do passado, a generosidade simples, os afetos que voltam. Convida-te a reconciliar-te com o que foi bom no que já viveste.",
+   "rev": "Preso ao passado, idealizar o que foi, recusar crescer. Imaturidade, viver de memórias em vez de presente. Ou, no sentido de cura, libertar-se enfim de uma recordação que prendia.",
+   "slug": "six-of-cups",
+   "sym": "Num pátio antigo, a criança mais velha oferece à mais nova uma taça com uma flor branca: ternura pura, sem cálculo. As seis taças floridas fazem do passado um jardim.",
+   "q": [
+    "Que memória doce me pode nutrir hoje sem me prender?",
+    "A quem devo ou quero oferecer ternura simples?"
+   ]
+  },
+  {
+   "pt": "7 de Copas",
+   "en": "Seven of Cups",
+   "cat": "cups",
+   "rank": 7,
+   "kw": [
+    "ilusão",
+    "escolhas",
+    "fantasia",
+    "dispersão",
+    "tentação"
+   ],
+   "up": "Sete taças flutuam nas nuvens, cheias de miragens: tesouros, coroas, mas também sombras. Fala de excesso de opções, de fantasia, de ilusão. É a dificuldade de escolher entre sonhos, a tentação de projetar em vez de agir. Convida-te a discernir o real do imaginado e a pousar os pés no chão.",
+   "rev": "Clareza na escolha, foco, sair da névoa das fantasias. Decidir enfim por uma taça. Ou, no sentido inverso, dispersão total, fuga à realidade, perder-se nas próprias projeções.",
+   "slug": "seven-of-cups",
+   "sym": "Sete taças flutuam na nuvem diante da silhueta: um rosto, uma figura velada e radiante, uma serpente, um castelo, jóias, uma coroa de louros junto a uma caveira, um dragão. Cada desejo traz o seu risco escondido.",
+   "q": [
+    "Qual destas opções é real, e qual é miragem?",
+    "O que ganho quando finalmente escolho uma só taça?"
+   ]
+  },
+  {
+   "pt": "8 de Copas",
+   "en": "Eight of Cups",
+   "cat": "cups",
+   "rank": 8,
+   "kw": [
+    "partida",
+    "desapego",
+    "procura",
+    "viragem",
+    "abandono"
+   ],
+   "up": "A figura vira as costas a oito taças alinhadas e parte, de bastão em punho, sob a lua. Fala de deixar para trás o que já não preenche, mesmo estando aparentemente completo. É desapego emocional, coragem de procurar mais sentido, a viragem de quem não se contenta com o vazio disfarçado de suficiente.",
+   "rev": "Medo de partir, ficar por comodismo naquilo que já não satisfaz. Andar em círculos, hesitar entre ficar e sair. Ou o regresso, reconsiderar a partida, voltar atrás no caminho.",
+   "slug": "eight-of-cups",
+   "sym": "Sob uma lua que é ao mesmo tempo cheia e minguante, a figura parte de bastão na mão, deixando oito taças empilhadas com uma falha visível: faltava uma, faltava algo. O caminho sobe pela margem.",
+   "q": [
+    "O que está completo por fora mas vazio por dentro?",
+    "Que procura de sentido estou a adiar?"
+   ]
+  },
+  {
+   "pt": "9 de Copas",
+   "en": "Nine of Cups",
+   "cat": "cups",
+   "rank": 9,
+   "kw": [
+    "satisfação",
+    "desejo realizado",
+    "contentamento",
+    "prazer",
+    "gratidão"
+   ],
+   "up": "A figura senta-se satisfeita diante das suas nove taças, de braços cruzados e sorriso tranquilo. É a célebre carta do desejo: contentamento, prazer, realização emocional. Fala de bem-estar, de gratidão pelo que se conquistou, de um desejo que se cumpre. Convida-te a desfrutar e a reconhecer a fartura.",
+   "rev": "Insatisfação apesar de ter tudo, prazeres que não preenchem, ganância. O desejo que, cumprido, sabe a pouco. Contentamento superficial, procurar no exterior o que faltava dentro.",
+   "slug": "nine-of-cups",
+   "sym": "O anfitrião senta-se de braços cruzados e sorriso satisfeito diante do arco de nove taças na bancada coberta de azul. A abundância está exposta: conquistou-a e sabe-o.",
+   "q": [
+    "Que desejo meu já se cumpriu e ainda não agradeci?",
+    "O meu contentamento é profundo, ou é vitrina?"
+   ]
+  },
+  {
+   "pt": "10 de Copas",
+   "en": "Ten of Cups",
+   "cat": "cups",
+   "rank": 10,
+   "kw": [
+    "felicidade",
+    "harmonia familiar",
+    "plenitude",
+    "amor",
+    "realização"
+   ],
+   "up": "Um arco-íris de dez taças cobre uma família reunida em alegria. Fala de felicidade plena, de harmonia afetiva, de amor realizado. É a comunhão, a paz emocional, o sonho de pertença concretizado. Convida-te a saborear a harmonia dos teus laços e a reconhecer a riqueza do que é intangível.",
+   "rev": "Desarmonia familiar, harmonia só na aparência, valores desalinhados sob o mesmo teto. Lar em tensão, felicidade que se procura fora porque dentro rareia. O arco-íris que não se concretiza.",
+   "slug": "ten-of-cups",
+   "sym": "O casal ergue os braços para o arco-íris de dez taças enquanto as crianças dançam ao lado; a casa e o rio completam a cena. É a taça do Ás transformada em vida partilhada.",
+   "q": [
+    "Como está a harmonia real dos meus laços mais próximos?",
+    "O que é, para mim, uma vida emocional plena?"
+   ]
+  },
+  {
+   "pt": "Valete de Copas",
+   "en": "Page of Cups",
+   "cat": "cups",
+   "rank": 11,
+   "kw": [
+    "sensibilidade",
+    "criatividade",
+    "intuição",
+    "mensagem",
+    "sonho"
+   ],
+   "up": "O jovem olha, surpreendido, o peixe que surge dentro da sua taça: o inesperado que vem do fundo do sentir. Fala de sensibilidade, de imaginação, de mensagens do coração. É criatividade, intuição jovem, abertura ao sonho e ao afeto. Convida-te a acolher os convites emocionais e a levar a sério a tua imaginação.",
+   "rev": "Imaturidade emocional, sensibilidade ferida, drama. Bloqueio criativo, escapismo, dificuldade em lidar com o que se sente. O sonhador que se refugia no sonho para não agir.",
+   "slug": "page-of-cups",
+   "sym": "Com a túnica florida e o barrete ondulante, o jovem ergue a taça de onde um peixe o espreita: a imaginação a saltar do fundo do sentir. Atrás, o mar ondula tranquilo.",
+   "q": [
+    "Que mensagem do coração ando a desvalorizar?",
+    "Onde posso levar a minha imaginação mais a sério?"
+   ]
+  },
+  {
+   "pt": "Cavaleiro de Copas",
+   "en": "Knight of Cups",
+   "cat": "cups",
+   "rank": 12,
+   "kw": [
+    "romance",
+    "idealismo",
+    "sedução",
+    "proposta",
+    "encanto"
+   ],
+   "up": "O cavaleiro avança com a taça estendida, sereno e sonhador: o portador de uma proposta do coração. Fala de romance, de idealismo, de encanto e sedução. É seguir o sentimento, oferecer ou receber um convite ao amor ou à arte. Convida-te a deixar o coração guiar, com graça e abertura.",
+   "rev": "Idealismo em excesso, promessas emocionais que não se cumprem, sedução vazia. Desilusão, capricho, fuga quando o sentimento exige compromisso. O sonhador que promete mais do que dá.",
+   "slug": "knight-of-cups",
+   "sym": "O cavaleiro avança a passo lento, taça estendida como oferta, com asas no elmo e nos calcanhares. O rio corre entre as margens: a proposta emocional chega com graça, não com pressa.",
+   "q": [
+    "Que convite do coração quero fazer, ou aceitar?",
+    "O meu romantismo tem chão por baixo?"
+   ]
+  },
+  {
+   "pt": "Rainha de Copas",
+   "en": "Queen of Cups",
+   "cat": "cups",
+   "rank": 13,
+   "kw": [
+    "empatia",
+    "intuição",
+    "cuidado",
+    "sensibilidade",
+    "acolhimento"
+   ],
+   "up": "A rainha contempla a sua taça elaborada, à beira-mar, imersa no sentir. Fala de empatia profunda, de intuição, de cuidado emocional maduro. É o acolhimento que conforta sem julgar, a compaixão que compreende. Convida-te a honrar a tua sensibilidade e a cuidar dos outros a partir de um centro sereno.",
+   "rev": "Sobrecarga emocional, limites difusos, deixar-se consumir pelos sentimentos alheios. Dependência, insegurança, ou manipulação afetiva. A água que transborda e alaga em vez de nutrir.",
+   "slug": "queen-of-cups",
+   "sym": "No trono à beira-mar, contempla a única taça fechada de todo o baralho, ornada de anjos: guarda o mistério do sentir. Os pés quase tocam a água sem se afogar nela.",
+   "q": [
+    "Como cuido dos outros sem me perder neles?",
+    "Que emoção minha pede escuta atenta?"
+   ]
+  },
+  {
+   "pt": "Rei de Copas",
+   "en": "King of Cups",
+   "cat": "cups",
+   "rank": 14,
+   "kw": [
+    "equilíbrio emocional",
+    "maturidade",
+    "compaixão",
+    "diplomacia",
+    "serenidade"
+   ],
+   "up": "O rei mantém-se sereno no trono, sobre um mar agitado que não o desequilibra. Fala de domínio das emoções, de maturidade afetiva, de calma sob pressão. É a compaixão temperada pela razão, o conselheiro que acolhe sem se afogar. Convida-te a sentir profundamente e a agir com equilíbrio.",
+   "rev": "Emoções reprimidas ou voláteis por baixo da calma aparente. Frieza, manipulação, mau humor, chantagem afetiva. O mar que já não se domina e se derrama em desequilíbrio escondido.",
+   "slug": "king-of-cups",
+   "sym": "O trono assenta numa plataforma no meio do mar agitado; atrás saltam um golfinho e um navio. O rei segura taça e ceptro imperturbável, com o talismã de peixe ao peito: sente tudo, não se afoga em nada.",
+   "q": [
+    "Como mantenho o centro quando as emoções sobem?",
+    "Onde é que a minha calma é sabedoria, e onde é repressão?"
+   ]
+  },
+  {
+   "pt": "Ás de Espadas",
+   "en": "Ace of Swords",
+   "cat": "swords",
+   "rank": 1,
+   "kw": [
+    "clareza",
+    "verdade",
+    "ideia",
+    "avanço mental",
+    "corte"
+   ],
+   "up": "A mão ergue uma espada coroada que rompe a névoa: a clareza que corta e decide. Fala de verdade, de lucidez, de uma ideia poderosa que abre caminho. É o avanço intelectual, o discernimento que separa o verdadeiro do falso. Convida-te a nomear a verdade com coragem e a agir com a mente limpa.",
+   "rev": "Confusão, ideias turvas, verdade distorcida. Força mental mal dirigida, decisões precipitadas, a espada usada para ferir em vez de esclarecer. Clareza que se procura e não chega.",
+   "slug": "ace-of-swords",
+   "sym": "A mão ergue da nuvem a espada que atravessa a coroa, de onde pendem o louro da vitória e a palma. As montanhas áridas ao fundo dizem que a clareza se conquista em terreno difícil.",
+   "q": [
+    "Que verdade preciso de nomear sem rodeios?",
+    "Onde me falta clareza para decidir?"
+   ]
+  },
+  {
+   "pt": "2 de Espadas",
+   "en": "Two of Swords",
+   "cat": "swords",
+   "rank": 2,
+   "kw": [
+    "impasse",
+    "indecisão",
+    "equilíbrio tenso",
+    "negação",
+    "escolha adiada"
+   ],
+   "up": "De olhos vendados, a figura equilibra duas espadas cruzadas sobre o peito. Fala de impasse, de decisão evitada, de não querer ver para não ter de escolher. É o equilíbrio precário entre duas opções, a pausa tensa antes de decidir. Convida-te a tirar a venda e a encarar o que estás a adiar.",
+   "rev": "O impasse desbloqueia-se, a venda cai, a decisão faz-se enfim. Ou, no sentido inverso, sobrecarga de informação, confusão, verdade que se recusa até ao limite.",
+   "slug": "two-of-swords",
+   "sym": "De costas para o mar semeado de rochedos, a figura vendada cruza duas espadas sobre o peito, em equilíbrio tenso. A lua crescente assiste: a decisão adiada não desaparece, espera.",
+   "q": [
+    "Que decisão estou a adiar ao recusar ver?",
+    "O que aconteceria se tirasse a venda?"
+   ]
+  },
+  {
+   "pt": "3 de Espadas",
+   "en": "Three of Swords",
+   "cat": "swords",
+   "rank": 3,
+   "kw": [
+    "mágoa",
+    "dor",
+    "separação",
+    "desilusão",
+    "sofrimento"
+   ],
+   "up": "Três espadas trespassam um coração sob a chuva: a imagem crua da mágoa. Fala de dor, de separação, de traição ou desilusão. É o sofrimento que fere mas também clarifica, a verdade dolorosa que atravessa. Convida-te a deixar a dor passar por ti sem te agarrares a ela, sabendo que a chuva também limpa.",
+   "rev": "Cura da mágoa, recuperação, libertar a dor que se guardava. Ou, no sentido de prolongamento, ressentimento agarrado, sofrimento que se alimenta, ferida que não se deixa sarar.",
+   "slug": "three-of-swords",
+   "sym": "O coração vermelho suspenso é trespassado por três espadas sob um céu de chuva. Não há figuras nem cenário: só a dor, nítida e sem disfarce, a exigir ser sentida.",
+   "q": [
+    "Que mágoa preciso de atravessar em vez de contornar?",
+    "Que verdade dolorosa acabou por me libertar?"
+   ]
+  },
+  {
+   "pt": "4 de Espadas",
+   "en": "Four of Swords",
+   "cat": "swords",
+   "rank": 4,
+   "kw": [
+    "descanso",
+    "recuperação",
+    "pausa",
+    "retiro",
+    "silêncio"
+   ],
+   "up": "A figura repousa, como em efígie, com três espadas na parede e uma sob si. Fala de descanso necessário, de recuperação, de pausa depois do conflito. É o retiro para curar, o silêncio que recarrega, a trégua antes de voltar à luta. Convida-te a parar sem culpa e a deixar o corpo e a mente refazerem-se.",
+   "rev": "Inquietação, esgotamento por não parar, ou o despertar depois do repouso, a hora de retomar. Descanso que se prolonga em estagnação, ou pressa de voltar antes de estar curado.",
+   "slug": "four-of-swords",
+   "sym": "O cavaleiro jaz em efígie, mãos em prece, com três espadas suspensas na parede e uma gravada sob o corpo: as batalhas ficam penduradas, uma reserva fica à mão. O vitral abençoa o repouso.",
+   "q": [
+    "Que descanso ando a negar a mim mesmo?",
+    "O que precisa de recuperar antes da próxima etapa?"
+   ]
+  },
+  {
+   "pt": "5 de Espadas",
+   "en": "Five of Swords",
+   "cat": "swords",
+   "rank": 5,
+   "kw": [
+    "conflito",
+    "derrota",
+    "vitória vazia",
+    "tensão",
+    "ego"
+   ],
+   "up": "Uma figura recolhe as espadas com um sorriso, enquanto outras se afastam derrotadas. Fala de conflito com custo, de vitória que sabe a derrota, de ego que ganha perdendo. É a discórdia, a humilhação, o preço de ter razão a qualquer preço. Convida-te a escolher bem as batalhas e a perguntar o que a vitória te custa.",
+   "rev": "Reconciliação, largar o rancor, superar a discórdia. Vontade de fazer as pazes. Ou, no sentido inverso, conflito que se arrasta, remorso, feridas que não cicatrizam.",
+   "slug": "five-of-swords",
+   "sym": "O vencedor recolhe as espadas com um sorriso enquanto dois derrotados se afastam de ombros caídos; o céu rasga-se em nuvens dentadas. Ganhou o campo, perdeu tudo o resto.",
+   "q": [
+    "Ter razão está a custar-me o quê?",
+    "Que batalha devia simplesmente abandonar?"
+   ]
+  },
+  {
+   "pt": "6 de Espadas",
+   "en": "Six of Swords",
+   "cat": "swords",
+   "rank": 6,
+   "kw": [
+    "transição",
+    "passagem",
+    "afastamento",
+    "cura gradual",
+    "viagem"
+   ],
+   "up": "Um barqueiro leva figuras através da água, das águas agitadas para as calmas. Fala de transição, de afastamento do que magoava, de cura gradual. É a viagem para um lugar melhor, a passagem que se faz devagar mas na direção certa. Convida-te a deixar para trás a turbulência e a seguir rumo a águas serenas.",
+   "rev": "Resistência à mudança, bagagem que se recusa largar, transição bloqueada. Ficar preso na tempestade por não conseguir partir, ou uma viagem que se repete sem chegar a porto.",
+   "slug": "six-of-swords",
+   "sym": "O barqueiro empurra a embarcação onde seguem, curvados, uma figura embrulhada e uma criança. As seis espadas espetadas na proa seguem viagem: leva-se o aprendido, deixa-se a tormenta. A água à frente já está lisa.",
+   "q": [
+    "De que águas agitadas me estou finalmente a afastar?",
+    "Que bagagem levo, e qual posso deixar na margem?"
+   ]
+  },
+  {
+   "pt": "7 de Espadas",
+   "en": "Seven of Swords",
+   "cat": "swords",
+   "rank": 7,
+   "kw": [
+    "estratégia",
+    "engano",
+    "fuga",
+    "cautela",
+    "astúcia"
+   ],
+   "up": "A figura afasta-se de mansinho com cinco espadas, deixando duas para trás. Fala de estratégia, de astúcia, de agir por vias indiretas. Pode ser engano, fuga discreta, esconder algo, ou simplesmente a cautela de quem faz sozinho o que não pode fazer às claras. Convida-te a ser esperto, mas a vigiar a fronteira da desonestidade.",
+   "rev": "Confissão, verdade que vem ao de cima, fim do embuste. Consciência que pesa, ser desmascarado, ou decidir jogar limpo. O plano que se desfaz ou o remorso que aflora.",
+   "slug": "seven-of-swords",
+   "sym": "Em bicos de pés, a figura afasta-se do acampamento com cinco espadas nos braços e um sorriso de esperteza, deixando duas espetadas para trás. Ao longe, o grupo não repara: a jogada é pela calada.",
+   "q": [
+    "Onde estou a agir pela calada, e porquê?",
+    "A minha estratégia é astúcia legítima ou fuga?"
+   ]
+  },
+  {
+   "pt": "8 de Espadas",
+   "en": "Eight of Swords",
+   "cat": "swords",
+   "rank": 8,
+   "kw": [
+    "prisão mental",
+    "limitação",
+    "medo",
+    "impotência",
+    "autolimitação"
+   ],
+   "up": "Vendada e mal amarrada entre oito espadas, a figura sente-se presa, mas a jaula tem saídas. Fala de sentir-se limitado por medos e crenças, de uma prisão mais mental do que real. É a impotência aparente, a paralisia que nós próprios alimentamos. Convida-te a ver que as vendas se tiram e que o caminho está livre.",
+   "rev": "Libertação, ver que a saída sempre esteve ali, recuperar o poder. Sair da prisão auto-imposta, desatar os próprios nós. Os medos que se dissolvem quando se olham de frente.",
+   "slug": "eight-of-swords",
+   "sym": "Vendada e frouxamente amarrada, a figura está de pé entre oito espadas espetadas como uma cerca incompleta, com poças de água aos pés e o castelo no alto. A prisão tem aberturas por todos os lados.",
+   "q": [
+    "Que crença me prende mais do que qualquer facto?",
+    "Que primeiro passo pequeno desmonta esta jaula?"
+   ]
+  },
+  {
+   "pt": "9 de Espadas",
+   "en": "Nine of Swords",
+   "cat": "swords",
+   "rank": 9,
+   "kw": [
+    "angústia",
+    "ansiedade",
+    "insónia",
+    "medo",
+    "pesadelo"
+   ],
+   "up": "A figura senta-se na cama, tomada pela aflição, com nove espadas na parede escura. Fala de angústia, de ansiedade, de noites de insónia. É o medo que cresce no escuro, a preocupação que devora, o pesadelo que muitas vezes é maior na mente do que na realidade. Convida-te a acender a luz e a ver que o terror exagera.",
+   "rev": "A angústia começa a passar, pedir ajuda, perceber que o medo era desproporcionado. O amanhecer que chega. Ou, no sentido de agravamento, desespero que se aprofunda e se isola.",
+   "slug": "nine-of-swords",
+   "sym": "Sentada na cama, a figura esconde o rosto nas mãos, sob nove espadas alinhadas na parede escura. A colcha, bordada de rosas e signos do zodíaco, lembra que a vida continua debaixo do pesadelo.",
+   "q": [
+    "Que preocupação cresce à noite e encolhe de dia?",
+    "Com quem posso partilhar o que me tira o sono?"
+   ]
+  },
+  {
+   "pt": "10 de Espadas",
+   "en": "Ten of Swords",
+   "cat": "swords",
+   "rank": 10,
+   "kw": [
+    "fim doloroso",
+    "fundo do poço",
+    "rendição",
+    "encerramento",
+    "recomeço"
+   ],
+   "up": "A figura jaz com dez espadas nas costas, mas ao fundo o céu começa a clarear. Fala de um fim doloroso mas definitivo, de tocar o fundo. O pior já passou porque não há mais para descer: a partir daqui, só se sobe. Convida-te a aceitar o encerramento, render-te ao que acabou e voltar-te para o amanhecer.",
+   "rev": "Recuperação, levantar-se do fundo, resistir ao fim. Ou, no sentido de prolongamento, medo de um fim que se arrasta, dificuldade em virar a página, dramatizar o que já podia encerrar.",
+   "slug": "ten-of-swords",
+   "sym": "A figura jaz com dez espadas cravadas nas costas, mas a mão faz um gesto sereno e, no horizonte, o negro do céu abre para o dourado da madrugada sobre um mar calmo. O fim já contém o princípio.",
+   "q": [
+    "O que acabou de vez, mesmo que me custe admitir?",
+    "Que amanhecer se anuncia depois deste fundo?"
+   ]
+  },
+  {
+   "pt": "Valete de Espadas",
+   "en": "Page of Swords",
+   "cat": "swords",
+   "rank": 11,
+   "kw": [
+    "curiosidade",
+    "vigilância",
+    "ideias",
+    "comunicação",
+    "verdade"
+   ],
+   "up": "O jovem ergue a espada, alerta e curioso, pronto para o desafio das ideias. Fala de mente afiada, de sede de saber, de vigilância. É comunicação direta, procura da verdade, energia mental fresca e inquieta. Convida-te a fazer perguntas, a investigar, a manter-te atento sem baixar a guarda.",
+   "rev": "Palavras impulsivas, mexericos, dispersão mental. Espiar, cinismo, usar a inteligência para ferir ou provocar. A curiosidade que degenera em intriga.",
+   "slug": "page-of-swords",
+   "sym": "No terreno elevado, o jovem empunha a espada enquanto o vento lhe agita o cabelo e verga as árvores; pássaros cruzam o céu em bando. Tudo é movimento mental: alerta, curioso, pronto.",
+   "q": [
+    "Que pergunta devia estar a fazer, e não faço?",
+    "A minha vigilância é atenção ou desconfiança?"
+   ]
+  },
+  {
+   "pt": "Cavaleiro de Espadas",
+   "en": "Knight of Swords",
+   "cat": "swords",
+   "rank": 12,
+   "kw": [
+    "ímpeto",
+    "determinação",
+    "rapidez",
+    "ambição",
+    "impaciência"
+   ],
+   "up": "O cavaleiro carrega em plena velocidade, espada em riste, sem olhar para trás. Fala de determinação feroz, de rapidez de pensamento e ação, de coragem intelectual. É ir direito ao objetivo, com foco cortante e ambição. Convida-te a avançar com decisão, sem deixar que a pressa te faça atropelar tudo.",
+   "rev": "Precipitação, agressividade verbal, ir a direito sem medir consequências. Arrogância, impaciência, energia que se descontrola. O ímpeto que se torna violência ou dispersão.",
+   "slug": "knight-of-swords",
+   "sym": "O cavaleiro carrega a galope contra o próprio vento, espada em riste, com o manto e as crinas rasgados pelo ar. Os pássaros dispersam: nada trava o pensamento lançado em ataque.",
+   "q": [
+    "Esta pressa é urgência real ou impaciência?",
+    "O que atropelo quando vou direito ao objectivo?"
+   ]
+  },
+  {
+   "pt": "Rainha de Espadas",
+   "en": "Queen of Swords",
+   "cat": "swords",
+   "rank": 13,
+   "kw": [
+    "lucidez",
+    "independência",
+    "honestidade",
+    "discernimento",
+    "limites"
+   ],
+   "up": "A rainha ergue a espada com uma mão e estende a outra, direta e clara. Fala de lucidez, de honestidade sem rodeios, de independência. É o discernimento afiado, a clareza sem ilusões, os limites firmes de quem aprendeu com a experiência. Convida-te a pensar com frieza sadia e a dizer a verdade com dignidade.",
+   "rev": "Frieza, amargura, crítica cortante. Isolamento, cinismo, usar a lucidez como arma contra os outros. A dor antiga que se converteu em dureza defensiva.",
+   "slug": "queen-of-swords",
+   "sym": "De perfil no trono esculpido com borboletas, ergue a espada na vertical e estende a outra mão, aberta: a verdade primeiro, o acolhimento logo a seguir. As nuvens ficam abaixo dela.",
+   "q": [
+    "Onde preciso de dizer a verdade com dignidade?",
+    "A minha lucidez está ao serviço de quê?"
+   ]
+  },
+  {
+   "pt": "Rei de Espadas",
+   "en": "King of Swords",
+   "cat": "swords",
+   "rank": 14,
+   "kw": [
+    "autoridade intelectual",
+    "verdade",
+    "ética",
+    "clareza",
+    "juízo"
+   ],
+   "up": "O rei senta-se firme, espada ao alto: a autoridade da razão ao serviço da justiça. Fala de juízo claro, de ética, de imparcialidade. É a mente do líder ou do conselheiro, a verdade dita sem paixão, a decisão racional e justa. Convida-te a pensar com rigor e a decidir com integridade.",
+   "rev": "Frieza tirânica, uso da razão para dominar, manipulação intelectual. Rigidez, juízos sem coração, abuso de autoridade. O intelecto que julga tudo e não perdoa nada.",
+   "slug": "king-of-swords",
+   "sym": "De frente, no trono de borboletas e luas crescentes, segura a espada ligeiramente inclinada: até o juízo mais firme admite ponderação. Dois pássaros cruzam o céu limpo por cima dos pinheiros.",
+   "q": [
+    "A minha decisão é justa, ou apenas racional?",
+    "Como uso a minha autoridade intelectual sem esmagar?"
+   ]
+  },
+  {
+   "pt": "Ás de Ouros",
+   "en": "Ace of Pentacles",
+   "cat": "pentacles",
+   "rank": 1,
+   "kw": [
+    "oportunidade",
+    "prosperidade",
+    "início material",
+    "segurança",
+    "semente"
+   ],
+   "up": "A mão oferece um pentáculo reluzente sobre um jardim: uma semente de prosperidade. Fala de uma nova oportunidade material ou financeira, de um início concreto e promissor. É o potencial de segurança e abundância, o dom terreno que pede para ser cultivado. Convida-te a agarrar a oportunidade e a plantá-la com cuidado.",
+   "rev": "Oportunidade perdida, investimento mal feito, insegurança material. Ganância, planos sem base sólida, a semente que não se planta ou que cai em terreno pobre.",
+   "slug": "ace-of-pentacles",
+   "sym": "A mão oferece da nuvem um pentáculo dourado sobre um jardim florido. Em baixo, um arco de roseiras abre caminho para as montanhas: a oportunidade é concreta, mas o percurso ainda é todo por andar.",
+   "q": [
+    "Que oportunidade concreta tenho na mão neste momento?",
+    "O que preciso de plantar já para colher mais tarde?"
+   ]
+  },
+  {
+   "pt": "2 de Ouros",
+   "en": "Two of Pentacles",
+   "cat": "pentacles",
+   "rank": 2,
+   "kw": [
+    "equilíbrio",
+    "adaptação",
+    "malabarismo",
+    "prioridades",
+    "flexibilidade"
+   ],
+   "up": "A figura faz malabarismo com dois pentáculos ligados pelo símbolo do infinito, sobre um mar ondulante. Fala de equilibrar várias exigências, de adaptação, de flexibilidade. É gerir prioridades, manter tudo em movimento sem deixar cair nada. Convida-te a jogar com as circunstâncias em vez de lutar contra elas.",
+   "rev": "Desequilíbrio, sobrecarga, deixar cair uma das bolas. Má gestão, desorganização, tentar fazer demais ao mesmo tempo. O malabarismo que se descontrola.",
+   "slug": "two-of-pentacles",
+   "sym": "A figura dança enquanto equilibra duas moedas ligadas por uma fita em forma de infinito; atrás, dois navios sobem e descem ondas enormes. O segredo não é parar o mar: é acompanhar o balanço.",
+   "q": [
+    "Que pratos tenho no ar, e qual deles posso pousar?",
+    "Onde me falta flexibilidade em vez de força?"
+   ]
+  },
+  {
+   "pt": "3 de Ouros",
+   "en": "Three of Pentacles",
+   "cat": "pentacles",
+   "rank": 3,
+   "kw": [
+    "colaboração",
+    "trabalho de equipa",
+    "competência",
+    "aprendizagem",
+    "construção"
+   ],
+   "up": "O artesão trabalha na catedral enquanto dois observadores avaliam a obra: competência reconhecida em colaboração. Fala de trabalho de equipa, de aprender fazendo, de qualidade que se nota. São os primeiros frutos de um esforço conjunto. Convida-te a valorizar a tua perícia e a construir com os outros.",
+   "rev": "Falta de trabalho de equipa, competência ignorada, desalinhamento entre quem faz e quem decide. Trabalho medíocre, falta de coordenação, mérito não reconhecido.",
+   "slug": "three-of-pentacles",
+   "sym": "Sob o arco da catedral, o artesão jovem trabalha enquanto o monge e o arquitecto conferem a planta. Três saberes diferentes na mesma obra: a mestria cresce quando é vista e discutida.",
+   "q": [
+    "Com quem devia estar a construir, em vez de fazer sozinho?",
+    "Onde é que a minha competência merece mais palco?"
+   ]
+  },
+  {
+   "pt": "4 de Ouros",
+   "en": "Four of Pentacles",
+   "cat": "pentacles",
+   "rank": 4,
+   "kw": [
+    "segurança",
+    "controlo",
+    "posse",
+    "avareza",
+    "conservação"
+   ],
+   "up": "A figura agarra um pentáculo ao peito e assenta os pés noutros dois: segurança que já pende para o apego. Fala de estabilidade material, de poupança, de controlo dos recursos, mas também do medo de perder e da avareza. Convida-te a garantir o teu sem te fechares, a distinguir prudência de agarramento.",
+   "rev": "Largar o controlo, generosidade, abrir a mão. Ou, no sentido inverso, insegurança financeira, gastar por impulso, o apego que aperta até sufocar.",
+   "slug": "four-of-pentacles",
+   "sym": "A figura senta-se com uma moeda presa contra o peito, outra em equilíbrio na coroa e duas debaixo dos pés: nenhum pentáculo livre, nenhuma mão livre. A cidade fica atrás; o abraço ao ouro isola.",
+   "q": [
+    "O que estou a agarrar com demasiada força?",
+    "A minha segurança protege-me, ou fecha-me?"
+   ]
+  },
+  {
+   "pt": "5 de Ouros",
+   "en": "Five of Pentacles",
+   "cat": "pentacles",
+   "rank": 5,
+   "kw": [
+    "dificuldade",
+    "perda material",
+    "exclusão",
+    "isolamento",
+    "escassez"
+   ],
+   "up": "Duas figuras arrastam-se na neve diante de uma janela iluminada que não veem. Fala de dificuldade material, de perda, de insegurança. É o sentir-se excluído, ao frio, à porta fechada. Mas há ajuda perto, se se souber pedir e olhar. Convida-te a não sofrer sozinho e a procurar a luz que está mesmo ao lado.",
+   "rev": "Recuperação material, sair da dificuldade, encontrar apoio. O fim de um período de escassez, a porta que enfim se abre. Ou, no outro sentido, aprofundar-se no isolamento e na privação.",
+   "slug": "five-of-pentacles",
+   "sym": "Duas figuras avançam na neve, uma de muletas, por baixo do vitral iluminado com cinco pentáculos. A janela da ajuda está mesmo ali, mas nenhuma das duas levanta os olhos para a ver.",
+   "q": [
+    "Que ajuda existe perto de mim que não estou a ver?",
+    "O que me impede de pedir apoio?"
+   ]
+  },
+  {
+   "pt": "6 de Ouros",
+   "en": "Six of Pentacles",
+   "cat": "pentacles",
+   "rank": 6,
+   "kw": [
+    "generosidade",
+    "partilha",
+    "reciprocidade",
+    "dar e receber",
+    "equilíbrio"
+   ],
+   "up": "O mercador pesa moedas e distribui-as aos necessitados, com a balança na outra mão. Fala de generosidade, de partilha, do equilíbrio entre dar e receber. É ajuda que chega, gratidão, o fluxo justo de recursos. Convida-te a dar quando podes e a receber quando precisas, sem culpa nem dívida.",
+   "rev": "Dádivas com segundas intenções, desequilíbrio de poder entre quem dá e quem recebe, dívidas que prendem. Generosidade interesseira, ou receber com custos escondidos.",
+   "slug": "six-of-pentacles",
+   "sym": "O mercador segura a balança numa mão e distribui moedas com a outra a dois mendigos ajoelhados. O prato equilibrado é a chave da cena: dar com medida, receber com dignidade.",
+   "q": [
+    "Neste momento estou mais a dar ou a receber, e está certo assim?",
+    "Que generosidade posso praticar sem me desequilibrar?"
+   ]
+  },
+  {
+   "pt": "7 de Ouros",
+   "en": "Seven of Pentacles",
+   "cat": "pentacles",
+   "rank": 7,
+   "kw": [
+    "paciência",
+    "investimento",
+    "colheita",
+    "avaliação",
+    "longo prazo"
+   ],
+   "up": "O agricultor apoia-se na enxada e contempla os frutos que ainda amadurecem. Fala de paciência, de esperar a colheita, de avaliar o que se investiu. É o fruto do trabalho a crescer, a pausa para ver o que já rendeu e o que falta. Convida-te a perseverar com visão de longo prazo e a não colher verde.",
+   "rev": "Impaciência, investimento sem retorno, esforço mal aplicado. Desistir cedo demais, frustração com a lentidão, ou perceber que se semeou no terreno errado.",
+   "slug": "seven-of-pentacles",
+   "sym": "O agricultor apoia o queixo na enxada e contempla os sete pentáculos que amadurecem na vinha. Um deles está aos seus pés, já colhido: houve retorno, mas a colheita grande ainda pede tempo.",
+   "q": [
+    "O meu investimento está a crescer, ou só a ocupar terreno?",
+    "Consigo esperar sem desistir nem colher verde?"
+   ]
+  },
+  {
+   "pt": "8 de Ouros",
+   "en": "Eight of Pentacles",
+   "cat": "pentacles",
+   "rank": 8,
+   "kw": [
+    "dedicação",
+    "mestria",
+    "trabalho",
+    "foco",
+    "aperfeiçoamento"
+   ],
+   "up": "O artesão cinzela um pentáculo após outro, absorto no ofício. Fala de dedicação, de aperfeiçoamento, de foco no detalhe. É o trabalho diligente que constrói mestria, a repetição que gera qualidade, o orgulho de fazer bem. Convida-te a aplicar-te com paciência e a tratar o teu ofício como uma arte.",
+   "rev": "Falta de foco, trabalho sem alma, atalhos. Perfeccionismo estéril que trava, ou mediocridade e desmotivação. O ofício que se faz por obrigação e não por cuidado.",
+   "slug": "eight-of-pentacles",
+   "sym": "Na bancada, o artesão cinzela mais um pentáculo, com os já acabados pendurados em fila e a cidade ao longe: escolheu ficar longe da distracção. Cada peça repete e apura a anterior.",
+   "q": [
+    "Que competência quero apurar com prática deliberada?",
+    "Onde troco qualidade por pressa?"
+   ]
+  },
+  {
+   "pt": "9 de Ouros",
+   "en": "Nine of Pentacles",
+   "cat": "pentacles",
+   "rank": 9,
+   "kw": [
+    "autossuficiência",
+    "abundância",
+    "independência",
+    "refinamento",
+    "mérito"
+   ],
+   "up": "A figura passeia serena no seu jardim próspero, com um falcão na mão. Fala de autossuficiência, de abundância conquistada, de independência. É desfrutar do fruto do próprio esforço com refinamento e autonomia. Convida-te a reconhecer o que construíste sozinho e a saborear o conforto merecido.",
+   "rev": "Dependência financeira, gastos impulsivos, insegurança sob a aparência de fartura. Ou trabalho excessivo à custa do prazer de viver, sucesso que não se desfruta.",
+   "slug": "nine-of-pentacles",
+   "sym": "Entre vinhas carregadas, a senhora do jardim pousa a mão sobre os pentáculos e segura no pulso o falcão encapuzado: o instinto treinado, sob domínio elegante. Um caracol atravessa a cena: isto levou tempo.",
+   "q": [
+    "Que independência já conquistei e não reconheço?",
+    "Como posso desfrutar do que construí, sem culpa?"
+   ]
+  },
+  {
+   "pt": "10 de Ouros",
+   "en": "Ten of Pentacles",
+   "cat": "pentacles",
+   "rank": 10,
+   "kw": [
+    "legado",
+    "riqueza",
+    "família",
+    "estabilidade",
+    "património"
+   ],
+   "up": "Três gerações reúnem-se sob os arcos, entre cães e pentáculos: a riqueza que perdura. Fala de legado, de estabilidade familiar, de património que atravessa o tempo. É a segurança duradoura, a tradição, a realização material plena e partilhada. Convida-te a pensar no que constróis para durar e para os que vêm depois.",
+   "rev": "Instabilidade financeira, conflitos de herança, valores materiais em crise. Legado ameaçado, família e dinheiro em tensão, a estrutura que parecia sólida a abanar.",
+   "slug": "ten-of-pentacles",
+   "sym": "O ancião de manto bordado com vinhas e luas repousa com os seus dois cães, enquanto o casal e a criança conversam sob o arco com brasões. Os dez pentáculos desenham a Árvore da Vida sobre a cena inteira.",
+   "q": [
+    "Que legado quero deixar aos que vêm depois de mim?",
+    "O que estou a construir que dura para além de mim?"
+   ]
+  },
+  {
+   "pt": "Valete de Ouros",
+   "en": "Page of Pentacles",
+   "cat": "pentacles",
+   "rank": 11,
+   "kw": [
+    "estudo",
+    "oportunidade",
+    "ambição",
+    "aprendizagem",
+    "foco"
+   ],
+   "up": "O jovem contempla o pentáculo nas mãos como quem estuda uma promessa. Fala de sede de aprender, de uma nova oportunidade de estudo ou trabalho, de ambição concreta. É a semente material com futuro, a aplicação de quem quer construir algo sólido. Convida-te a estudar, a planear e a dar o primeiro passo prático.",
+   "rev": "Falta de foco, procrastinação, planos que não passam a ação. Oportunidade desperdiçada, imaturidade com dinheiro, sonhar sem fazer.",
+   "slug": "page-of-pentacles",
+   "sym": "O jovem atravessa o campo lavrado de olhos postos no pentáculo que ergue ao nível do rosto, como quem estuda uma promessa. Nada o distrai: entre a semente e o futuro só falta o trabalho.",
+   "q": [
+    "Que competência nova quero começar a estudar?",
+    "Qual é o primeiro passo prático, pequeno e concreto?"
+   ]
+  },
+  {
+   "pt": "Cavaleiro de Ouros",
+   "en": "Knight of Pentacles",
+   "cat": "pentacles",
+   "rank": 12,
+   "kw": [
+    "método",
+    "fiabilidade",
+    "persistência",
+    "rotina",
+    "responsabilidade"
+   ],
+   "up": "O cavaleiro está parado, firme, a contemplar o pentáculo: o mais estável de todos. Fala de método, de fiabilidade, de trabalho constante. É a persistência de quem avança devagar mas seguro, a responsabilidade de quem cumpre o que promete. Convida-te a ser consistente e a confiar no valor do esforço regular.",
+   "rev": "Estagnação, rotina que aprisiona, tédio. Preguiça ou, no oposto, rigidez e resistência à mudança. Trabalho que se arrasta sem progredir, teimosia no que já não resulta.",
+   "slug": "knight-of-pentacles",
+   "sym": "O único cavaleiro parado do baralho: o cavalo negro de lavoura assenta as quatro patas no chão enquanto o cavaleiro contempla o pentáculo, com um ramo de carvalho no elmo. A força dele é não sair do caminho.",
+   "q": [
+    "Onde preciso de mais constância e menos brilho?",
+    "A minha rotina serve o objectivo, ou virou piloto automático?"
+   ]
+  },
+  {
+   "pt": "Rainha de Ouros",
+   "en": "Queen of Pentacles",
+   "cat": "pentacles",
+   "rank": 13,
+   "kw": [
+    "prosperidade prática",
+    "cuidado",
+    "nutrição",
+    "segurança",
+    "equilíbrio"
+   ],
+   "up": "A rainha senta-se no seu jardim fértil, com o pentáculo no colo: prosperidade que nutre. Fala de cuidar do lar e dos recursos, de equilíbrio entre trabalho e vida, de generosidade concreta. É a abundância com pés na terra, o conforto que se partilha. Convida-te a cuidar do prático com carinho e a criar segurança em redor.",
+   "rev": "Sobrecarga entre deveres, negligência de si ou dos outros, insegurança material. Foco excessivo no material, dependência, dar tanto que já não sobra para si.",
+   "slug": "queen-of-pentacles",
+   "sym": "No trono esculpido com frutos, cabras e querubins, sob um arco de rosas, a rainha embala o pentáculo no colo como quem cuida de algo vivo. No canto, salta um coelho: a fertilidade discreta da terra.",
+   "q": [
+    "Como estou a cuidar do meu corpo, da casa e dos recursos?",
+    "Onde dou tanto aos outros que não sobra para mim?"
+   ]
+  },
+  {
+   "pt": "Rei de Ouros",
+   "en": "King of Pentacles",
+   "cat": "pentacles",
+   "rank": 14,
+   "kw": [
+    "prosperidade",
+    "liderança sólida",
+    "abundância",
+    "provisão",
+    "disciplina"
+   ],
+   "up": "O rei reina no meio da fartura que construiu, seguro e provedor. Fala de abundância conquistada, de liderança sólida no plano material, de disciplina. É quem edificou um domínio com trabalho e sabe geri-lo e proteger os seus. Convida-te a liderar com estabilidade e a transformar o esforço em segurança duradoura.",
+   "rev": "Materialismo, ganância, controlo pelo dinheiro. Rigidez, teimosia, sucesso à custa de tudo o resto. O provedor que se torna avaro ou que mede o valor apenas em posses.",
+   "slug": "king-of-pentacles",
+   "sym": "O manto do rei está coberto de cachos de uva e o trono decorado com touros; um pé em armadura espreita sob a veste: a fartura foi conquistada, não herdada. Atrás, o castelo que construiu.",
+   "q": [
+    "O que já construí que me dá base sólida?",
+    "O sucesso material está a servir a minha vida, ou a substituí-la?"
+   ]
+  }
+ ]
+}
