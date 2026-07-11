@@ -1,34 +1,60 @@
-// Gera os ícones PNG da PWA a partir do sigilo SVG.
-import { readFileSync, writeFileSync } from "node:fs";
+// Gera a marca e os ícones da PWA a partir do logotipo oficial 3SIGILOS
+// (source/3sigilos-logo.png, branco sobre preto), recolorido a dourado.
+import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import sharp from "sharp";
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
-const svg = readFileSync(join(root, "public/sigilo.svg"), "utf8");
+const SRC = join(root, "source/3sigilos-logo.png");
+const GOLD = { r: 231, g: 207, b: 146 }; // dourado claro da app (--gold-light)
+const INK = "#0b0c14";
 
-// O ícone maskable precisa de margem extra (zona segura de 40% do raio).
-function padded(svgStr, pad) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-    <rect width="64" height="64" fill="#0b0c14"/>
-    <svg x="${pad}" y="${pad}" width="${64 - 2 * pad}" height="${64 - 2 * pad}" viewBox="0 0 64 64">${svgStr
-      .replace(/^[\s\S]*?<svg[^>]*>/, "")
-      .replace("</svg>", "")}</svg>
-  </svg>`;
+// 1. Isola o símbolo circular (sem o lettering): corta acima do wordmark
+//    e apara as margens pretas.
+const meta = await sharp(SRC).metadata();
+const topHalf = await sharp(SRC)
+  .extract({ left: 0, top: 0, width: meta.width, height: Math.round(meta.height * 0.72) })
+  .toBuffer();
+const markRegion = await sharp(topHalf).trim({ threshold: 25 }).toBuffer();
+
+// 2. Recolore: a luminância do original passa a canal alfa sobre dourado puro.
+const gray = sharp(markRegion).grayscale();
+const { width, height } = await gray.clone().metadata();
+const alpha = await gray.raw().toBuffer();
+const px = Buffer.alloc(width * height * 4);
+for (let i = 0; i < width * height; i++) {
+  px[i * 4] = GOLD.r;
+  px[i * 4 + 1] = GOLD.g;
+  px[i * 4 + 2] = GOLD.b;
+  px[i * 4 + 3] = alpha[i];
 }
+const markPng = await sharp(px, { raw: { width, height, channels: 4 } })
+  .resize(512, 512, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
+  .png()
+  .toBuffer();
+writeFileSync(join(root, "public/marca.png"), markPng);
+console.log("OK marca.png (512, transparente)");
 
-const jobs = [
-  { file: "icon-192.png", size: 192, pad: 4 },
-  { file: "icon-512.png", size: 512, pad: 4 },
-  { file: "icon-maskable-512.png", size: 512, pad: 11 },
-  { file: "apple-touch-icon.png", size: 180, pad: 7 },
-];
-
-for (const { file, size, pad } of jobs) {
-  const png = await sharp(Buffer.from(padded(svg, pad)), { density: 300 })
-    .resize(size, size)
+// 3. Ícones: símbolo dourado centrado sobre tinta-noite.
+async function icon(file, size, scale) {
+  const inner = Math.round(size * scale);
+  const markBuf = await sharp(markPng)
+    .resize(inner, inner, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .png()
     .toBuffer();
-  writeFileSync(join(root, "public", file), png);
+  const out = await sharp({
+    create: { width: size, height: size, channels: 4, background: INK },
+  })
+    .composite([{ input: markBuf, gravity: "centre" }])
+    .png()
+    .toBuffer();
+  writeFileSync(join(root, "public", file), out);
   console.log(`OK ${file} (${size}x${size})`);
 }
+
+await icon("icon-192.png", 192, 0.82);
+await icon("icon-512.png", 512, 0.82);
+await icon("icon-maskable-512.png", 512, 0.6);
+await icon("apple-touch-icon.png", 180, 0.76);
+await icon("favicon.png", 96, 0.88);

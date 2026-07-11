@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/main.tsx","./src/share.ts","./src/components/BottomNav.tsx","./src/components/CardImg.tsx","./src/components/DetailView.tsx","./src/components/GuideView.tsx","./src/components/Header.tsx","./src/components/ListView.tsx","./src/components/Sigil.tsx","./src/components/Splash.tsx","./src/data/index.ts","./src/hooks/useHashRoute.ts"],"version":"5.9.3"}

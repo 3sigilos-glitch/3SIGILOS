@@ -22,9 +22,9 @@ export function Splash() {
   if (phase === "gone") return null;
   return (
     <div className={"splash" + (phase === "fade" ? " fade" : "")} aria-hidden="true">
-      <Sigil size={72} />
-      <p className="splash-title">Tarot</p>
-      <p className="splash-by">by 3SIGILOS</p>
+      <Sigil size={96} />
+      <p className="splash-title">3SIGILOS</p>
+      <p className="splash-by">Tarot Rider-Waite</p>
     </div>
   );
 }

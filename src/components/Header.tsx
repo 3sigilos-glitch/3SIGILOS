@@ -9,10 +9,10 @@ export function Header({ reversed, onToggleReversed }: Props) {
   return (
     <header className="app-header">
       <div className="brand">
-        <Sigil size={34} />
+        <Sigil size={36} />
         <div className="brand-text">
-          <span className="brand-title">Tarot</span>
-          <span className="brand-by">by 3SIGILOS</span>
+          <span className="brand-title">3SIGILOS</span>
+          <span className="brand-by">Tarot Rider-Waite</span>
         </div>
       </div>
       <button

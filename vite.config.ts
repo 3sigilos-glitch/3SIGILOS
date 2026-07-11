@@ -13,9 +13,9 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["sigilo.svg", "apple-touch-icon.png"],
+      includeAssets: ["marca.png", "favicon.png", "apple-touch-icon.png"],
       manifest: {
-        name: "Tarot by 3SIGILOS",
+        name: "3SIGILOS",
         short_name: "3SIGILOS",
         description:
           "Consulta das 78 cartas do Tarot Rider-Waite, com significados, simbolismo e perguntas de reflexão em português.",

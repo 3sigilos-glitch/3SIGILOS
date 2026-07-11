@@ -2,7 +2,7 @@
 export async function share(title?: string, text?: string) {
   const url = window.location.origin + import.meta.env.BASE_URL;
   const payload = {
-    title: title ?? "Tarot by 3SIGILOS",
+    title: title ?? "3SIGILOS",
     text: text ?? "Consulta das 78 cartas do Tarot Rider-Waite, em português.",
     url,
   };

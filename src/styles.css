@@ -93,16 +93,19 @@ button {
   animation: splash-in 0.9s ease both;
 }
 .splash-title {
-  margin: 14px 0 0;
-  font-size: 30px;
-  letter-spacing: 0.06em;
+  margin: 16px 0 0;
+  font-size: 27px;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  font-weight: 600;
   color: var(--parch);
 }
 .splash-by {
-  margin: 0;
+  margin: 4px 0 0;
   font-family: var(--sans);
-  font-size: 11px;
-  letter-spacing: 0.34em;
+  font-size: 10.5px;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
   text-transform: uppercase;
   color: var(--gold);
 }
@@ -144,8 +147,8 @@ button {
   line-height: 1.05;
 }
 .brand-title {
-  font-size: 21px;
-  letter-spacing: 0.05em;
+  font-size: 18px;
+  letter-spacing: 0.16em;
   font-weight: 600;
 }
 .brand-by {
