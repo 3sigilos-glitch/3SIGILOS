@@ -1,30 +1,19 @@
-import { useEffect, useState } from "react";
-import { Sigil } from "./Sigil";
+import { useEffect } from "react";
 
-/* Ecrã de arranque breve: mostra a marca e desvanece. */
+/* O ecrã de arranque vive no index.html para pintar antes do JavaScript.
+   Este componente só o desvanece e remove quando a app está pronta. */
 export function Splash() {
-  const [phase, setPhase] = useState<"show" | "fade" | "gone">("show");
-
   useEffect(() => {
+    const el = document.getElementById("boot-splash");
+    if (!el) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
-      setPhase("gone");
-      return;
-    }
-    const t1 = window.setTimeout(() => setPhase("fade"), 900);
-    const t2 = window.setTimeout(() => setPhase("gone"), 1450);
+    const delay = reduced ? 0 : 750;
+    const t1 = window.setTimeout(() => el.classList.add("fade"), delay);
+    const t2 = window.setTimeout(() => el.remove(), delay + 600);
     return () => {
       window.clearTimeout(t1);
       window.clearTimeout(t2);
     };
   }, []);
-
-  if (phase === "gone") return null;
-  return (
-    <div className={"splash" + (phase === "fade" ? " fade" : "")} aria-hidden="true">
-      <Sigil size={96} />
-      <p className="splash-title">3SIGILOS</p>
-      <p className="splash-by">Tarot Rider-Waite</p>
-    </div>
-  );
+  return null;
 }

@@ -3,16 +3,72 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="description" content="3SIGILOS: consulta das 78 cartas do Tarot Rider-Waite, com significados, simbolismo e perguntas de reflexão em português." />
+    <meta name="description" content="Tarot by 3SIGILOS: consulta das 78 cartas do Rider-Waite, com carta do dia, Jornada do Louco, significados, simbolismo e perguntas de reflexão em português." />
     <meta name="theme-color" content="#0b0c14" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="3SIGILOS" />
+    <meta name="apple-mobile-web-app-title" content="Tarot 3SIGILOS" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <title>3SIGILOS</title>
+    <title>Tarot by 3SIGILOS</title>
   </head>
   <body>
+    <div id="boot-splash" aria-hidden="true">
+      <img src="/marca.png" alt="" width="96" height="96" />
+      <p class="bs-title">Tarot</p>
+      <p class="bs-by">by 3SIGILOS</p>
+    </div>
+    <style>
+      #boot-splash {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #0b0c14;
+        font-family: Georgia, serif;
+        transition: opacity 0.55s ease;
+      }
+      #boot-splash.fade {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #boot-splash img {
+        animation: bs-in 0.9s ease both;
+      }
+      @keyframes bs-in {
+        from {
+          opacity: 0;
+          transform: scale(0.92);
+        }
+      }
+      #boot-splash .bs-title {
+        margin: 16px 0 0;
+        font-size: 32px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-indent: 0.1em;
+        color: #ede4d3;
+      }
+      #boot-splash .bs-by {
+        margin: 4px 0 0;
+        font-family: Arial, sans-serif;
+        font-size: 10.5px;
+        letter-spacing: 0.3em;
+        text-indent: 0.3em;
+        text-transform: uppercase;
+        color: #b89344;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #boot-splash,
+        #boot-splash img {
+          animation: none;
+          transition: none;
+        }
+      }
+    </style>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

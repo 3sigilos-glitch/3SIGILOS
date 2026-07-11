@@ -1,6 +1,10 @@
+import { readFileSync } from "node:fs";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
+
+const pkg = JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8"));
+const version = pkg.version + " · " + new Date().toISOString().slice(0, 10);
 
 // Para publicar em GitHub Pages (em vez de Vercel), corre o build com:
 //   GHPAGES=1 npm run build
@@ -9,14 +13,15 @@ const base = process.env.GHPAGES ? "/3sigilos/" : "/";
 
 export default defineConfig({
   base,
+  define: { __APP_VERSION__: JSON.stringify(version) },
   plugins: [
     react(),
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: ["marca.png", "favicon.png", "apple-touch-icon.png"],
       manifest: {
-        name: "3SIGILOS",
-        short_name: "3SIGILOS",
+        name: "Tarot by 3SIGILOS",
+        short_name: "Tarot 3SIGILOS",
         description:
           "Consulta das 78 cartas do Tarot Rider-Waite, com significados, simbolismo e perguntas de reflexão em português.",
         lang: "pt-PT",
