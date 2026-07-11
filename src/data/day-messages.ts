@@ -1,9 +1,92 @@
-/* Mensagens da carta do dia, indexadas pelo nome EN da carta.
-   Conteúdo a fornecer pelo autor, em PT-PT e sem travessões.
-   Enquanto uma carta não tiver mensagem própria, a app compõe uma
-   mensagem curta a partir das keywords e da primeira frase do
-   significado direito (ver src/lib/dailyCard.ts). */
+// Mensagens da carta do dia, indexadas pelo nome EN da carta (a mesma chave usada em CARDS).
+// PT-PT. Uma mensagem curta e orientadora por carta. Sem travessões.
 
 export const DAY_MESSAGES: Record<string, string> = {
-  // "The Fool": "Exemplo de mensagem do dia para O Louco.",
+  // ===== Arcanos Maiores =====
+  "The Fool": `Começa. Hoje o mais sábio é dar o primeiro passo sem exigir o mapa inteiro, com o coração leve e a confiança de quem sabe que o chão aparece a caminhar.`,
+  "The Magician": `Tens à mão tudo o que precisas. Junta a vontade ao foco e transforma hoje uma intenção num gesto concreto.`,
+  "The High Priestess": `Faz silêncio e escuta por dentro. A resposta que procuras hoje não vem da análise, vem da intuição que já a sussurra.`,
+  "The Empress": `Cuida e cria. Rega hoje o que quer crescer em ti e à tua volta, e permite-te desfrutar do que os sentidos oferecem.`,
+  "The Emperor": `Põe ordem no que anda solto. Hoje uma estrutura simples e um limite claro dão-te mais liberdade do que o improviso.`,
+  "The Hierophant": `Procura o que já foi aprendido antes de ti. Hoje um mestre, uma tradição ou um método poupam-te caminho.`,
+  "The Lovers": `Escolhe com o coração e os valores alinhados. A decisão de hoje define mais do que parece: sê fiel ao que te é essencial.`,
+  "The Chariot": `Junta as forças que te puxam para lados opostos e avança na mesma direção. Hoje a vontade firme vence o obstáculo.`,
+  "Strength": `A tua força hoje é a suavidade. Doma o impulso com paciência e ternura, não com dureza, e verás como cede.`,
+  "The Hermit": `Afasta-te do ruído. Hoje um pouco de recolhimento vale mais do que mil opiniões: a tua luz interior sabe o caminho.`,
+  "Wheel of Fortune": `A roda está a virar. Aceita o movimento de hoje e flui com a mudança em vez de lhe resistir.`,
+  "Justice": `Age com verdade e assume o que é teu. Hoje o que semeares volta, por isso escolhe com integridade.`,
+  "The Hanged Man": `Para de forçar. Hoje, ao render-te e olhar tudo de outro ângulo, encontras a saída que a pressa escondia.`,
+  "Death": `Deixa terminar o que já cumpriu o seu tempo. Hoje um fim abre espaço ao que precisa de nascer.`,
+  "Temperance": `Procura a justa medida. Hoje mistura, concilia e tempera os excessos: o equilíbrio é a tua alquimia.`,
+  "The Devil": `Olha de frente aquilo que te prende. Hoje reconhece uma corrente que tu próprio seguras, e vê que a podes largar.`,
+  "The Tower": `Se algo mal fundado ruir hoje, deixa cair. A verdade que destrói a ilusão liberta-te para reconstruir melhor.`,
+  "The Star": `Respira e confia. Depois da tempestade, hoje a esperança regressa: cura as feridas e segue a tua estrela.`,
+  "The Moon": `Nem tudo está claro hoje, e não faz mal. Atravessa a névoa pelo instinto, sem exigir certezas que ainda não existem.`,
+  "The Sun": `Deixa-te iluminar. Hoje há clareza e alegria simples ao teu alcance: mostra-te sem máscara e celebra.`,
+  "Judgement": `Ouve o chamado interior. Hoje é dia de avaliar com honestidade, perdoar e responder à convocação que sentes.`,
+  "The World": `Fecha o ciclo em plenitude. Hoje reconhece o quanto caminhaste e celebra a totalidade antes de partires de novo.`,
+
+  // ===== Paus =====
+  "Ace of Wands": `Uma faísca acende-se hoje. Pega na ideia enquanto arde e dá-lhe corpo, antes que o entusiasmo esfrie.`,
+  "Two of Wands": `Olha para lá do horizonte conhecido. Hoje vale a pena planear em grande e escolher que caminho seguir.`,
+  "Three of Wands": `O que puseste em movimento começa a dar sinais. Hoje confia no que navega e prepara-te para crescer.`,
+  "Four of Wands": `Celebra o que construíste. Hoje há motivo para festejar e para saborear as tuas raízes com quem te é próximo.`,
+  "Five of Wands": `Vais encontrar fricção hoje. Afirma-te no meio do ruído, mas escolhe se a contenda vale mesmo a tua energia.`,
+  "Six of Wands": `Recebe o mérito sem falsa modéstia. Hoje o teu esforço é reconhecido: deixa-te ver.`,
+  "Seven of Wands": `Defende hoje o que é teu com firmeza. Tens o terreno elevado, mantém a posição mesmo sob pressão.`,
+  "Eight of Wands": `Tudo se acelera hoje. Age com prontidão e acompanha o ritmo: as coisas finalmente se movem.`,
+  "Nine of Wands": `Falta pouco. Mesmo cansado, persiste hoje mais um pouco: a última defesa antecede a vitória.`,
+  "Ten of Wands": `Pergunta o que é mesmo teu para carregar. Hoje alivia o fardo e larga o que não tinhas de levar sozinho.`,
+  "Page of Wands": `Segue hoje a curiosidade. Atreve-te a experimentar algo novo só pelo gosto de tentar.`,
+  "Knight of Wands": `Avança com ímpeto hoje, mas não deixes o fogo apagar-se na hesitação nem atropelar tudo à frente.`,
+  "Queen of Wands": `Habita a tua confiança. Hoje brilha sem pedir licença e deixa o teu calor atrair o que é bom.`,
+  "King of Wands": `Lidera com visão. Hoje transforma a tua paixão em direção e inspira quem te rodeia.`,
+
+  // ===== Copas =====
+  "Ace of Cups": `Abre o coração hoje. Deixa entrar o afeto que se oferece e permite-te sentir plenamente.`,
+  "Two of Cups": `Honra hoje um vínculo. Um encontro ou uma parceria pede reciprocidade: dá e recebe na mesma medida.`,
+  "Three of Cups": `Celebra com os teus. Hoje a alegria multiplica-se quando é partilhada com quem te quer bem.`,
+  "Four of Cups": `Olha para cima hoje. Talvez andes a recusar, por tédio, uma oferta que está mesmo à tua frente.`,
+  "Five of Cups": `Não fiques só no que se perdeu. Hoje vira-te para as taças que continuam de pé atrás de ti.`,
+  "Six of Cups": `Deixa uma memória doce nutrir-te hoje, sem te prender a ela. A ternura simples cura.`,
+  "Seven of Cups": `Discerne o real do imaginado. Hoje, em vez de sonhar entre mil opções, escolhe uma e age.`,
+  "Eight of Cups": `Se algo te parece completo mas soa a vazio, tens permissão para partir hoje em busca de mais sentido.`,
+  "Nine of Cups": `Reconhece o que já conquistaste. Hoje desfruta e agradece o que te dá contentamento.`,
+  "Ten of Cups": `Valoriza a harmonia dos teus laços. Hoje a maior riqueza é a que não se toca.`,
+  "Page of Cups": `Leva a sério hoje uma mensagem do coração ou um lampejo de imaginação: pode trazer algo bom do fundo.`,
+  "Knight of Cups": `Segue hoje o sentimento com graça. Faz ou aceita um convite do coração, com os pés no chão.`,
+  "Queen of Cups": `Cuida dos outros a partir de um centro sereno. Hoje sente com profundidade sem te perderes.`,
+  "King of Cups": `Mantém o centro quando as emoções subirem. Hoje sente tudo, e responde com equilíbrio.`,
+
+  // ===== Espadas =====
+  "Ace of Swords": `Nomeia hoje a verdade sem rodeios. Uma ideia clara corta a névoa e abre caminho.`,
+  "Two of Swords": `Tira a venda. A decisão que andas a adiar não desaparece: hoje encara-a de frente.`,
+  "Three of Swords": `Se houver mágoa hoje, atravessa-a em vez de a contornar. A chuva também limpa.`,
+  "Four of Swords": `Descansa sem culpa. Hoje o teu corpo e a tua mente pedem trégua para se refazerem.`,
+  "Five of Swords": `Pergunta-te hoje o que a vitória te custa. Ter razão a todo o custo pode não valer a pena.`,
+  "Six of Swords": `Afasta-te hoje das águas agitadas. Leva o que aprendeste e ruma, devagar, a lugar mais calmo.`,
+  "Seven of Swords": `Sê esperto hoje, mas vigia a fronteira da honestidade. Nem toda a estratégia é limpa.`,
+  "Eight of Swords": `A prisão de hoje é mais mental do que real. Tira a venda e vê que o caminho está livre.`,
+  "Nine of Swords": `O medo cresce no escuro e encolhe à luz. Hoje acende a luz e partilha o que te tira o sono.`,
+  "Ten of Swords": `Se algo tocou o fundo, aceita o fim. Hoje o pior já passou, e o horizonte começa a clarear.`,
+  "Page of Swords": `Faz hoje as perguntas certas. Mantém-te atento e curioso, sem cair na desconfiança.`,
+  "Knight of Swords": `Vai direito ao objetivo hoje, mas pergunta se a pressa é urgência real ou impaciência.`,
+  "Queen of Swords": `Diz a verdade com dignidade. Hoje a tua lucidez é uma bússola, usa-a com clareza.`,
+  "King of Swords": `Decide hoje com rigor e justiça. Usa a tua autoridade sem esmagar ninguém.`,
+
+  // ===== Ouros =====
+  "Ace of Pentacles": `Agarra hoje uma oportunidade concreta. Planta já a semente que queres colher mais tarde.`,
+  "Two of Pentacles": `Equilibra hoje as várias exigências sem deixar cair nada. Acompanha o balanço em vez de o travar.`,
+  "Three of Pentacles": `Constrói hoje com os outros. A tua competência ganha quando é vista e trabalhada em conjunto.`,
+  "Four of Pentacles": `Garante o teu sem te fechares. Hoje distingue a prudência do apego que aperta.`,
+  "Five of Pentacles": `Se estiveres em dificuldade hoje, não sofras sozinho. Há ajuda perto, basta olhar e pedir.`,
+  "Six of Pentacles": `Dá quando podes e recebe quando precisas. Hoje mantém justo o fluxo entre dar e receber.`,
+  "Seven of Pentacles": `Tem paciência hoje com o que investiste. O fruto amadurece a seu tempo, não colhas verde.`,
+  "Eight of Pentacles": `Aplica-te hoje ao detalhe. A prática paciente é o que transforma o teu ofício em arte.`,
+  "Nine of Pentacles": `Reconhece o que construíste sozinho. Hoje desfruta, sem culpa, do conforto que mereceste.`,
+  "Ten of Pentacles": `Pensa hoje no que dura. Constrói algo que sustente os teus e permaneça para além de ti.`,
+  "Page of Pentacles": `Dá hoje o primeiro passo prático de um plano. Estuda, prepara, e começa pequeno e concreto.`,
+  "Knight of Pentacles": `Sê hoje constante mais do que brilhante. O esforço regular leva-te onde a pressa não chega.`,
+  "Queen of Pentacles": `Cuida hoje do corpo, da casa e dos recursos. Nutre os outros sem te esqueceres de ti.`,
+  "King of Pentacles": `O que construíste dá-te base. Hoje faz o sucesso servir a tua vida, não substituí-la.`
 };

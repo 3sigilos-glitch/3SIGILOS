@@ -210,7 +210,7 @@ export function Journey() {
                 </button>
               </div>
               <div className="chapter-text">
-                <p className="eyebrow">{ch.roman === "0" ? "0" : ch.roman} · {i + 1} de 22</p>
+                <p className="eyebrow">{ch.roman} · {card.pt}</p>
                 <h2>{ch.title}</h2>
                 <ChapterBody
                   text={ch.text}
