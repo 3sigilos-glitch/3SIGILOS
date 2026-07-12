@@ -2,7 +2,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 /* Motor de voz transversal (Web Speech API), usado no detalhe das cartas
    e na Jornada. Lida com o carregamento assíncrono das vozes, prefere
-   PT-PT quando existe e degrada sem partir quando algo falta. */
+   PT-PT quando existe e degrada sem partir quando algo falta.
+
+   Nota sobre a pausa: em muitos Android, speechSynthesis.pause() é
+   simplesmente ignorado e o áudio continua. Por isso a pausa aqui é um
+   cancel() com memória da posição (última fronteira de palavra ouvida),
+   e o retomar volta a falar a partir desse ponto. Cada utterance tem um
+   número de geração para os eventos antigos não interferirem. */
 
 export interface Track {
   id: string;
@@ -27,8 +33,14 @@ if (supported) {
 export function pickVoice(): SpeechSynthesisVoice | null {
   refreshVoices();
   const pt = cachedVoices.filter((v) => v.lang.toLowerCase().startsWith("pt"));
-  const ptPT = pt.find((v) => v.lang.toLowerCase().includes("pt-pt") || v.lang.toLowerCase().includes("pt_pt"));
+  const ptPT = pt.find(
+    (v) => v.lang.toLowerCase().includes("pt-pt") || v.lang.toLowerCase().includes("pt_pt")
+  );
   return ptPT ?? pt[0] ?? null;
+}
+
+function fullText(track: Track): string {
+  return track.title ? track.title + ". " + track.text : track.text;
 }
 
 export interface UseSpeech {
@@ -57,55 +69,79 @@ export function useSpeech(onTrackChange?: (index: number) => void): UseSpeech {
   const tracksRef = useRef<Track[]>([]);
   const rateRef = useRef(1);
   const autoRef = useRef(true);
+  const genRef = useRef(0); // geração da utterance actual
+  const trackRef = useRef(0);
+  const pausedAtRef = useRef(0); // posição absoluta onde a pausa parou
+  const lastCharRef = useRef(0); // última fronteira ouvida (absoluta)
   const onChangeRef = useRef(onTrackChange);
   onChangeRef.current = onTrackChange;
   autoRef.current = autoAdvance;
 
+  const hardCancel = useCallback(() => {
+    genRef.current += 1; // invalida os eventos da utterance anterior
+    if (supported) window.speechSynthesis.cancel();
+  }, []);
+
   const stop = useCallback(() => {
-    if (!supported) return;
-    window.speechSynthesis.cancel();
+    hardCancel();
+    pausedAtRef.current = 0;
     setStatus("idle");
     setCharIndex(-1);
-  }, []);
+  }, [hardCancel]);
 
   useEffect(() => stop, [stop]);
 
-  const speakIndex = useCallback((index: number) => {
-    if (!supported) return;
-    const track = tracksRef.current[index];
-    if (!track) return;
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(track.title + ". " + track.text);
-    u.lang = "pt-PT";
-    const voice = pickVoice();
-    if (voice) u.voice = voice;
-    u.rate = rateRef.current;
-    u.onboundary = (e) => {
-      if (e.name === "word" || e.name === "sentence") setCharIndex(e.charIndex);
-    };
-    u.onend = () => {
-      setCharIndex(-1);
-      const nextIndex = index + 1;
-      if (autoRef.current && nextIndex < tracksRef.current.length) {
-        setTrackIndex(nextIndex);
-        onChangeRef.current?.(nextIndex);
-        speakIndex(nextIndex);
-      } else {
+  const speakIndex = useCallback(
+    (index: number, fromChar = 0) => {
+      if (!supported) return;
+      const track = tracksRef.current[index];
+      if (!track) return;
+      hardCancel();
+      const gen = genRef.current;
+      const text = fullText(track).slice(fromChar);
+      if (!text.trim()) return;
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "pt-PT";
+      const voice = pickVoice();
+      if (voice) u.voice = voice;
+      u.rate = rateRef.current;
+      lastCharRef.current = fromChar;
+      u.onboundary = (e) => {
+        if (genRef.current !== gen) return;
+        lastCharRef.current = fromChar + e.charIndex;
+        setCharIndex(fromChar + e.charIndex);
+      };
+      u.onend = () => {
+        if (genRef.current !== gen) return; // foi pausa, salto ou paragem
+        setCharIndex(-1);
+        pausedAtRef.current = 0;
+        const nextIndex = index + 1;
+        if (autoRef.current && nextIndex < tracksRef.current.length) {
+          trackRef.current = nextIndex;
+          setTrackIndex(nextIndex);
+          onChangeRef.current?.(nextIndex);
+          speakIndex(nextIndex);
+        } else {
+          setStatus("idle");
+        }
+      };
+      u.onerror = () => {
+        if (genRef.current !== gen) return;
         setStatus("idle");
-      }
-    };
-    u.onerror = () => {
-      setStatus("idle");
-      setCharIndex(-1);
-    };
-    setTrackIndex(index);
-    setStatus("playing");
-    window.speechSynthesis.speak(u);
-  }, []);
+        setCharIndex(-1);
+      };
+      trackRef.current = index;
+      setTrackIndex(index);
+      setStatus("playing");
+      window.speechSynthesis.speak(u);
+    },
+    [hardCancel]
+  );
 
   const playTracks = useCallback(
     (tracks: Track[], index = 0) => {
       tracksRef.current = tracks;
+      pausedAtRef.current = 0;
       onChangeRef.current?.(index);
       speakIndex(index);
     },
@@ -115,38 +151,41 @@ export function useSpeech(onTrackChange?: (index: number) => void): UseSpeech {
   const toggle = useCallback(() => {
     if (!supported) return;
     if (status === "playing") {
-      window.speechSynthesis.pause();
+      // Pausa fiável: cancela e guarda a posição para retomar.
+      pausedAtRef.current = lastCharRef.current;
+      hardCancel();
       setStatus("paused");
     } else if (status === "paused") {
-      window.speechSynthesis.resume();
-      setStatus("playing");
+      speakIndex(trackRef.current, pausedAtRef.current);
     } else if (tracksRef.current.length) {
-      speakIndex(trackIndex);
+      speakIndex(trackRef.current);
     }
-  }, [status, trackIndex, speakIndex]);
+  }, [status, speakIndex, hardCancel]);
 
   const next = useCallback(() => {
-    if (trackIndex + 1 < tracksRef.current.length) {
-      onChangeRef.current?.(trackIndex + 1);
-      speakIndex(trackIndex + 1);
+    if (trackRef.current + 1 < tracksRef.current.length) {
+      pausedAtRef.current = 0;
+      onChangeRef.current?.(trackRef.current + 1);
+      speakIndex(trackRef.current + 1);
     }
-  }, [trackIndex, speakIndex]);
+  }, [speakIndex]);
 
   const prev = useCallback(() => {
-    if (trackIndex > 0) {
-      onChangeRef.current?.(trackIndex - 1);
-      speakIndex(trackIndex - 1);
+    if (trackRef.current > 0) {
+      pausedAtRef.current = 0;
+      onChangeRef.current?.(trackRef.current - 1);
+      speakIndex(trackRef.current - 1);
     }
-  }, [trackIndex, speakIndex]);
+  }, [speakIndex]);
 
   const setRate = useCallback(
     (r: number) => {
       rateRef.current = r;
       setRateState(r);
-      // A velocidade nova aplica-se retomando a faixa actual do início.
-      if (status !== "idle") speakIndex(trackIndex);
+      // A velocidade nova aplica-se retomando perto do ponto onde ia.
+      if (status === "playing") speakIndex(trackRef.current, lastCharRef.current);
     },
-    [status, trackIndex, speakIndex]
+    [status, speakIndex]
   );
 
   return {

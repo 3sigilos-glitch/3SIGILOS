@@ -1,4 +1,4 @@
-import { Card, cardImgURL } from "../data";
+import { Card, cardImgFile, cardImgURL } from "../data";
 
 /* Gera um cartão vertical (1080x1920, formato stories) com a gravura,
    o nome, a mensagem do dia e a marca, e partilha-o com a Web Share API.
@@ -15,14 +15,39 @@ function loadImage(src: string): Promise<HTMLImageElement | null> {
 }
 
 /* A gravura tem de vir com CORS para o canvas poder exportar a imagem.
-   As gravuras vistas na app ficam em cache "opaca" (sem CORS) no service
-   worker, e essa versão faz falhar a exportação. Um parâmetro extra dá a
-   este pedido uma entrada de cache própria, carregada em modo CORS.
-   Se mesmo assim falhar, tenta-se em maior largura e só depois se desiste. */
+   O caminho Special:FilePath redirecciona, e esse redireccionamento nem
+   sempre autoriza CORS. Por isso o cartão pergunta primeiro à API do
+   Commons o endereço directo no servidor de ficheiros
+   (upload.wikimedia.org), que autoriza CORS sempre. Se a API falhar,
+   tenta o caminho antigo com entrada de cache própria, e só depois
+   desiste para o marcador dourado. */
+async function directThumbURL(card: Card, width: number): Promise<string | null> {
+  try {
+    const api =
+      "https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*" +
+      "&prop=imageinfo&iiprop=url&iiurlwidth=" +
+      width +
+      "&titles=" +
+      encodeURIComponent("File:" + cardImgFile(card));
+    const res = await fetch(api);
+    if (!res.ok) return null;
+    const data = await res.json();
+    const pages = data?.query?.pages;
+    const first = pages ? (Object.values(pages)[0] as { imageinfo?: { thumburl?: string }[] }) : null;
+    return first?.imageinfo?.[0]?.thumburl ?? null;
+  } catch {
+    return null;
+  }
+}
+
 async function loadEngraving(card: Card): Promise<HTMLImageElement | null> {
+  const direct = await directThumbURL(card, 640);
+  if (direct) {
+    const img = await loadImage(direct);
+    if (img) return img;
+  }
   for (const w of [640, 768]) {
-    const url = cardImgURL(card, w) + "&cors=1";
-    const img = await loadImage(url);
+    const img = await loadImage(cardImgURL(card, w) + "&cors=1");
     if (img) return img;
   }
   return null;

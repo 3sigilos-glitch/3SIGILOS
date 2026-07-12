@@ -58,14 +58,20 @@ function pad2(n: number): string {
 }
 
 /* URL da gravura de 1909 (Wikimedia Commons, domínio público) */
-export function cardImgURL(c: Card, w: number): string {
-  let fn: string;
+export function cardImgFile(c: Card): string {
   if (c.cat === "major") {
-    fn = "RWS1909 - " + ROMAN2NN[c.roman!] + " " + c.en.replace(/^The /, "") + ".jpeg";
-  } else {
-    fn = "RWS1909 - " + SUIT_IMG[c.cat] + " " + pad2(c.rank!) + ".jpeg";
+    return "RWS1909 - " + ROMAN2NN[c.roman!] + " " + c.en.replace(/^The /, "") + ".jpeg";
   }
-  return "https://commons.wikimedia.org/wiki/Special:FilePath/" + encodeURIComponent(fn) + "?width=" + w;
+  return "RWS1909 - " + SUIT_IMG[c.cat] + " " + pad2(c.rank!) + ".jpeg";
+}
+
+export function cardImgURL(c: Card, w: number): string {
+  return (
+    "https://commons.wikimedia.org/wiki/Special:FilePath/" +
+    encodeURIComponent(cardImgFile(c)) +
+    "?width=" +
+    w
+  );
 }
 
 export function badgeText(c: Card): string {
