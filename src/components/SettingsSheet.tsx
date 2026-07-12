@@ -1,9 +1,12 @@
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { usePrefs } from "../lib/prefs";
 
+/* A folha vive num portal no body: dentro do header, o backdrop-filter
+   dele prendia o position fixed e a folha abria cortada. */
 export function SettingsSheet({ onClose }: { onClose: () => void }) {
   const { reversed, setReversed } = usePrefs();
-  return (
+  return createPortal(
     <div className="sheet-backdrop" onClick={onClose}>
       <div
         className="sheet"
@@ -44,6 +47,7 @@ export function SettingsSheet({ onClose }: { onClose: () => void }) {
 
         <p className="sheet-version">Versão {__APP_VERSION__}</p>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
