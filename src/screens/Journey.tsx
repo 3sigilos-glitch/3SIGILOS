@@ -181,18 +181,13 @@ export function Journey() {
                 <stop offset="0" stopColor="#e7cf92" stopOpacity="0.9" />
                 <stop offset="1" stopColor="#b89344" stopOpacity="0.45" />
               </linearGradient>
-              <filter id="trailMaskBlur">
-                <feGaussianBlur stdDeviation="8" />
-              </filter>
-              {/* Nas zonas de texto a linha fica quase invisível, com
-                  transição suave, para não prejudicar a leitura. */}
+              {/* Nas zonas de texto a linha fica quase invisível, para
+                  não prejudicar a leitura. */}
               <mask id="trailMask">
                 <rect x="0" y="0" width={size.w} height={size.h} fill="#ffffff" />
-                <g filter="url(#trailMaskBlur)">
-                  {textRects.map((r, i) => (
-                    <rect key={i} x={r.x} y={r.y} width={r.w} height={r.h} rx="14" fill="#1f1f1f" />
-                  ))}
-                </g>
+                {textRects.map((r, i) => (
+                  <rect key={i} x={r.x} y={r.y} width={r.w} height={r.h} rx="16" fill="#000000" />
+                ))}
               </mask>
             </defs>
             <m.path
@@ -263,6 +258,10 @@ export function Journey() {
                       : -1
                   }
                 />
+                <aside className="life-stage">
+                  <p className="life-stage-label">Na vida · {ch.lifeStage.label}</p>
+                  <p>{ch.lifeStage.text}</p>
+                </aside>
               </div>
             </m.section>
           );
