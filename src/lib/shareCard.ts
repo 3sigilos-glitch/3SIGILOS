@@ -14,6 +14,20 @@ function loadImage(src: string): Promise<HTMLImageElement | null> {
   });
 }
 
+/* A gravura tem de vir com CORS para o canvas poder exportar a imagem.
+   As gravuras vistas na app ficam em cache "opaca" (sem CORS) no service
+   worker, e essa versão faz falhar a exportação. Um parâmetro extra dá a
+   este pedido uma entrada de cache própria, carregada em modo CORS.
+   Se mesmo assim falhar, tenta-se em maior largura e só depois se desiste. */
+async function loadEngraving(card: Card): Promise<HTMLImageElement | null> {
+  for (const w of [640, 768]) {
+    const url = cardImgURL(card, w) + "&cors=1";
+    const img = await loadImage(url);
+    if (img) return img;
+  }
+  return null;
+}
+
 function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
   const words = text.split(" ");
   const lines: string[] = [];
@@ -77,12 +91,19 @@ export async function shareDailyImage(card: Card, message: string, reversed: boo
   ctx.lineWidth = 1.5;
   ctx.strokeRect(imgX - 12, imgY - 12, imgW + 24, imgH + 24);
 
-  const engraving = await loadImage(cardImgURL(card, 640));
+  const engraving = await loadEngraving(card);
   if (engraving) {
     const scale = Math.min(imgW / engraving.width, imgH / engraving.height);
     const dw = engraving.width * scale;
     const dh = engraving.height * scale;
+    ctx.save();
+    if (reversed) {
+      ctx.translate(W / 2, imgY + imgH / 2);
+      ctx.rotate(Math.PI);
+      ctx.translate(-W / 2, -(imgY + imgH / 2));
+    }
     ctx.drawImage(engraving, imgX + (imgW - dw) / 2, imgY + (imgH - dh) / 2, dw, dh);
+    ctx.restore();
   } else {
     ctx.fillStyle = "#16131e";
     ctx.fillRect(imgX, imgY, imgW, imgH);
