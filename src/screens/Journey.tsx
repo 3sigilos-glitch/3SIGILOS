@@ -51,12 +51,13 @@ export function Journey() {
     goTo(index, false);
   });
 
+  // Cada faixa lê a narrativa e, no fim, o bloco da fase da vida.
   const tracks = useMemo(
     () =>
       FOOL_JOURNEY.map((ch) => ({
         id: ch.cardEn,
         title: ch.roman === "0" ? ch.title : ch.roman + ". " + ch.title,
-        text: ch.text,
+        text: ch.text + " Na vida: " + ch.lifeStage.label + ". " + ch.lifeStage.text,
       })),
     []
   );
@@ -258,7 +259,16 @@ export function Journey() {
                       : -1
                   }
                 />
-                <aside className="life-stage">
+                <aside
+                  className={
+                    "life-stage" +
+                    (speech.status !== "idle" &&
+                    speech.trackIndex === i &&
+                    speech.charIndex - (tracks[i].title.length + 2) >= ch.text.length
+                      ? " reading-now"
+                      : "")
+                  }
+                >
                   <p className="life-stage-label">Na vida · {ch.lifeStage.label}</p>
                   <p>{ch.lifeStage.text}</p>
                 </aside>

@@ -1668,3 +1668,10 @@ a {
 .chapter.active .life-stage p:last-child {
   color: var(--parch);
 }
+.life-stage.reading-now {
+  border-left-color: var(--gold);
+  box-shadow: 0 0 18px rgba(231, 207, 146, 0.12);
+}
+.life-stage.reading-now p:last-child {
+  color: var(--gold-light);
+}
