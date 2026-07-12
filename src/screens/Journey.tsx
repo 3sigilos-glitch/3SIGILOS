@@ -15,6 +15,13 @@ interface Point {
   y: number;
 }
 
+interface Rect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
 /* Constrói um caminho suave que passa por todos os nós do trilho. */
 function buildPath(points: Point[]): string {
   if (points.length < 2) return "";
@@ -32,7 +39,9 @@ export function Journey() {
   const reduced = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const textRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [points, setPoints] = useState<Point[]>([]);
+  const [textRects, setTextRects] = useState<Rect[]>([]);
   const [size, setSize] = useState({ w: 0, h: 0 });
   const [active, setActive] = useState(0);
   const [entered, setEntered] = useState(reduced ?? false);
@@ -63,10 +72,25 @@ export function Journey() {
         const r = el.getBoundingClientRect();
         // Âncora na margem interior da carta (o lado do texto), para o
         // caminho serpentear entre as cartas sem o orbe as tapar.
-        const x = i % 2 === 0 ? r.right - cRect.left + 14 : r.left - cRect.left - 14;
+        const x = i % 2 === 0 ? r.right - cRect.left + 5 : r.left - cRect.left - 5;
         return { x, y: r.top - cRect.top + r.height / 2 };
       });
       setPoints(pts);
+      // Zonas de texto, para a linha dourada desvanecer por trás delas
+      // e não roubar legibilidade.
+      setTextRects(
+        textRefs.current
+          .filter((el): el is HTMLDivElement => el !== null)
+          .map((el) => {
+            const r = el.getBoundingClientRect();
+            return {
+              x: r.left - cRect.left - 10,
+              y: r.top - cRect.top - 10,
+              w: r.width + 20,
+              h: r.height + 20,
+            };
+          })
+      );
       setSize({ w: container.offsetWidth, h: container.offsetHeight });
     };
     measure();
@@ -157,6 +181,19 @@ export function Journey() {
                 <stop offset="0" stopColor="#e7cf92" stopOpacity="0.9" />
                 <stop offset="1" stopColor="#b89344" stopOpacity="0.45" />
               </linearGradient>
+              <filter id="trailMaskBlur">
+                <feGaussianBlur stdDeviation="8" />
+              </filter>
+              {/* Nas zonas de texto a linha fica quase invisível, com
+                  transição suave, para não prejudicar a leitura. */}
+              <mask id="trailMask">
+                <rect x="0" y="0" width={size.w} height={size.h} fill="#ffffff" />
+                <g filter="url(#trailMaskBlur)">
+                  {textRects.map((r, i) => (
+                    <rect key={i} x={r.x} y={r.y} width={r.w} height={r.h} rx="14" fill="#1f1f1f" />
+                  ))}
+                </g>
+              </mask>
             </defs>
             <m.path
               d={pathD}
@@ -165,6 +202,7 @@ export function Journey() {
               strokeWidth="1.4"
               strokeLinecap="round"
               opacity="0.75"
+              mask="url(#trailMask)"
               initial={reduced ? { pathLength: 1 } : { pathLength: 0 }}
               animate={{ pathLength: 1 }}
               transition={{ duration: reduced ? 0 : 2.6, delay: reduced ? 0 : 0.7, ease: "easeInOut" }}
@@ -209,7 +247,12 @@ export function Journey() {
                   <CardImg card={card} width={240} />
                 </button>
               </div>
-              <div className="chapter-text">
+              <div
+                className="chapter-text"
+                ref={(el) => {
+                  textRefs.current[i] = el;
+                }}
+              >
                 <p className="eyebrow">{ch.roman} · {card.pt}</p>
                 <h2>{ch.title}</h2>
                 <ChapterBody
