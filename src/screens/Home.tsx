@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { m, useReducedMotion } from "framer-motion";
-import { Footprints, GraduationCap, History, ImageDown, Loader2 } from "lucide-react";
+import { GraduationCap, History, ImageDown, Loader2 } from "lucide-react";
 import { cardBySlug, metaEyebrow, suitHex } from "../data";
 import { usePrefs } from "../lib/prefs";
 import { dailyCard, dayMessage, dailyHistory, recordDaily } from "../lib/dailyCard";
@@ -85,13 +85,6 @@ export function Home() {
       </m.section>
 
       <nav className="home-shortcuts" aria-label="Atalhos">
-        <Link to="/jornada" className="shortcut">
-          <Footprints size={20} />
-          <span>
-            <strong>Jornada do Louco</strong>
-            <small>Os 22 Arcanos Maiores, capítulo a capítulo</small>
-          </span>
-        </Link>
         <Link to="/estudo" className="shortcut">
           <GraduationCap size={20} />
           <span>
