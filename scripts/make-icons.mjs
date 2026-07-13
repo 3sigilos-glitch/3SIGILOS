@@ -14,9 +14,27 @@ const INK = "#0b0c14";
 //    e apara as margens pretas.
 const meta = await sharp(SRC).metadata();
 const topHalf = await sharp(SRC)
+  .flatten({ background: "#000000" })
   .extract({ left: 0, top: 0, width: meta.width, height: Math.round(meta.height * 0.72) })
   .toBuffer();
-const markRegion = await sharp(topHalf).trim({ threshold: 25 }).toBuffer();
+
+// O trim automático não apara bem este PNG, por isso o recorte é
+// calculado ao pixel sobre a luminância.
+const probe = await sharp(topHalf).grayscale().raw().toBuffer({ resolveWithObject: true });
+let minX = probe.info.width, maxX = 0, minY = probe.info.height, maxY = 0;
+for (let y = 0; y < probe.info.height; y++) {
+  for (let x = 0; x < probe.info.width; x++) {
+    if (probe.data[y * probe.info.width + x] > 25) {
+      if (x < minX) minX = x;
+      if (x > maxX) maxX = x;
+      if (y < minY) minY = y;
+      if (y > maxY) maxY = y;
+    }
+  }
+}
+const markRegion = await sharp(topHalf)
+  .extract({ left: minX, top: minY, width: maxX - minX + 1, height: maxY - minY + 1 })
+  .toBuffer();
 
 // 2. Recolore: a luminância do original passa a canal alfa sobre dourado puro.
 const gray = sharp(markRegion).grayscale();
@@ -53,8 +71,8 @@ async function icon(file, size, scale) {
   console.log(`OK ${file} (${size}x${size})`);
 }
 
-await icon("icon-192-v3.png", 192, 0.96);
-await icon("icon-512-v3.png", 512, 0.96);
-await icon("icon-maskable-512-v3.png", 512, 0.8);
-await icon("apple-touch-icon-v3.png", 180, 0.94);
-await icon("favicon-v3.png", 96, 1);
+await icon("icon-192-v4.png", 192, 1);
+await icon("icon-512-v4.png", 512, 1);
+await icon("icon-maskable-512-v4.png", 512, 0.94);
+await icon("apple-touch-icon-v4.png", 180, 1);
+await icon("favicon-v4.png", 96, 1);
