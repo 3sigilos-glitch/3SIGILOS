@@ -68,6 +68,9 @@ export function Home() {
         </p>
         <h2 className="daily-name">{daily.card.pt}</h2>
         <p className="card-en">{daily.card.en}</p>
+        <div className="day-divider" aria-hidden="true">
+          ✦
+        </div>
         <p className="daily-msg">{message}</p>
         {daily.reversed && (
           <p className="daily-rev-note">Saiu invertida: lê também o sentido invertido na ficha.</p>

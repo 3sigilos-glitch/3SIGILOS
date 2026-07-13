@@ -16,7 +16,7 @@
   --gold-dim: rgba(184, 147, 68, 0.32);
   --parch: #ede4d3;
   --sepia: #a99c86;
-  --sepia-2: #8d8272;
+  --sepia-2: #978b7a;
   --rev: #c98d98;
   --serif: "EB Garamond", "Iowan Old Style", "Palatino Linotype", Palatino,
     "Hoefler Text", Georgia, serif;
@@ -322,10 +322,14 @@ button {
   width: 100%;
   text-align: left;
   border-radius: 10px;
-  transition: transform 0.18s ease;
+  transition: transform 0.12s ease;
 }
 .card-cell:active {
   transform: scale(0.97);
+}
+.card-cell:active .engraving {
+  border-color: var(--gold);
+  box-shadow: 0 0 22px 2px rgba(231, 207, 146, 0.16);
 }
 .cell-badge {
   font-family: var(--sans);
@@ -363,10 +367,11 @@ button {
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 7;
-  border: 1px solid var(--gold-dim);
+  border: 1px solid rgba(184, 147, 68, 0.38);
   border-radius: 6px;
   padding: 5px;
   background: var(--ink-soft);
+  box-shadow: inset 0 0 0 1px rgba(231, 207, 146, 0.1);
   overflow: hidden;
 }
 .engraving img {
@@ -534,7 +539,8 @@ button {
 }
 
 .detail-figure {
-  max-width: 270px;
+  position: relative;
+  max-width: 216px;
   margin: 6px auto 20px;
   filter: drop-shadow(0 14px 32px rgba(0, 0, 0, 0.55));
 }
@@ -991,9 +997,9 @@ a {
 }
 .home-date {
   font-family: var(--sans);
-  font-size: 11px;
+  font-size: 11.5px;
   letter-spacing: 0.18em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--sepia-2);
   margin: 0;
   text-align: center;
@@ -1018,7 +1024,7 @@ a {
   transform: rotate(180deg);
 }
 .daily-name {
-  font-size: 30px;
+  font-size: 34px;
   font-weight: 600;
   margin: 2px 0 0;
   line-height: 1.15;
@@ -1028,8 +1034,8 @@ a {
   font-style: italic;
   line-height: 1.6;
   color: var(--parch);
-  margin: 14px auto 0;
-  max-width: 42ch;
+  margin: 10px auto 0;
+  max-width: 38ch;
 }
 .daily-rev-note {
   font-family: var(--sans);
@@ -1055,9 +1061,9 @@ a {
   gap: 14px;
   width: 100%;
   text-align: left;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-soft);
   border-radius: 14px;
-  background: var(--panel);
+  background: rgba(22, 19, 30, 0.5);
   padding: 14px 16px;
   color: var(--gold);
   min-height: 44px;
@@ -1073,7 +1079,7 @@ a {
   gap: 2px;
 }
 .shortcut strong {
-  font-size: 16.5px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--parch);
 }
@@ -1674,4 +1680,114 @@ a {
 }
 .life-stage.reading-now p:last-child {
   color: var(--gold-light);
+}
+
+/* ============================================================
+   Retoques de design (Claude Design)
+   ============================================================ */
+
+/* 7/19: halo radial atrás das cartas herói */
+.daily-figure {
+  position: relative;
+}
+.daily-figure::before,
+.detail-figure::before,
+.study-figure::before {
+  content: "";
+  position: absolute;
+  inset: -46px;
+  background: radial-gradient(circle, rgba(231, 207, 146, 0.14), transparent 62%);
+  pointer-events: none;
+}
+.study-figure {
+  position: relative;
+}
+
+/* 9: divisor ✦ com linhas em gradiente */
+.day-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px auto 0;
+  max-width: 240px;
+  color: var(--gold);
+  font-size: 11px;
+}
+.day-divider::before,
+.day-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+}
+.day-divider::before {
+  background: linear-gradient(90deg, transparent, var(--gold-dim));
+}
+.day-divider::after {
+  background: linear-gradient(90deg, var(--gold-dim), transparent);
+}
+
+/* 12: ponto luminoso no item activo da navegação */
+.nav-item {
+  position: relative;
+}
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--gold-light);
+  box-shadow: 0 0 8px 2px rgba(231, 207, 146, 0.5);
+}
+
+/* 17: pega do painel de filtros */
+.filter-panel::before {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line);
+  margin: 8px auto 0;
+}
+
+/* 25/26: acordeões com marcador ✦, aberto realçado, texto indentado */
+.accordion-head::before {
+  content: "✦";
+  font-size: 11px;
+  color: var(--sepia-2);
+  flex: 0 0 auto;
+  transition: color 0.2s;
+}
+.accordion.open {
+  border-color: var(--gold-dim);
+  background: var(--panel-2);
+}
+.accordion.open .accordion-head::before {
+  color: var(--gold);
+}
+.accordion-inner {
+  padding-left: 37px;
+}
+
+/* 27/28: correcções rápidas */
+p a,
+li a {
+  color: var(--gold-light);
+}
+p a:hover,
+li a:hover {
+  color: var(--gold);
+}
+h1,
+h2,
+h3,
+.meaning p,
+.daily-msg,
+.chapter-text p,
+.guide-intro {
+  text-wrap: pretty;
 }
