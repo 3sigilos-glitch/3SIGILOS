@@ -1,3 +1,4 @@
+import { LEITURAS_INTELIGENTES_POR_DIA } from "../config";
 import { load, save } from "./storage";
 
 /* Cliente da leitura inteligente. A chave da IA vive só no proxy
@@ -18,12 +19,23 @@ function todayKey(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
-export function usedInsightToday(): boolean {
-  return load<string>("ts-insight-day", "") === todayKey();
+interface InsightUsage {
+  day: string;
+  count: number;
+}
+
+function usage(): InsightUsage {
+  const u = load<InsightUsage>("ts-insight-usage", { day: "", count: 0 });
+  return u.day === todayKey() ? u : { day: todayKey(), count: 0 };
+}
+
+export function insightsLeftToday(): number {
+  return Math.max(0, LEITURAS_INTELIGENTES_POR_DIA - usage().count);
 }
 
 function markUsedToday() {
-  save("ts-insight-day", todayKey());
+  const u = usage();
+  save("ts-insight-usage", { day: todayKey(), count: u.count + 1 });
 }
 
 export interface InsightPayload {

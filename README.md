@@ -122,7 +122,8 @@ Para activar:
    `UPSTASH_REDIS_REST_URL` e `UPSTASH_REDIS_REST_TOKEN`.
    Sem Upstash, a contagem vive na memória da instância (best effort).
 
-Limites (por defeito 1 por pessoa por dia e 50 globais por dia), ajustáveis
+Limites (por defeito 2 por pessoa por dia durante os testes, 50 globais por
+dia), ajustáveis
 com as variáveis `INSIGHT_PER_USER_DAY` e `INSIGHT_GLOBAL_DAY`.
 
 Rede de segurança do gasto: no Google Cloud, em Billing > Budgets &

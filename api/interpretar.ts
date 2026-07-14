@@ -24,7 +24,7 @@ function today(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
-const PER_USER = Number(process.env.INSIGHT_PER_USER_DAY ?? 1);
+const PER_USER = Number(process.env.INSIGHT_PER_USER_DAY ?? 2);
 const GLOBAL = Number(process.env.INSIGHT_GLOBAL_DAY ?? 50);
 
 async function upstash(cmd: (string | number)[]): Promise<number | null> {

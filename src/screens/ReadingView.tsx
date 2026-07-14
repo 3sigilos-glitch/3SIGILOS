@@ -4,7 +4,7 @@ import { m, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ImageDown, Loader2, Sparkles, Trash2 } from "lucide-react";
 import { cardBySlug, suitHex } from "../data";
 import { positionsFor, spreadById } from "../data/spreads";
-import { usedInsightToday, requestInsight } from "../lib/insight";
+import { insightsLeftToday, requestInsight } from "../lib/insight";
 import { Reading, deleteReading, getReading, updateReading } from "../lib/readings";
 import { shareReadingImage } from "../lib/shareReading";
 import { haptic } from "../lib/storage";
@@ -82,7 +82,7 @@ export function ReadingView() {
       updateReading(reading!.id, { aiText: result.text });
       setReading({ ...reading!, aiText: result.text });
     } else if (result.reason === "limite-pessoal") {
-      setAiMessage("Já usaste a leitura inteligente de hoje. Volta amanhã: a leitura por padrões acima continua válida.");
+      setAiMessage("Já usaste as leituras inteligentes de hoje. Volta amanhã: a leitura por padrões acima continua válida.");
     } else if (result.reason === "limite-global") {
       setAiMessage("As leituras inteligentes de hoje esgotaram para toda a app. A leitura por padrões acima continua válida.");
     } else {
@@ -106,7 +106,7 @@ export function ReadingView() {
     navigate("/leituras", { replace: true });
   }
 
-  const insightUsed = usedInsightToday();
+  const insightsLeft = insightsLeftToday();
 
   return (
     <main className="readings reading-view">
@@ -185,15 +185,17 @@ export function ReadingView() {
           ) : (
             <>
               <p className="ai-status">
-                {insightUsed
-                  ? "Já usaste a leitura inteligente de hoje, volta amanhã."
-                  : "Tens 1 leitura inteligente hoje."}
+                {insightsLeft === 0
+                  ? "Já usaste as leituras inteligentes de hoje, volta amanhã."
+                  : insightsLeft === 1
+                    ? "Tens 1 leitura inteligente hoje."
+                    : "Tens " + insightsLeft + " leituras inteligentes hoje."}
               </p>
               <button
                 type="button"
                 className="gold-btn"
                 onClick={onInsight}
-                disabled={aiBusy || insightUsed}
+                disabled={aiBusy || insightsLeft === 0}
               >
                 {aiBusy ? <Loader2 size={16} className="spin" /> : <Sparkles size={16} />}
                 {aiBusy ? "A interpretar…" : "Leitura inteligente"}

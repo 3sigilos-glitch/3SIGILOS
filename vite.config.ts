@@ -42,6 +42,10 @@ export default defineConfig({
       },
       workbox: {
         navigateFallback: base + "index.html",
+        // Os sons de ambiente (mp3) NÃO entram no cache inicial: só se
+        // descarregam quando o utilizador escolhe um ambiente.
+        globIgnores: ["**/*.mp3"],
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
         // Gravuras do Wikimedia Commons: cache first depois da primeira visita,
         // para a app funcionar offline com as cartas já vistas.
         runtimeCaching: [
