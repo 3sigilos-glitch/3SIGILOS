@@ -4,7 +4,7 @@ import { Card, cardImgFile, cardImgURL } from "../data";
    o nome, a mensagem do dia e a marca, e partilha-o com a Web Share API.
    Sem suporte para partilha de ficheiros, descarrega a imagem. */
 
-function loadImage(src: string): Promise<HTMLImageElement | null> {
+export function loadImage(src: string): Promise<HTMLImageElement | null> {
   return new Promise((resolve) => {
     const img = new Image();
     img.crossOrigin = "anonymous";
@@ -40,7 +40,7 @@ async function directThumbURL(card: Card, width: number): Promise<string | null>
   }
 }
 
-async function loadEngraving(card: Card): Promise<HTMLImageElement | null> {
+export async function loadEngraving(card: Card): Promise<HTMLImageElement | null> {
   const direct = await directThumbURL(card, 640);
   if (direct) {
     const img = await loadImage(direct);

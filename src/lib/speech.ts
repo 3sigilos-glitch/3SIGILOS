@@ -62,6 +62,13 @@ export interface UseSpeech {
 
 export function useSpeech(onTrackChange?: (index: number) => void): UseSpeech {
   const [status, setStatus] = useState<SpeechStatus>("idle");
+
+  // Avisa o ambiente sonoro para baixar enquanto a voz fala.
+  useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent("ts-speech", { detail: { speaking: status === "playing" } })
+    );
+  }, [status]);
   const [trackIndex, setTrackIndex] = useState(0);
   const [rate, setRateState] = useState(1);
   const [charIndex, setCharIndex] = useState(-1);

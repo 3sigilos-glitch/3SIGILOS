@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { CatFilter, RankFilter } from "../data";
+import { CODIGO_RESERVADO, RESERVADO_PARA_TODOS } from "../config";
 import { load, save } from "./storage";
 
 /* Preferências e estado partilhado da app, persistidos localmente. */
@@ -21,6 +22,9 @@ interface Prefs {
   setQuery: (q: string) => void;
   favOnly: boolean;
   setFavOnly: (v: boolean) => void;
+  // acesso reservado às funcionalidades em teste
+  reserved: boolean;
+  tryUnlock: (code: string) => boolean;
 }
 
 const Ctx = createContext<Prefs | null>(null);
@@ -38,7 +42,9 @@ export function PrefsProvider({ children }: { children: React.ReactNode }) {
   const [rank, setRank] = useState<RankFilter>("all");
   const [query, setQuery] = useState("");
   const [favOnly, setFavOnly] = useState(false);
+  const [unlocked, setUnlocked] = useState(() => load("ts-reserved", false));
 
+  useEffect(() => save("ts-reserved", unlocked), [unlocked]);
   useEffect(() => save("ts-reversed-v2", reversed), [reversed]);
   useEffect(() => save("ts-favorites", favorites), [favorites]);
   useEffect(() => save("ts-diary", notes), [notes]);
@@ -67,8 +73,14 @@ export function PrefsProvider({ children }: { children: React.ReactNode }) {
       setQuery,
       favOnly,
       setFavOnly,
+      reserved: RESERVADO_PARA_TODOS || unlocked,
+      tryUnlock: (code) => {
+        const ok = code.trim().toLowerCase() === CODIGO_RESERVADO.toLowerCase();
+        if (ok) setUnlocked(true);
+        return ok;
+      },
     }),
-    [reversed, favorites, notes, cat, rank, query, favOnly]
+    [reversed, favorites, notes, cat, rank, query, favOnly, unlocked]
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

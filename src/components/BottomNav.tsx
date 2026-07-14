@@ -1,18 +1,20 @@
 import { NavLink } from "react-router-dom";
-import { Home, WalletCards, Footprints, BookOpen } from "lucide-react";
+import { Home, WalletCards, Footprints, BookOpen, Sparkles } from "lucide-react";
+import { usePrefs } from "../lib/prefs";
 import { haptic } from "../lib/storage";
 
-const TABS = [
-  { to: "/", label: "Início", icon: Home, end: true },
-  { to: "/cartas", label: "Cartas", icon: WalletCards, end: false },
-  { to: "/jornada", label: "Jornada", icon: Footprints, end: false },
-  { to: "/guia", label: "Guia", icon: BookOpen, end: false },
-];
-
 export function BottomNav() {
+  const { reserved } = usePrefs();
+  const tabs = [
+    { to: "/", label: "Início", icon: Home, end: true },
+    { to: "/cartas", label: "Cartas", icon: WalletCards, end: false },
+    ...(reserved ? [{ to: "/leituras", label: "Leituras", icon: Sparkles, end: false }] : []),
+    { to: "/jornada", label: "Jornada", icon: Footprints, end: false },
+    { to: "/guia", label: "Guia", icon: BookOpen, end: false },
+  ];
   return (
     <nav className="bottom-nav" aria-label="Navegação principal">
-      {TABS.map(({ to, label, icon: Icon, end }) => (
+      {tabs.map(({ to, label, icon: Icon, end }) => (
         <NavLink
           key={to}
           to={to}

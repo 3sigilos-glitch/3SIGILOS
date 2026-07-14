@@ -89,3 +89,61 @@ A leitura em voz alta usa a síntese de voz do próprio dispositivo
 - Mudar a velocidade reinicia a faixa actual do início.
 - O destaque da frase a ser lida depende do suporte do dispositivo; sem
   ele, o áudio funciona na mesma.
+
+## Módulo de Leituras (acesso reservado)
+
+As tiragens fazem-se sempre no baralho físico: a app não sorteia nem
+baralha. O utilizador insere as cartas que saíram e a app interpreta.
+
+### Acesso reservado
+
+- As Leituras (e futuras novidades) estão ocultas por defeito.
+- Para desbloquear num dispositivo: Definições > Acesso reservado >
+  introduzir o código. O código define-se em `src/config.ts`
+  (`CODIGO_RESERVADO`).
+- Para abrir a todos de uma vez: em `src/config.ts`, muda
+  `RESERVADO_PARA_TODOS` para `true` e publica.
+- Nota: é ocultação do lado do cliente para gerir testes, não é
+  segurança forte.
+
+### Leitura inteligente (Gemini pago, via proxy)
+
+A chave NUNCA fica na app: vive na função serverless `api/interpretar.ts`,
+publicada automaticamente pelo Vercel junto com a app.
+
+Para activar:
+1. Cria uma chave do Gemini no Google AI Studio e liga a facturação
+   (serviço pago; o tier gratuito não serve, por privacidade e pelos
+   termos para a Europa).
+2. No painel do Vercel do projecto: Settings > Environment Variables >
+   adiciona `GEMINI_API_KEY` com a chave. Redeploy.
+3. Recomendado para os limites serem à prova de reinícios: cria uma base
+   Upstash Redis gratuita (upstash.com) e define também
+   `UPSTASH_REDIS_REST_URL` e `UPSTASH_REDIS_REST_TOKEN`.
+   Sem Upstash, a contagem vive na memória da instância (best effort).
+
+Limites (por defeito 1 por pessoa por dia e 50 globais por dia), ajustáveis
+com as variáveis `INSIGHT_PER_USER_DAY` e `INSIGHT_GLOBAL_DAY`.
+
+Rede de segurança do gasto: no Google Cloud, em Billing > Budgets &
+alerts, cria um orçamento (por exemplo 5 euros/mês) com alertas a 50%,
+90% e 100%. Assim o custo nunca dispara sem aviso.
+
+Fallback: sem chave, sem rede, ou com os limites atingidos, a app mostra
+sempre a leitura por padrões e uma mensagem simpática. Nunca fica sem
+resposta.
+
+### Ambiente sonoro
+
+Coloca seis mp3 leves e em loop em `src/assets/ambient/` com os nomes
+`rio.mp3`, `mata.mp3`, `mar.mp3`, `chuva.mp3`, `lareira.mp3`,
+`galaxia.mp3` (fontes livres para uso comercial sem atribuição, por
+exemplo Pixabay ou CC0). Sem ficheiro, a opção aparece indisponível.
+Começa sempre desligado e baixa quando a voz fala.
+
+### Limitações conhecidas
+
+- O registo de leituras vive no localStorage do dispositivo (limite
+  prático de algumas centenas de leituras; a app guarda as 200 mais
+  recentes).
+- O limite diário mostrado na app é indicativo; o que conta é o do proxy.

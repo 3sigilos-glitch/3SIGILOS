@@ -1,0 +1,12 @@
+Coloca aqui os seis ficheiros de som ambiente, em mp3, leves e em loop
+suave, de fontes livres para uso comercial sem atribuicao (por exemplo
+Pixabay ou CC0). Os nomes tem de ser exactamente:
+
+  rio.mp3
+  mata.mp3
+  mar.mp3
+  chuva.mp3
+  lareira.mp3
+  galaxia.mp3
+
+Sem o ficheiro, a opcao correspondente aparece indisponivel na app.
