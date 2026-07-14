@@ -7,5 +7,5 @@
    a toda a gente, muda para true e publica. O código deixa de ser
    necessário. */
 
-export const CODIGO_RESERVADO = "3sigilos";
+export const CODIGO_RESERVADO = "3sigilostouro";
 export const RESERVADO_PARA_TODOS = false;
