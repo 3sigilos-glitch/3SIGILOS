@@ -12,7 +12,15 @@
 
 export const config = { runtime: "edge" };
 
-const MODEL = "gemini-2.0-flash";
+// Modelos Flash a tentar por ordem. Se a Google reformar um nome (404),
+// o proxy passa ao seguinte sozinho. Pode forçar-se um com a variável
+// GEMINI_MODEL no Vercel. gemini-flash-latest aponta sempre para o Flash
+// estável mais recente.
+const MODELS = (process.env.GEMINI_MODEL ? [process.env.GEMINI_MODEL] : []).concat([
+  "gemini-flash-latest",
+  "gemini-2.5-flash",
+  "gemini-3-flash-preview",
+]);
 
 const memory: { day: string; users: Map<string, number>; global: number } = {
   day: "",
@@ -124,31 +132,40 @@ export default async function handler(req: Request): Promise<Response> {
     ...(Array.isArray(body.patterns) ? body.patterns.slice(0, 10).map((p) => "- " + String(p).slice(0, 300)) : []),
   ].join("\n");
 
+  const requestBody = JSON.stringify({
+    systemInstruction: { parts: [{ text: SYSTEM }] },
+    contents: [{ role: "user", parts: [{ text: material }] }],
+    generationConfig: { temperature: 0.7, maxOutputTokens: 900 },
+  });
+
   try {
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${key}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          systemInstruction: { parts: [{ text: SYSTEM }] },
-          contents: [{ role: "user", parts: [{ text: material }] }],
-          generationConfig: { temperature: 0.7, maxOutputTokens: 900 },
-        }),
+    let res: Response | null = null;
+    let lastStatus = 0;
+    let lastMsg = "";
+    // Tenta os modelos por ordem; se um foi reformado (404), passa ao
+    // seguinte. Qualquer outro erro (429, 400) pára e é reportado.
+    for (const model of MODELS) {
+      const r = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+        { method: "POST", headers: { "Content-Type": "application/json" }, body: requestBody }
+      );
+      if (r.ok) {
+        res = r;
+        break;
       }
-    );
-    if (!res.ok) {
-      // Devolve a razão real da Google (mensagem e estado), para
-      // diagnóstico. Não contém a chave.
-      const raw = await res.text().catch(() => "");
-      let msg = "";
+      const raw = await r.text().catch(() => "");
       try {
-        msg = (JSON.parse(raw) as { error?: { message?: string; status?: string } }).error?.message ?? "";
+        lastMsg = (JSON.parse(raw) as { error?: { message?: string } }).error?.message ?? "";
       } catch {
-        msg = raw.slice(0, 160);
+        lastMsg = raw.slice(0, 160);
       }
+      lastStatus = r.status;
+      if (r.status !== 404) break; // só o 404 (modelo indisponível) faz tentar o próximo
+    }
+    if (!res) {
+      // Devolve a razão real da Google (mensagem e estado), sem a chave.
       return Response.json(
-        { error: "gemini", googleStatus: res.status, googleMessage: msg.slice(0, 200) },
+        { error: "gemini", googleStatus: lastStatus, googleMessage: lastMsg.slice(0, 200) },
         { status: 502 }
       );
     }
