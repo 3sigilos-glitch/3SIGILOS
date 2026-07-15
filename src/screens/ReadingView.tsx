@@ -86,7 +86,10 @@ export function ReadingView() {
     } else if (result.reason === "limite-global") {
       setAiMessage("As leituras inteligentes de hoje esgotaram para toda a app. A leitura por padrões acima continua válida.");
     } else {
-      setAiMessage("A leitura inteligente não está disponível neste momento. Fica com a leitura por padrões acima, que é sempre tua.");
+      setAiMessage(
+        "A leitura inteligente não está disponível neste momento. Fica com a leitura por padrões acima, que é sempre tua." +
+          (result.detail ? " (Diagnóstico: " + result.detail + ".)" : "")
+      );
     }
   }
 

@@ -54,7 +54,18 @@ export interface InsightPayload {
 
 export type InsightResult =
   | { ok: true; text: string }
-  | { ok: false; reason: "limite-pessoal" | "limite-global" | "indisponivel" };
+  | { ok: false; reason: "limite-pessoal" | "limite-global" | "indisponivel"; detail?: string };
+
+/* Traduz a causa técnica num diagnóstico curto, só para a mensagem de
+   erro (ajuda a perceber o que falta configurar no proxy). */
+function diagnose(status: number, error?: string): string {
+  if (status === 404) return "o proxy /api/interpretar não foi encontrado (função não publicada)";
+  if (error === "por-configurar" || status === 503) return "falta a chave GEMINI_API_KEY no Vercel, ou o redeploy";
+  if (error === "gemini") return "a Google recusou o pedido (chave inválida ou facturação por activar)";
+  if (error === "rede") return "o proxy não conseguiu falar com a Google";
+  if (error === "vazio") return "a Google respondeu vazio";
+  return "erro " + status + (error ? " (" + error + ")" : "");
+}
 
 export async function requestInsight(payload: InsightPayload): Promise<InsightResult> {
   try {
@@ -69,12 +80,15 @@ export async function requestInsight(payload: InsightPayload): Promise<InsightRe
       markUsedToday();
       return { ok: false, reason: "limite-pessoal" };
     }
-    if (!res.ok) return { ok: false, reason: "indisponivel" };
+    if (!res.ok) {
+      const body = (await res.json().catch(() => ({}))) as { error?: string };
+      return { ok: false, reason: "indisponivel", detail: diagnose(res.status, body.error) };
+    }
     const body = (await res.json()) as { text?: string };
-    if (!body.text) return { ok: false, reason: "indisponivel" };
+    if (!body.text) return { ok: false, reason: "indisponivel", detail: "resposta sem texto" };
     markUsedToday();
     return { ok: true, text: body.text };
   } catch {
-    return { ok: false, reason: "indisponivel" };
+    return { ok: false, reason: "indisponivel", detail: "sem ligação ao proxy" };
   }
 }
