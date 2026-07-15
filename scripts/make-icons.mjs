@@ -71,8 +71,8 @@ async function icon(file, size, scale) {
   console.log(`OK ${file} (${size}x${size})`);
 }
 
-await icon("icon-192-v4.png", 192, 1);
-await icon("icon-512-v4.png", 512, 1);
-await icon("icon-maskable-512-v4.png", 512, 0.94);
-await icon("apple-touch-icon-v4.png", 180, 1);
-await icon("favicon-v4.png", 96, 1);
+await icon("icon-192-v5.png", 192, 0.8);
+await icon("icon-512-v5.png", 512, 0.8);
+await icon("icon-maskable-512-v5.png", 512, 0.66);
+await icon("apple-touch-icon-v5.png", 180, 0.8);
+await icon("favicon-v5.png", 96, 0.86);

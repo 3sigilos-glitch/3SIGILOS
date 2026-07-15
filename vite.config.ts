@@ -18,7 +18,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["marca.png", "favicon-v4.png", "apple-touch-icon-v4.png"],
+      includeAssets: ["marca.png", "favicon-v5.png", "apple-touch-icon-v5.png"],
       manifest: {
         name: "Tarot by 3SIGILOS",
         short_name: "Tarot 3SIGILOS",
@@ -30,10 +30,10 @@ export default defineConfig({
         background_color: "#0b0c14",
         theme_color: "#0b0c14",
         icons: [
-          { src: "icon-192-v4.png", sizes: "192x192", type: "image/png" },
-          { src: "icon-512-v4.png", sizes: "512x512", type: "image/png" },
+          { src: "icon-192-v5.png", sizes: "192x192", type: "image/png" },
+          { src: "icon-512-v5.png", sizes: "512x512", type: "image/png" },
           {
-            src: "icon-maskable-512-v4.png",
+            src: "icon-maskable-512-v5.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "maskable",
