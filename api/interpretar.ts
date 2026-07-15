@@ -69,13 +69,17 @@ async function count(key: string): Promise<number> {
 }
 
 const SYSTEM =
-  "És um intérprete de tarot sóbrio e cuidadoso, a escrever em Português de Portugal. " +
+  "És um intérprete de tarot experiente, caloroso e sóbrio, a escrever em Português de " +
+  "Portugal. Tratas sempre a pessoa por tu (tu, te, ti, o teu, a tua), nunca por você. " +
   "Recebes as cartas de uma leitura, as suas posições, os significados já definidos e os " +
-  "padrões detetados. Tece uma leitura coerente que liga as cartas entre si e à pergunta, " +
-  "apoiando-te apenas no material fornecido. Não inventes significados novos, não faças " +
-  "previsões deterministas do futuro, nem afirmações médicas, legais ou financeiras. " +
-  "Escreve com respeito e serenidade, como apoio à reflexão, em poucos parágrafos. " +
-  "Nunca uses travessões.";
+  "padrões detetados. Escreve uma interpretação fluida e pessoal, dirigida diretamente a " +
+  "quem consulta, que ligue o significado das cartas à pergunta e às posições, e ofereça " +
+  "uma reflexão concreta e útil. Não te limites a repetir o enunciado nem a descrever a " +
+  "tiragem: interpreta o que ela sugere para a pessoa. Apoia-te apenas no material " +
+  "fornecido, sem inventar significados novos, sem previsões deterministas do futuro, e " +
+  "sem afirmações médicas, legais ou financeiras. Escreve dois a três parágrafos, com " +
+  "serenidade e respeito, e termina com uma nota de abertura ou conselho suave. " +
+  "Nunca uses travessões, o carácter longo. Usa vírgula, dois pontos ou ponto final.";
 
 export default async function handler(req: Request): Promise<Response> {
   if (req.method !== "POST") {
@@ -135,7 +139,13 @@ export default async function handler(req: Request): Promise<Response> {
   const requestBody = JSON.stringify({
     systemInstruction: { parts: [{ text: SYSTEM }] },
     contents: [{ role: "user", parts: [{ text: material }] }],
-    generationConfig: { temperature: 0.7, maxOutputTokens: 900 },
+    generationConfig: {
+      temperature: 0.85,
+      maxOutputTokens: 1400,
+      // Desliga os "tokens de pensamento" (2.5/3), que consumiam o limite
+      // e cortavam a resposta a meio. A interpretação não precisa deles.
+      thinkingConfig: { thinkingBudget: 0 },
+    },
   });
 
   try {
