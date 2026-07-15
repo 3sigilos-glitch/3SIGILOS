@@ -138,7 +138,19 @@ export default async function handler(req: Request): Promise<Response> {
       }
     );
     if (!res.ok) {
-      return Response.json({ error: "gemini" }, { status: 502 });
+      // Devolve a razão real da Google (mensagem e estado), para
+      // diagnóstico. Não contém a chave.
+      const raw = await res.text().catch(() => "");
+      let msg = "";
+      try {
+        msg = (JSON.parse(raw) as { error?: { message?: string; status?: string } }).error?.message ?? "";
+      } catch {
+        msg = raw.slice(0, 160);
+      }
+      return Response.json(
+        { error: "gemini", googleStatus: res.status, googleMessage: msg.slice(0, 200) },
+        { status: 502 }
+      );
     }
     const data = (await res.json()) as {
       candidates?: { content?: { parts?: { text?: string }[] } }[];

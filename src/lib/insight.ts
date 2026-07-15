@@ -81,8 +81,15 @@ export async function requestInsight(payload: InsightPayload): Promise<InsightRe
       return { ok: false, reason: "limite-pessoal" };
     }
     if (!res.ok) {
-      const body = (await res.json().catch(() => ({}))) as { error?: string };
-      return { ok: false, reason: "indisponivel", detail: diagnose(res.status, body.error) };
+      const body = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        googleStatus?: number;
+        googleMessage?: string;
+      };
+      const detail = body.googleMessage
+        ? "Google " + (body.googleStatus ?? "") + ": " + body.googleMessage
+        : diagnose(res.status, body.error);
+      return { ok: false, reason: "indisponivel", detail };
     }
     const body = (await res.json()) as { text?: string };
     if (!body.text) return { ok: false, reason: "indisponivel", detail: "resposta sem texto" };
