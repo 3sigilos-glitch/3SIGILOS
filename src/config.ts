@@ -8,7 +8,7 @@
    necessário. */
 
 export const CODIGO_RESERVADO = "3sigilostouro";
-export const RESERVADO_PARA_TODOS = false;
+export const RESERVADO_PARA_TODOS = true;
 
 /* Leituras inteligentes permitidas por pessoa por dia (indicação no
    cliente). O limite que conta é o do proxy: mantém a variável

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { KeyRound, Volume2, VolumeX, X } from "lucide-react";
+import { RESERVADO_PARA_TODOS } from "../config";
 import { AMBIENTS, ambientState, playAmbient, setAmbientVolume, stopAmbient } from "../lib/ambient";
 import { usePrefs } from "../lib/prefs";
 import { haptic } from "../lib/storage";
@@ -139,7 +140,7 @@ export function SettingsSheet({ onClose }: { onClose: () => void }) {
             )}
           </div>
         )}
-        {reserved && (
+        {reserved && !RESERVADO_PARA_TODOS && (
           <p className="sheet-note reserved-on">
             <KeyRound size={13} /> Acesso reservado activo: vês as funcionalidades em teste,
             como as Leituras.
