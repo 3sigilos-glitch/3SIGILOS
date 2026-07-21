@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { ChevronDown, Flame, RotateCcw } from "lucide-react";
 import { RUNES, runeById } from "@/lib/runes";
+import { INTENTS } from "@/lib/elements";
+import { elemsOf } from "@/lib/rules";
 import {
   buildEvocation,
   DETERM,
@@ -12,6 +14,9 @@ import {
   PROC,
 } from "@/lib/evocations";
 import type { EvocationType } from "@/lib/types";
+import RuneGlyph from "@/components/RuneGlyph";
+import { VelaDot } from "@/components/bits";
+import { useSheet } from "@/components/Sheet";
 import { useAppStore } from "@/components/StoreProvider";
 
 // Modo Altar: escuro, à luz de velas. Texto grande (20 a 24px,
@@ -28,6 +33,7 @@ export default function AltarPage() {
       </p>
 
       <Procedimento />
+      <VisaoGeral />
       <Evocacoes />
       <TemploLink />
       <Determinacoes />
@@ -120,6 +126,108 @@ function Procedimento() {
         >
           <RotateCcw size={16} /> Recomeçar ({done}/{PROC.length})
         </button>
+      )}
+    </Section>
+  );
+}
+
+/* ------------- visão geral: runa/regente/arma/ser + qualidades ------------- */
+
+function VisaoGeral() {
+  const sheet = useSheet();
+  const [intent, setIntent] = useState("");
+
+  const shown = intent ? RUNES.filter((r) => r.intent.includes(intent)) : RUNES;
+
+  return (
+    <Section
+      title="Visão geral"
+      sub="Runa, regente, arma e ser, com as qualidades de cada. Filtra pelo que precisas e toca para abrir a ficha."
+    >
+      {/* filtro por qualidade, em fita deslizante para caber no polegar */}
+      <div className="no-scrollbar -mx-1 mb-3 flex gap-1.5 overflow-x-auto px-1 pb-1">
+        <button
+          onClick={() => setIntent("")}
+          className="min-h-[44px] shrink-0 rounded-full border px-4 text-[15px]"
+          style={
+            intent === ""
+              ? { background: "var(--accent)", borderColor: "var(--accent)", color: "var(--bg)", fontWeight: 600 }
+              : { borderColor: "var(--line)", color: "var(--muted)" }
+          }
+        >
+          Tudo
+        </button>
+        {INTENTS.map((i) => (
+          <button
+            key={i}
+            onClick={() => setIntent(intent === i ? "" : i)}
+            className="min-h-[44px] shrink-0 rounded-full border px-4 text-[15px]"
+            style={
+              intent === i
+                ? { background: "var(--accent)", borderColor: "var(--accent)", color: "var(--bg)", fontWeight: 600 }
+                : { borderColor: "var(--line)", color: "var(--muted)" }
+            }
+          >
+            {i}
+          </button>
+        ))}
+      </div>
+
+      <ul className="flex flex-col gap-2">
+        {shown.map((r) => (
+          <li key={r.id}>
+            <button
+              onClick={() => sheet.openRune(r.id)}
+              className="flex w-full items-start gap-3 rounded-xl border px-3 py-3 text-left"
+              style={{ borderColor: "var(--line)", background: "var(--card)" }}
+            >
+              <span className="flex shrink-0 flex-col items-center gap-1 pt-0.5">
+                <RuneGlyph id={r.id} className="h-[44px] w-[24px]" />
+                <span className="flex gap-0.5">
+                  {elemsOf(r).map((e) => (
+                    <VelaDot key={e} elem={e} size={10} />
+                  ))}
+                </span>
+              </span>
+              <span className="min-w-0">
+                <span className="font-display text-[20px] font-semibold leading-tight" style={{ color: "var(--ink)" }}>
+                  {r.ed}
+                  <span className="font-body text-[15px] font-normal" style={{ color: "var(--muted)" }}>
+                    {" "}· {r.deity}
+                  </span>
+                </span>
+                <span className="mt-1 block text-[17px] leading-[1.5]" style={{ color: "var(--accent)" }}>
+                  {r.intent.join(" · ")}
+                </span>
+                <span className="block text-[15px] leading-[1.5]" style={{ color: "var(--muted)" }}>
+                  {r.kw.join(", ")}
+                </span>
+                {(r.weapons.length > 0 || r.being) && (
+                  <span className="mt-1 block text-[15px] leading-[1.5]" style={{ color: "var(--ink)" }}>
+                    {r.weapons.length > 0 && (
+                      <>
+                        <span style={{ color: "var(--muted)" }}>Arma: </span>
+                        {r.weapons.join(" · ")}
+                      </>
+                    )}
+                    {r.weapons.length > 0 && r.being && " · "}
+                    {r.being && (
+                      <>
+                        <span style={{ color: "var(--muted)" }}>Ser: </span>
+                        {r.being}
+                      </>
+                    )}
+                  </span>
+                )}
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+      {shown.length === 0 && (
+        <p className="py-4 text-center text-[16px]" style={{ color: "var(--muted)" }}>
+          Nenhum regente com esta qualidade.
+        </p>
       )}
     </Section>
   );
