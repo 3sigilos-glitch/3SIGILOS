@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Códice vivo — dois ambientes.
+   CLARO (Estudo): guia de campo em papel/linho.
+   ESCURO (Altar): fumo quente, à luz de velas reais.
+   O colorido vem das 9 cores dos elementos; nunca dourado de marca.
+   ============================================================ */
+
+.env-claro {
+  --bg: #eae4d6;
+  --panel: #f3eee3;
+  --card: #f3eee3;
+  --ink: #23201b;
+  --muted: #5b554a;
+  --line: rgba(35, 32, 27, 0.14);
+  /* acento do ambiente: vermelho de rubrica, como nos códices */
+  --accent: #8c2f24;
+  --ring: rgba(35, 32, 27, 0.35);
+  color: var(--ink);
+  background: var(--bg);
+  /* textura de linho muito leve */
+  background-image: radial-gradient(
+      120% 80% at 50% -20%,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(255, 255, 255, 0) 60%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(35, 32, 27, 0.016) 0px,
+      rgba(35, 32, 27, 0.016) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+}
+
+.env-escuro {
+  --bg: #16130e;
+  --panel: #201b14;
+  --card: #201b14;
+  --ink: #e9e1ce;
+  --muted: #a79c86;
+  --line: rgba(233, 225, 206, 0.13);
+  /* acento do ambiente: luz de chama âmbar (é luz, não marca) */
+  --accent: #f0b24a;
+  --ring: rgba(233, 225, 206, 0.4);
+  color: var(--ink);
+  background: var(--bg);
+  background-image: radial-gradient(
+    120% 90% at 50% 0%,
+    #241e15 0%,
+    #16130e 55%,
+    #100d09 100%
+  );
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-body), "Hanken Grotesk", system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+  -webkit-text-size-adjust: 100%;
+}
+
+.font-display {
+  font-family: var(--font-display), Fraunces, serif;
+}
+
+/* Runa gravada no papel (deboss leve) — assinatura do sistema */
+.rune-engraved {
+  color: var(--ink);
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.55))
+    drop-shadow(0 -0.5px 0 rgba(35, 32, 27, 0.28));
+}
+.env-escuro .rune-engraved {
+  filter: drop-shadow(0 0 5px rgba(240, 178, 74, 0.28));
+}
+
+/* Vela: ponto redondo com anel quando a cor se confunde com o fundo */
+.vela {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 9999px;
+  flex: 0 0 auto;
+  border: 1px solid var(--ring);
+}
+
+/* Lombada de cor do elemento no cartão da runa */
+.spine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  border-radius: 6px 0 0 6px;
+}
+
+/* Tremular de chama, muito ligeiro, só no Altar */
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  46% {
+    opacity: 0.86;
+    transform: scale(0.985);
+  }
+  52% {
+    opacity: 0.96;
+    transform: scale(1.008);
+  }
+  71% {
+    opacity: 0.9;
+    transform: scale(0.995);
+  }
+}
+.flame {
+  animation: flicker 2.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* esconder scrollbar horizontal dos seletores em fita, mantendo o scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
