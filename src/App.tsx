@@ -1,6 +1,7 @@
 import { Suspense, lazy, useEffect } from "react";
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, LazyMotion, domAnimation, m, useReducedMotion } from "framer-motion";
+import { Analytics } from "@vercel/analytics/react";
 import { PrefsProvider, usePrefs } from "./lib/prefs";
 import { Header } from "./components/Header";
 import { BottomNav } from "./components/BottomNav";
@@ -83,6 +84,8 @@ export default function App() {
           <Screens />
           <BottomNav />
         </div>
+        {/* Web Analytics do Vercel: anónimo, sem cookies nem dados pessoais. */}
+        <Analytics />
       </PrefsProvider>
     </LazyMotion>
   );
