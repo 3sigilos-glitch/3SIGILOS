@@ -1,76 +1,84 @@
 "use client";
 
-import { Star } from "lucide-react";
 import type { Rune } from "@/lib/types";
 import { classOf, elemsOf } from "@/lib/rules";
-import { accentOf } from "@/lib/maps";
-import RuneGlyph from "./RuneGlyph";
-import { ClassBadge, VelaDot } from "./bits";
-import { useEnv } from "./EnvContext";
-import { useSheet } from "./Sheet";
+import { CANDLE, CLASS_COLOR } from "@/lib/maps";
+import { GLYPH } from "@/lib/glyphs";
+import Glyph from "./Glyph";
+import { ClassSquare, Vela } from "./ui";
+import { useModal } from "./Modal";
 import { useAppStore } from "./StoreProvider";
 
-// Cartão da runa: lombada da cor do elemento à esquerda, runa gravada,
-// os dois nomes (o do Eduardo em destaque), regente, vela(s) e classe.
+// Cartão da runa (handoff): glifo dourado com glow, glifo marca-de-água,
+// nome Eduardo em Cinzel, nome moderno em itálico, regente e vela+classe.
 export default function RuneCard({ rune }: { rune: Rune }) {
-  const env = useEnv();
-  const sheet = useSheet();
-  const { store, toggleFav } = useAppStore();
+  const modal = useModal();
+  const { store } = useAppStore();
   const cls = classOf(rune);
   const elems = elemsOf(rune);
   const fav = !!store.favs[rune.id];
 
   return (
     <div
-      className="relative overflow-hidden rounded-2xl border transition-transform hover:-translate-y-0.5"
+      onClick={() => modal.openRune(rune.id)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          modal.openRune(rune.id);
+        }
+      }}
+      className="card-hover"
       style={{
-        borderColor: "var(--line)",
-        background: "var(--card)",
-        boxShadow: "0 1px 2px rgba(35,32,27,.06)",
+        cursor: "pointer",
+        background: "var(--surface)",
+        border: "1px solid var(--border-card)",
+        borderRadius: 5,
+        padding: "16px 16px 13px",
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
+        minHeight: 130,
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      {/* glifo marca-de-água */}
       <span
-        className="spine"
-        style={{
-          background:
-            rune.elem === "Tríade"
-              ? `linear-gradient(${accentOf("Cristalino", env)} 0%, ${accentOf("Cristalino", env)} 33%, ${accentOf("Vazio", env)} 33%, ${accentOf("Vazio", env)} 66%, ${accentOf("Temporal", env)} 66%)`
-              : accentOf(elems[0], env),
-        }}
         aria-hidden
-      />
-      <button
-        onClick={() => sheet.openRune(rune.id)}
-        className="block w-full pb-3 pl-5 pr-3 pt-3 text-left"
+        className="font-runic"
+        style={{
+          position: "absolute",
+          right: -6,
+          bottom: -22,
+          fontSize: 96,
+          lineHeight: 1,
+          color: "rgba(201,168,106,0.055)",
+          pointerEvents: "none",
+        }}
       >
-        <RuneGlyph id={rune.id} className="mb-2 h-[52px] w-[30px]" />
-        <div className="font-display text-[24px] font-semibold leading-none" style={{ color: "var(--ink)" }}>
+        {GLYPH[rune.id]}
+      </span>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+        <Glyph id={rune.id} size={32} glow origin="left center" />
+        <span style={{ color: "var(--gold)", fontSize: 15 }}>{fav ? "★" : ""}</span>
+      </div>
+      <div>
+        <div className="font-cinzel" style={{ fontSize: 19, letterSpacing: 1, color: "var(--text-strong)" }}>
           {rune.ed}
         </div>
-        <div className="mt-0.5 text-[14px]" style={{ color: "var(--muted)" }}>
-          {rune.mod}
-        </div>
-        <div className="mt-2 text-[14px] font-medium" style={{ color: "var(--ink)" }}>
-          {rune.deity}
-        </div>
-        <div className="mt-1.5 flex items-center gap-2">
-          <span className="inline-flex items-center gap-1">
-            {elems.map((e) => (
-              <VelaDot key={e} elem={e} />
-            ))}
-          </span>
-          <ClassBadge cls={cls} />
-        </div>
-      </button>
-      <button
-        onClick={() => toggleFav(rune.id)}
-        aria-label={fav ? `Tirar ${rune.ed} dos favoritos` : `Adicionar ${rune.ed} aos favoritos`}
-        aria-pressed={fav}
-        className="absolute right-1 top-1 flex h-11 w-11 items-center justify-center rounded-xl"
-        style={{ color: fav ? "var(--accent)" : "var(--muted)" }}
+        <div style={{ fontStyle: "italic", color: "var(--text-3)", fontSize: 14 }}>{rune.mod}</div>
+      </div>
+      <div
+        style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "auto", gap: 8 }}
       >
-        <Star size={20} fill={fav ? "currentColor" : "none"} />
-      </button>
+        <span style={{ fontSize: 14.5, color: "#bdb7c9" }}>{rune.deity}</span>
+        <span style={{ display: "flex", alignItems: "center", gap: 7, flexShrink: 0 }}>
+          <Vela color={CANDLE[elems[0]]} />
+          <ClassSquare color={CLASS_COLOR[cls]} title={cls} />
+        </span>
+      </div>
     </div>
   );
 }

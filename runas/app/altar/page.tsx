@@ -1,383 +1,322 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { ChevronDown, Flame, RotateCcw } from "lucide-react";
 import { RUNES, runeById } from "@/lib/runes";
 import { INTENTS } from "@/lib/elements";
-import { elemsOf } from "@/lib/rules";
 import {
   buildEvocation,
   DETERM,
   EVOCATION_TYPES,
   MUDRAS,
+  NEEDS_REGENTE,
   PROC,
 } from "@/lib/evocations";
 import type { EvocationType } from "@/lib/types";
-import RuneGlyph from "@/components/RuneGlyph";
-import { VelaDot } from "@/components/bits";
-import { useSheet } from "@/components/Sheet";
+import { Chip, RunicDivider, ScreenTitle, SectionTitle } from "@/components/ui";
+import { useModal } from "@/components/Modal";
 import { useAppStore } from "@/components/StoreProvider";
 
-// Modo Altar: escuro, à luz de velas. Texto grande (20 a 24px,
-// entrelinha 1.6), pouca distração.
-
+// Ecrã Altar (handoff): procedimento em checklist, visão geral filtrável,
+// evocações com chips de tipo e select de regente, determinações e mudras
+// em grelha de cartões.
 export default function AltarPage() {
   return (
-    <div className="mx-auto max-w-2xl">
-      <h1 className="font-display text-[30px] font-semibold" style={{ color: "var(--ink)" }}>
-        Altar
-      </h1>
-      <p className="mb-5 text-[15px] leading-[1.6]" style={{ color: "var(--muted)" }}>
-        Modo prática. Pouca luz, texto grande, um fio condutor.
-      </p>
-
+    <section className="fade-up" style={{ display: "flex", flexDirection: "column", gap: 36 }}>
+      <div>
+        <ScreenTitle title="Altar">Modo prática. Pouca luz, texto grande, um fio condutor.</ScreenTitle>
+        <RunicDivider runes="ᛏᛁᛊ" />
+      </div>
       <Procedimento />
       <VisaoGeral />
       <Evocacoes />
-      <TemploLink />
-      <Determinacoes />
-      <Mudras />
-    </div>
-  );
-}
-
-function Section({
-  title,
-  sub,
-  children,
-}: {
-  title: string;
-  sub?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section
-      className="mb-4 rounded-2xl border p-4 sm:p-5"
-      style={{ borderColor: "var(--line)", background: "var(--panel)" }}
-    >
-      <h2
-        className="font-display text-[22px] font-semibold tracking-wide"
-        style={{ color: "var(--ink)" }}
-      >
-        {title}
-      </h2>
-      {sub && (
-        <p className="mt-0.5 text-[14px]" style={{ color: "var(--muted)" }}>
-          {sub}
-        </p>
-      )}
-      <div className="mt-3">{children}</div>
+      <CardsGrid
+        title="Determinações"
+        sub="O que pedir depois de ativar. Versões resumidas, adapta às tuas palavras."
+        items={DETERM.map((d) => ({ t: d.t, b: d.x + " Que assim seja!" }))}
+      />
+      <CardsGrid
+        title="Mudras"
+        sub="Referência rápida."
+        items={MUDRAS.map((m) => ({ t: m.n, b: m.p }))}
+      />
     </section>
   );
 }
 
-/* ------------- procedimento: 8 passos para tocar e marcar ------------- */
+/* ------------- procedimento ------------- */
 
 function Procedimento() {
-  const { store, toggleStep, resetSteps } = useAppStore();
-  const done = PROC.filter((_, i) => store.steps[i]).length;
+  const { store, toggleStep } = useAppStore();
 
   return (
-    <Section
-      title="Procedimento de Atendimento"
-      sub="A sequência de proteção antes de atender. Toca em cada passo para marcar."
+    <div
+      style={{
+        border: "1px solid var(--border)",
+        borderRadius: 6,
+        padding: 22,
+        background: "var(--panel)",
+      }}
     >
-      <ol className="flex flex-col gap-2">
-        {PROC.map((t, i) => {
-          const on = !!store.steps[i];
+      <SectionTitle
+        title="Procedimento de Atendimento"
+        sub="A sequência de proteção antes de atender. Toca em cada passo para marcar."
+      />
+      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        {PROC.map((text, i) => {
+          const done = !!store.steps[i];
           return (
-            <li key={i}>
-              <button
-                onClick={() => toggleStep(i)}
-                aria-pressed={on}
-                className="flex w-full min-h-[56px] items-start gap-3 rounded-xl border px-4 py-3 text-left"
-                style={{ borderColor: on ? "var(--accent)" : "var(--line)", background: "var(--card)" }}
+            <button
+              key={i}
+              onClick={() => toggleStep(i)}
+              aria-pressed={done}
+              style={{
+                display: "flex",
+                gap: 14,
+                alignItems: "flex-start",
+                background: done ? "rgba(201,168,106,0.07)" : "transparent",
+                border: "1px solid " + (done ? "#4a3f2a" : "var(--border)"),
+                borderRadius: 5,
+                padding: "11px 14px",
+                color: done ? "var(--text-3)" : "var(--text-warm)",
+                textDecoration: done ? "line-through" : "none",
+                fontFamily: "inherit",
+                width: "100%",
+              }}
+            >
+              <span
+                className="font-cinzel"
+                style={{
+                  fontSize: 13,
+                  color: done ? "var(--gold)" : "var(--text-4)",
+                  border: "1px solid " + (done ? "var(--gold)" : "var(--border-chip)"),
+                  borderRadius: "50%",
+                  width: 24,
+                  height: 24,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}
               >
-                <span
-                  className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border font-display text-[16px] ${on ? "flame" : ""}`}
-                  style={
-                    on
-                      ? { background: "var(--accent)", borderColor: "var(--accent)", color: "var(--bg)" }
-                      : { borderColor: "var(--line)", color: "var(--muted)" }
-                  }
-                >
-                  {i + 1}
-                </span>
-                <span
-                  className="text-[20px] leading-[1.6]"
-                  style={{
-                    color: on ? "var(--muted)" : "var(--ink)",
-                    textDecoration: on ? "line-through" : "none",
-                  }}
-                >
-                  {t}
-                </span>
-              </button>
-            </li>
+                {i + 1}
+              </span>
+              <span style={{ textAlign: "left", fontSize: 17.5, lineHeight: 1.45 }}>{text}</span>
+            </button>
           );
         })}
-      </ol>
-      {done > 0 && (
-        <button
-          onClick={resetSteps}
-          className="mt-3 inline-flex min-h-[44px] items-center gap-2 rounded-xl border px-4 text-[15px]"
-          style={{ borderColor: "var(--line)", color: "var(--muted)" }}
-        >
-          <RotateCcw size={16} /> Recomeçar ({done}/{PROC.length})
-        </button>
-      )}
-    </Section>
+      </div>
+    </div>
   );
 }
 
-/* ------------- visão geral: runa/regente/arma/ser + qualidades ------------- */
+/* ------------- visão geral ------------- */
 
 function VisaoGeral() {
-  const sheet = useSheet();
-  const [intent, setIntent] = useState("");
-
-  const shown = intent ? RUNES.filter((r) => r.intent.includes(intent)) : RUNES;
+  const modal = useModal();
+  const [intent, setIntent] = useState<string | null>(null);
+  const shown = RUNES.filter((r) => !intent || r.intent.includes(intent));
 
   return (
-    <Section
-      title="Visão geral"
-      sub="Runa, regente, arma e ser, com as qualidades de cada. Filtra pelo que precisas e toca para abrir a ficha."
-    >
-      {/* filtro por qualidade, em fita deslizante para caber no polegar */}
-      <div className="no-scrollbar -mx-1 mb-3 flex gap-1.5 overflow-x-auto px-1 pb-1">
-        <button
-          onClick={() => setIntent("")}
-          className="min-h-[44px] shrink-0 rounded-full border px-4 text-[15px]"
-          style={
-            intent === ""
-              ? { background: "var(--accent)", borderColor: "var(--accent)", color: "var(--bg)", fontWeight: 600 }
-              : { borderColor: "var(--line)", color: "var(--muted)" }
-          }
-        >
+    <div>
+      <SectionTitle
+        title="Visão geral"
+        sub="Runa, regente, arma e ser, com as qualidades de cada. Filtra pelo que precisas e toca para abrir a ficha."
+      />
+      <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
+        <Chip active={!intent} onClick={() => setIntent(null)}>
           Tudo
-        </button>
+        </Chip>
         {INTENTS.map((i) => (
-          <button
-            key={i}
-            onClick={() => setIntent(intent === i ? "" : i)}
-            className="min-h-[44px] shrink-0 rounded-full border px-4 text-[15px]"
-            style={
-              intent === i
-                ? { background: "var(--accent)", borderColor: "var(--accent)", color: "var(--bg)", fontWeight: 600 }
-                : { borderColor: "var(--line)", color: "var(--muted)" }
-            }
-          >
+          <Chip key={i} active={intent === i} onClick={() => setIntent(i)}>
             {i}
-          </button>
+          </Chip>
         ))}
       </div>
-
-      <ul className="flex flex-col gap-2">
-        {shown.map((r) => (
-          <li key={r.id}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {shown.map((r) => {
+          const extra = [
+            r.weapons.length > 0 && "Arma: " + r.weapons.join(" · "),
+            r.being && "Ser: " + r.being,
+          ]
+            .filter(Boolean)
+            .join("  ·  ");
+          return (
             <button
-              onClick={() => sheet.openRune(r.id)}
-              className="flex w-full items-start gap-3 rounded-xl border px-3 py-3 text-left"
-              style={{ borderColor: "var(--line)", background: "var(--card)" }}
+              key={r.id}
+              onClick={() => modal.openRune(r.id)}
+              className="cell-hover"
+              style={{
+                background: "var(--surface)",
+                border: "1px solid var(--border-card)",
+                borderRadius: 5,
+                padding: "13px 16px",
+                display: "flex",
+                flexDirection: "column",
+                gap: 4,
+                color: "inherit",
+                textAlign: "left",
+              }}
             >
-              <span className="flex shrink-0 flex-col items-center gap-1 pt-0.5">
-                <RuneGlyph id={r.id} className="h-[44px] w-[24px]" />
-                <span className="flex gap-0.5">
-                  {elemsOf(r).map((e) => (
-                    <VelaDot key={e} elem={e} size={10} />
-                  ))}
+              <span style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
+                <span
+                  className="font-cinzel"
+                  style={{ fontSize: 17, letterSpacing: 1, color: "var(--text-strong)" }}
+                >
+                  {r.ed} · {r.deity}
                 </span>
-              </span>
-              <span className="min-w-0">
-                <span className="font-display text-[20px] font-semibold leading-tight" style={{ color: "var(--ink)" }}>
-                  {r.ed}
-                  <span className="font-body text-[15px] font-normal" style={{ color: "var(--muted)" }}>
-                    {" "}· {r.deity}
-                  </span>
-                </span>
-                <span className="mt-1 block text-[17px] leading-[1.5]" style={{ color: "var(--accent)" }}>
+                <span style={{ fontSize: 14, color: "var(--gold)", fontStyle: "italic" }}>
                   {r.intent.join(" · ")}
                 </span>
-                <span className="block text-[15px] leading-[1.5]" style={{ color: "var(--muted)" }}>
-                  {r.kw.join(", ")}
-                </span>
-                {(r.weapons.length > 0 || r.being) && (
-                  <span className="mt-1 block text-[15px] leading-[1.5]" style={{ color: "var(--ink)" }}>
-                    {r.weapons.length > 0 && (
-                      <>
-                        <span style={{ color: "var(--muted)" }}>Arma: </span>
-                        {r.weapons.join(" · ")}
-                      </>
-                    )}
-                    {r.weapons.length > 0 && r.being && " · "}
-                    {r.being && (
-                      <>
-                        <span style={{ color: "var(--muted)" }}>Ser: </span>
-                        {r.being}
-                      </>
-                    )}
-                  </span>
-                )}
               </span>
+              <span style={{ fontSize: 15.5, color: "var(--text-2)" }}>{r.kw.join(", ")}</span>
+              {extra && <span style={{ fontSize: 14, color: "var(--blue)" }}>{extra}</span>}
             </button>
-          </li>
-        ))}
-      </ul>
-      {shown.length === 0 && (
-        <p className="py-4 text-center text-[16px]" style={{ color: "var(--muted)" }}>
-          Nenhum regente com esta qualidade.
-        </p>
-      )}
-    </Section>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
-/* ------------- evocações: tipo + regente, fórmula preenchida ------------- */
+/* ------------- evocações ------------- */
 
 function Evocacoes() {
   const [tipo, setTipo] = useState<EvocationType>("Poder Divino específico");
   const [runeId, setRuneId] = useState(0);
   const r = runeById(runeId)!;
-  const segments = buildEvocation(tipo, r);
+  const needsReg = NEEDS_REGENTE.includes(tipo);
 
-  const selStyle = {
-    borderColor: "var(--line)",
-    background: "var(--card)",
-    color: "var(--ink)",
-  } as const;
+  const missing =
+    (tipo === "Invocar Arma" && r.weapons.length === 0) ||
+    (tipo === "Sumonar Ser" && !r.being);
+  const segments = buildEvocation(tipo, r);
+  const note = needsReg
+    ? "Regente: " +
+      r.deity +
+      " · runa " +
+      r.ed +
+      (r.weapons.length ? " · arma " + r.weapons.join(" · ") : "") +
+      (r.being ? " · ser " + r.being : "")
+    : "Fórmula fixa, não precisa de regente.";
 
   return (
-    <Section title="Evocações" sub="Escolhe o tipo e o regente. A fórmula sai preenchida.">
-      <div className="mb-3 flex flex-col gap-2 sm:flex-row">
-        <select
-          value={tipo}
-          onChange={(e) => setTipo(e.target.value as EvocationType)}
-          aria-label="Tipo de evocação"
-          className="min-h-[48px] flex-1 rounded-xl border px-3 text-[16px]"
-          style={selStyle}
-        >
-          {EVOCATION_TYPES.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
-        <select
-          value={runeId}
-          onChange={(e) => setRuneId(Number(e.target.value))}
-          aria-label="Regente"
-          className="min-h-[48px] flex-1 rounded-xl border px-3 text-[16px]"
-          style={selStyle}
-        >
-          {RUNES.map((x) => (
-            <option key={x.id} value={x.id}>
-              {x.deity} · {x.ed}
-            </option>
-          ))}
-        </select>
+    <div
+      style={{
+        border: "1px solid var(--border)",
+        borderRadius: 6,
+        padding: 22,
+        background: "var(--panel)",
+      }}
+    >
+      <SectionTitle title="Evocações" sub="Escolhe o tipo e o regente. A fórmula sai preenchida." />
+      <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 14 }}>
+        {EVOCATION_TYPES.map((t) => (
+          <Chip key={t} active={tipo === t} onClick={() => setTipo(t)}>
+            {t}
+          </Chip>
+        ))}
       </div>
+      {needsReg && (
+        <label
+          style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, flexWrap: "wrap" }}
+        >
+          <span
+            className="font-cinzel"
+            style={{ fontSize: 11, letterSpacing: 2, textTransform: "uppercase", color: "var(--text-4)" }}
+          >
+            Regente
+          </span>
+          <select
+            value={runeId}
+            onChange={(e) => setRuneId(Number(e.target.value))}
+            style={{
+              fontFamily: "inherit",
+              fontSize: 16,
+              background: "var(--surface)",
+              color: "var(--text-strong)",
+              border: "1px solid var(--border-chip)",
+              borderRadius: 4,
+              padding: "7px 10px",
+            }}
+          >
+            {RUNES.map((x) => (
+              <option key={x.id} value={x.id}>
+                {x.deity} · {x.ed}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
       <blockquote
-        className="rounded-2xl border p-5 font-display text-[21px] leading-[1.6]"
         style={{
-          borderColor: "var(--line)",
-          background: "var(--bg)",
-          color: "var(--ink)",
-          boxShadow: "inset 0 0 40px rgba(0,0,0,.35)",
+          margin: 0,
+          borderLeft: "2px solid var(--gold)",
+          padding: "14px 18px",
+          background: "rgba(201,168,106,0.05)",
+          fontSize: 18,
+          lineHeight: 1.6,
+          fontStyle: "italic",
+          color: "var(--text-warm)",
         }}
       >
-        {segments.map((s, i) =>
-          s.fill ? (
-            <b key={i} className="flame font-semibold" style={{ color: "var(--accent)" }}>
-              {s.text}
-            </b>
-          ) : (
-            <span key={i}>{s.text}</span>
+        {missing ? (
+          tipo === "Invocar Arma"
+            ? "Este regente não tem arma associada. Escolhe outro regente."
+            : "Este regente não tem ser associado. Escolhe outro regente."
+        ) : (
+          segments.map((s, i) =>
+            s.fill ? (
+              <b key={i} style={{ color: "var(--gold-light)", fontStyle: "normal" }}>
+                {s.text}
+              </b>
+            ) : (
+              <span key={i}>{s.text}</span>
+            )
           )
         )}
       </blockquote>
-    </Section>
+      <p style={{ margin: "10px 0 0", fontSize: 14, color: "var(--text-4)" }}>{note}</p>
+    </div>
   );
 }
 
-/* ------------- ligação ao montador ------------- */
+/* ------------- determinações e mudras ------------- */
 
-function TemploLink() {
+function CardsGrid({
+  title,
+  sub,
+  items,
+}: {
+  title: string;
+  sub: string;
+  items: { t: string; b: string }[];
+}) {
   return (
-    <Link
-      href="/templo"
-      className="mb-4 flex min-h-[56px] items-center gap-3 rounded-2xl border px-4 py-3"
-      style={{ borderColor: "var(--line)", background: "var(--panel)" }}
-    >
-      <Flame size={22} className="flame shrink-0" style={{ color: "var(--accent)" }} />
-      <span className="text-[17px] font-medium" style={{ color: "var(--ink)" }}>
-        Montador de Templo
-      </span>
-      <span className="ml-auto text-[14px]" style={{ color: "var(--muted)" }}>
-        escolher runas →
-      </span>
-    </Link>
-  );
-}
-
-/* ------------- determinações ------------- */
-
-function Determinacoes() {
-  return (
-    <Section
-      title="Determinações"
-      sub="O que pedir depois de ativar. Versões resumidas, adapta às tuas palavras."
-    >
-      <div className="flex flex-col gap-2">
-        {DETERM.map((d) => (
-          <details
+    <div>
+      <SectionTitle title={title} sub={sub} />
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 10 }}>
+        {items.map((d) => (
+          <div
             key={d.t}
-            className="group rounded-xl border"
-            style={{ borderColor: "var(--line)", background: "var(--card)" }}
+            style={{
+              background: "var(--surface)",
+              border: "1px solid var(--border-card)",
+              borderRadius: 5,
+              padding: "16px 18px",
+            }}
           >
-            <summary
-              className="flex min-h-[52px] cursor-pointer list-none items-center justify-between px-4 py-3 font-display text-[19px] [&::-webkit-details-marker]:hidden"
-              style={{ color: "var(--ink)" }}
+            <div
+              className="font-cinzel"
+              style={{ fontSize: 15, letterSpacing: 1.5, color: "var(--gold-light)", marginBottom: 8 }}
             >
               {d.t}
-              <ChevronDown
-                size={20}
-                className="shrink-0 transition-transform group-open:rotate-180"
-                style={{ color: "var(--accent)" }}
-              />
-            </summary>
-            <p className="px-4 pb-4 text-[20px] leading-[1.6]" style={{ color: "var(--ink)" }}>
-              {d.x}{" "}
-              <span className="font-display" style={{ color: "var(--accent)" }}>
-                Que assim seja!
-              </span>
-            </p>
-          </details>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ------------- mudras ------------- */
-
-function Mudras() {
-  return (
-    <Section title="Mudras" sub="Referência rápida.">
-      <div className="grid gap-2 sm:grid-cols-2">
-        {MUDRAS.map((m) => (
-          <div
-            key={m.n}
-            className="rounded-xl border p-4"
-            style={{ borderColor: "var(--line)", background: "var(--card)" }}
-          >
-            <b className="font-display text-[19px] font-semibold" style={{ color: "var(--ink)" }}>
-              {m.n}
-            </b>
-            <p className="mt-1 text-[17px] leading-[1.6]">{m.p}</p>
+            </div>
+            <div style={{ fontSize: 15.5, lineHeight: 1.55, color: "var(--text-body2)", textWrap: "pretty" }}>
+              {d.b}
+            </div>
           </div>
         ))}
       </div>
-    </Section>
+    </div>
   );
 }

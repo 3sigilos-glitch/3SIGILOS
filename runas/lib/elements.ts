@@ -1,7 +1,7 @@
 import type { Element } from "./types";
 
 // Os 9 elementos. A cor nomeada e a cor da vela; os hex por ambiente
-// vivem em maps.ts (ELEMENT_ACCENT).
+// vivem em maps.ts (CANDLE).
 export const ELEMENTS: Element[] = [
   { n: "Cristalino", cor: "Branco", rep: "Pureza, luz, éter, elevação." },
   { n: "Mineral", cor: "Amarelo", rep: "Harmonia, beleza, prosperidade." },

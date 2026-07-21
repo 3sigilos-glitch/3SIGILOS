@@ -1,24 +1,31 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Hanken_Grotesk } from "next/font/google";
+import { Cinzel, EB_Garamond, Noto_Sans_Runic } from "next/font/google";
 import "./globals.css";
 import AppShell from "@/components/AppShell";
 
-const display = Fraunces({
-  subsets: ["latin"],
-  weight: ["500", "600"],
-  variable: "--font-display",
-});
-
-const body = Hanken_Grotesk({
+const cinzel = Cinzel({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
-  variable: "--font-body",
+  variable: "--font-cinzel",
+});
+
+const garamond = EB_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-garamond",
+});
+
+const runic = Noto_Sans_Runic({
+  subsets: ["runic"],
+  weight: "400",
+  variable: "--font-runic",
 });
 
 export const metadata: Metadata = {
   title: "Magia Nórdica · Runas",
   description:
-    "Referência e prática do Módulo Branco: as 25 runas, armas, seres, elementos, evocações e o Montador de Templo.",
+    "Códice interativo do Módulo Branco: as 25 runas, matriz elemento e pólo, modo Altar, montador de templo e favoritos.",
 };
 
 export const viewport: Viewport = {
@@ -30,7 +37,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt">
-      <body className={`${display.variable} ${body.variable}`}>
+      <body className={`${cinzel.variable} ${garamond.variable} ${runic.variable}`}>
         <AppShell>{children}</AppShell>
       </body>
     </html>

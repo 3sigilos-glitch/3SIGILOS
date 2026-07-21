@@ -6,6 +6,9 @@ import { useCallback, useEffect, useState } from "react";
 // trocar por Supabase mais tarde nao mexa nos ecras (seccao 8 e 9).
 
 const KEY = "runas.store.v1";
+// Favoritos também ficam espelhados na chave do handoff do redesign
+// (array de ids), para compatibilidade com o comportamento especificado.
+const FAVS_KEY = "runas-codice-favs";
 
 export interface Store {
   favs: Record<number, boolean>;
@@ -20,10 +23,20 @@ function load(): Store {
   if (typeof window === "undefined") return EMPTY;
   try {
     const raw = window.localStorage.getItem(KEY);
-    if (!raw) return EMPTY;
-    const parsed = JSON.parse(raw) as Partial<Store>;
+    const parsed = raw ? (JSON.parse(raw) as Partial<Store>) : {};
+    const favs: Record<number, boolean> = { ...(parsed.favs ?? {}) };
+    // ler tambem a chave do redesign (array de ids)
+    const rawFavs = window.localStorage.getItem(FAVS_KEY);
+    if (rawFavs) {
+      const list = JSON.parse(rawFavs) as unknown;
+      if (Array.isArray(list)) {
+        for (const id of list) {
+          if (typeof id === "number") favs[id] = true;
+        }
+      }
+    }
     return {
-      favs: parsed.favs ?? {},
+      favs,
       notes: parsed.notes ?? {},
       steps: parsed.steps ?? {},
     };
@@ -35,6 +48,10 @@ function load(): Store {
 function save(s: Store) {
   try {
     window.localStorage.setItem(KEY, JSON.stringify(s));
+    const list = Object.keys(s.favs)
+      .map(Number)
+      .filter((id) => s.favs[id]);
+    window.localStorage.setItem(FAVS_KEY, JSON.stringify(list));
   } catch {
     // sem espaço ou modo privado: a app continua a funcionar em memória
   }

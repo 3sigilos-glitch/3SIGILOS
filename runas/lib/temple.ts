@@ -1,37 +1,67 @@
-// Geometria sagrada do Montador de Templo, portada da funcao templeShape
-// do prototipo: 2 linha, 3 triangulo, 4 quadrado, 5 pentagrama,
-// 6 estrela de seis (dois triangulos), 7 a 9 estrelas maiores.
+// Geometria do escudo do templo, portada do handoff do redesign:
+// 2 linha, 3 triângulo, 4 quadrado, 5 pentagrama (step 2),
+// 6 = dois triângulos sobrepostos, 7 estrela step 2,
+// 8 = dois quadrados, 9 estrela step 2.
 
-export type Point = [number, number];
-
-export interface TempleShape {
-  pts: Point[];
-  paths: Point[][];
+export interface ShieldPoint {
+  /** vértice (círculo da vela) no raio interior */
+  x: number;
+  y: number;
+  /** posição do glifo no raio exterior */
+  tx: number;
+  ty: number;
 }
 
-export function templeShape(n: number, cx: number, cy: number, R: number): TempleShape {
-  const pts: Point[] = [];
+export interface ShieldGeometry {
+  pts: ShieldPoint[];
+  path: string;
+}
+
+export const SHAPE_NAME: Record<number, string> = {
+  2: "linha",
+  3: "triângulo",
+  4: "quadrado",
+  5: "pentagrama",
+  6: "estrela de seis",
+  7: "estrela de sete",
+  8: "estrela de oito",
+  9: "estrela de nove",
+};
+
+export function shieldGeometry(
+  n: number,
+  cx = 220,
+  cy = 220,
+  r1 = 152,
+  r2 = 186
+): ShieldGeometry {
+  const pts: ShieldPoint[] = [];
   for (let i = 0; i < n; i++) {
-    const a = ((-90 + (i * 360) / n) * Math.PI) / 180;
-    pts.push([cx + R * Math.cos(a), cy + R * Math.sin(a)]);
+    const a = -Math.PI / 2 + (i * 2 * Math.PI) / n;
+    pts.push({
+      x: cx + r1 * Math.cos(a),
+      y: cy + r1 * Math.sin(a),
+      tx: cx + r2 * Math.cos(a),
+      ty: cy + r2 * Math.sin(a) + 6,
+    });
   }
-  const step: Record<number, number> = { 2: 1, 3: 1, 4: 1, 5: 2, 7: 3, 8: 3, 9: 4 };
-  const paths: Point[][] = [];
-  if (n === 6) {
-    paths.push([pts[0], pts[2], pts[4], pts[0]]);
-    paths.push([pts[1], pts[3], pts[5], pts[1]]);
-  } else if (n === 2) {
-    paths.push([pts[0], pts[1]]);
-  } else {
-    const s = step[n] || 1;
-    const order: Point[] = [];
-    let idx = 0;
-    for (let i = 0; i < n; i++) {
-      order.push(pts[idx]);
-      idx = (idx + s) % n;
-    }
-    order.push(order[0]);
-    paths.push(order);
+  const P = (p: ShieldPoint) => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`;
+  const poly = (idx: number[]) =>
+    "M" + idx.map((i) => P(pts[i])).join(" L") + (idx.length > 2 ? " Z" : "");
+
+  let path = "";
+  if (n === 2) path = poly([0, 1]);
+  else if (n <= 4) path = poly(pts.map((_, i) => i));
+  else if (n === 6) path = poly([0, 2, 4]) + " " + poly([1, 3, 5]);
+  else if (n === 8) path = poly([0, 2, 4, 6]) + " " + poly([1, 3, 5, 7]);
+  else {
+    const idx: number[] = [];
+    let i = 0;
+    do {
+      idx.push(i);
+      i = (i + 2) % n;
+    } while (i !== 0);
+    path = poly(idx);
   }
-  return { pts, paths };
+  return { pts, path };
 }

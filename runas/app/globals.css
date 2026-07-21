@@ -3,129 +3,163 @@
 @tailwind utilities;
 
 /* ============================================================
-   Códice vivo — dois ambientes.
-   CLARO (Estudo): guia de campo em papel/linho.
-   ESCURO (Altar): fumo quente, à luz de velas reais.
-   O colorido vem das 9 cores dos elementos; nunca dourado de marca.
+   Redesign "nórdica mística": fundo escuro com aurora boreal,
+   dourado envelhecido, Cinzel + EB Garamond + Noto Sans Runic.
+   Tokens conforme o handoff (hifi).
    ============================================================ */
 
-.env-claro {
-  --bg: #eae4d6;
-  --panel: #f3eee3;
-  --card: #f3eee3;
-  --ink: #23201b;
-  --muted: #5b554a;
-  --line: rgba(35, 32, 27, 0.14);
-  /* acento do ambiente: vermelho de rubrica, como nos códices */
-  --accent: #8c2f24;
-  --ring: rgba(35, 32, 27, 0.35);
-  color: var(--ink);
-  background: var(--bg);
-  /* textura de linho muito leve */
-  background-image: radial-gradient(
-      120% 80% at 50% -20%,
-      rgba(255, 255, 255, 0.5) 0%,
-      rgba(255, 255, 255, 0) 60%
-    ),
-    repeating-linear-gradient(
-      0deg,
-      rgba(35, 32, 27, 0.016) 0px,
-      rgba(35, 32, 27, 0.016) 1px,
-      transparent 1px,
-      transparent 3px
-    );
-}
-
-.env-escuro {
-  --bg: #16130e;
-  --panel: #201b14;
-  --card: #201b14;
-  --ink: #e9e1ce;
-  --muted: #a79c86;
-  --line: rgba(233, 225, 206, 0.13);
-  /* acento do ambiente: luz de chama âmbar (é luz, não marca) */
-  --accent: #f0b24a;
-  --ring: rgba(233, 225, 206, 0.4);
-  color: var(--ink);
-  background: var(--bg);
-  background-image: radial-gradient(
-    120% 90% at 50% 0%,
-    #241e15 0%,
-    #16130e 55%,
-    #100d09 100%
-  );
+:root {
+  --bg: #0e0d13;
+  --surface: #16141d;
+  --surface-hover: #1a1725;
+  --panel: rgba(23, 21, 30, 0.5);
+  --border: #221f2e;
+  --border-card: #262233;
+  --border-chip: #2f2a40;
+  --border-hover: #4a3f63;
+  --border-modal: #3b3450;
+  --gold: #c9a86a;
+  --gold-light: #e3cfa0;
+  --gold-pale: #e8dcbf;
+  --text: #e9e4d8;
+  --text-strong: #ece7db;
+  --title: #f0ebdf;
+  --text-2: #9a94a8;
+  --text-3: #8f8a9c;
+  --text-4: #7d7890;
+  --text-dim: #585470;
+  --text-body2: #b5afc2;
+  --text-warm: #ded8c8;
+  --blue: #7d9cc4;
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
-  min-height: 100%;
+  background: #0e0d13;
+  color: var(--text);
 }
 
 body {
-  font-family: var(--font-body), "Hanken Grotesk", system-ui, sans-serif;
+  font-family: var(--font-garamond), "EB Garamond", serif;
   font-size: 17px;
-  line-height: 1.55;
-  -webkit-text-size-adjust: 100%;
+  min-height: 100vh;
+  background: radial-gradient(1200px 600px at 50% -200px, #1a1725 0%, #0e0d13 60%);
 }
 
-.font-display {
-  font-family: var(--font-display), Fraunces, serif;
+a {
+  color: var(--gold);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--gold-light);
 }
 
-/* Runa gravada no papel (deboss leve) — assinatura do sistema */
-.rune-engraved {
-  color: var(--ink);
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.55))
-    drop-shadow(0 -0.5px 0 rgba(35, 32, 27, 0.28));
-}
-.env-escuro .rune-engraved {
-  filter: drop-shadow(0 0 5px rgba(240, 178, 74, 0.28));
+button {
+  cursor: pointer;
+  font-family: inherit;
 }
 
-/* Vela: ponto redondo com anel quando a cor se confunde com o fundo */
-.vela {
-  display: inline-block;
-  width: 13px;
-  height: 13px;
-  border-radius: 9999px;
-  flex: 0 0 auto;
-  border: 1px solid var(--ring);
+::selection {
+  background: rgba(201, 168, 106, 0.35);
 }
 
-/* Lombada de cor do elemento no cartão da runa */
-.spine {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 6px;
-  height: 100%;
-  border-radius: 6px 0 0 6px;
+.font-cinzel {
+  font-family: var(--font-cinzel), Cinzel, serif;
+}
+.font-runic {
+  font-family: var(--font-runic), "Noto Sans Runic", serif;
 }
 
-/* Tremular de chama, muito ligeiro, só no Altar */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fade-up {
+  animation: fadeUp 0.35s ease;
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(5%, 9%, 0) scale(1.18);
+  }
+}
+
 @keyframes flicker {
   0%,
   100% {
     opacity: 1;
-    transform: scale(1);
   }
-  46% {
-    opacity: 0.86;
-    transform: scale(0.985);
+  22% {
+    opacity: 0.75;
   }
-  52% {
-    opacity: 0.96;
-    transform: scale(1.008);
+  50% {
+    opacity: 0.5;
   }
-  71% {
-    opacity: 0.9;
-    transform: scale(0.995);
+  64% {
+    opacity: 0.85;
+  }
+  82% {
+    opacity: 0.65;
   }
 }
-.flame {
-  animation: flicker 2.8s ease-in-out infinite;
+.flicker {
+  animation: flicker 3.2s ease-in-out infinite;
+}
+.flicker-fast {
+  animation: flicker 2.6s ease-in-out infinite;
+}
+.flicker-3 {
+  animation: flicker 3s ease-in-out infinite;
+}
+
+@keyframes spinSlow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    text-shadow: 0 0 16px rgba(201, 168, 106, 0.35);
+  }
+  50% {
+    text-shadow: 0 0 36px rgba(201, 168, 106, 0.75);
+  }
+}
+.glow-pulse {
+  animation: glowPulse 5s ease-in-out infinite;
+}
+.glow-pulse-4 {
+  animation: glowPulse 4s ease-in-out infinite;
+}
+
+/* hover dos cartões e células */
+.card-hover {
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+.card-hover:hover {
+  border-color: var(--border-hover) !important;
+  background: var(--surface-hover) !important;
+  box-shadow: 0 0 24px rgba(109, 91, 158, 0.18);
+}
+.cell-hover {
+  transition: border-color 0.15s, background 0.15s;
+}
+.cell-hover:hover {
+  border-color: var(--border-hover) !important;
+  background: var(--surface-hover) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -138,15 +172,7 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--gold);
   outline-offset: 2px;
-  border-radius: 6px;
-}
-
-/* esconder scrollbar horizontal dos seletores em fita, mantendo o scroll */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  scrollbar-width: none;
+  border-radius: 4px;
 }

@@ -4,27 +4,21 @@ Aplicação web de referência e prática para o curso de Magia Nórdica
 (Módulo Branco). Ferramenta de estudo e de uso durante os atendimentos,
 pensada para o telemóvel em primeiro lugar.
 
-## Direção visual "Códice vivo"
+## Direção visual "Nórdica mística" (redesign)
 
-Dois ambientes com propósitos diferentes:
+Estética escura com aurora boreal animada ao fundo, dourado envelhecido
+(#c9a86a) como acento, velas que tremeluzem com glow, glifos rúnicos
+reais (Noto Sans Runic, com normalização de tamanho por canvas) e
+tipografia Cinzel (títulos, navegação) + EB Garamond (corpo).
+Navegação no header sticky com blur. Animações respeitam
+prefers-reduced-motion. Tokens completos em app/globals.css.
 
-- **Estudo (claro)**: guia de campo em papel e linho, tinta quente,
-  runas gravadas, lombadas com as cores dos 9 elementos. Acento de
-  rubrica (vermelho de códice).
-- **Altar (escuro)**: fumo quente à luz de velas, texto grande
-  (20 a 24px), brilho de chama âmbar só à volta das velas e símbolos
-  ativos. Usado ao pé de velas reais.
+## Ecrãs (5 separadores na navegação do header)
 
-Sem dourado de marca: o colorido vem das 9 cores dos elementos, que são
-a taxonomia do sistema. Tipos: Fraunces (display) e Hanken Grotesk
-(corpo), via `next/font/google`.
-
-## Ecrãs (menu inferior, 5 separadores)
-
-1. **Runas**: grelha do códice com sub-abas Runas · Armas · Seres ·
-   Elementos, pesquisa (por qualquer um dos dois nomes, regente ou
-   palavra-chave, insensível a acentos), filtros por classe, elemento,
-   pólo e intenção, e favoritos.
+1. **Runas**: grelha de cartões com glifo dourado e marca-de-água,
+   pesquisa (por qualquer um dos dois nomes, regente ou palavra-chave,
+   insensível a acentos) e filtros por classe, elemento, pólo e
+   intenção. As descrições de armas e seres vivem na ficha da runa.
 2. **Matriz**: a grelha 9x3 (elementos x pólos). O Odin, tríade, ocupa
    as três células que faltam e a matriz fecha certa.
 3. **Altar**: procedimento de atendimento (8 passos para marcar),
@@ -36,8 +30,6 @@ a taxonomia do sistema. Tipos: Fraunces (display) e Hanken Grotesk
    cálice ao centro.
 5. **Guardados**: favoritos e notas pessoais, persistentes no
    dispositivo.
-
-Em ecrã largo a barra inferior passa a coluna lateral esquerda.
 
 ## Regras do sistema (a matriz)
 

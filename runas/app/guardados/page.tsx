@@ -1,89 +1,111 @@
 "use client";
 
-import { NotebookPen, Star } from "lucide-react";
 import { RUNES, runeById } from "@/lib/runes";
 import RuneCard from "@/components/RuneCard";
-import RuneGlyph from "@/components/RuneGlyph";
-import { Lab } from "@/components/bits";
-import { useSheet } from "@/components/Sheet";
+import Glyph from "@/components/Glyph";
+import { ScreenTitle, SectionTitle } from "@/components/ui";
+import { useModal } from "@/components/Modal";
 import { useAppStore } from "@/components/StoreProvider";
 
-// Guardados: favoritos e notas pessoais, persistentes neste dispositivo.
-
+// Guardados (handoff): os mesmos cartões da tab Runas, filtrados aos
+// favoritos; vazio com caixa tracejada. As notas pessoais mantêm-se
+// listadas abaixo, na mesma linguagem visual.
 export default function GuardadosPage() {
   const { store, ready } = useAppStore();
-  const sheet = useSheet();
+  const modal = useModal();
 
   const favs = RUNES.filter((r) => store.favs[r.id]);
   const noted = Object.keys(store.notes)
     .map(Number)
     .map((id) => ({ rune: runeById(id), text: store.notes[id] }))
-    .filter((x): x is { rune: NonNullable<ReturnType<typeof runeById>>; text: string } => !!x.rune);
+    .filter((x): x is { rune: (typeof RUNES)[number]; text: string } => !!x.rune);
 
   return (
-    <div>
-      <h1 className="font-display text-[30px] font-semibold" style={{ color: "var(--ink)" }}>
-        Guardados
-      </h1>
-      <p className="mb-4 text-[15px]" style={{ color: "var(--muted)" }}>
-        Favoritos e notas ficam guardados neste dispositivo.
-      </p>
+    <section className="fade-up" style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+      <ScreenTitle title="Guardados">
+        As runas que marcaste com ★. Ficam guardadas neste dispositivo.
+      </ScreenTitle>
 
-      <section className="mb-6">
-        <Lab>
-          <span className="inline-flex items-center gap-1.5">
-            <Star size={14} /> Favoritos
-          </span>
-        </Lab>
-        {ready && favs.length === 0 ? (
-          <p className="rounded-2xl border px-4 py-6 text-center text-[16px]" style={{ borderColor: "var(--line)", color: "var(--muted)" }}>
-            Ainda não tens favoritos. Toca na estrela de qualquer runa para a guardar aqui.
-          </p>
-        ) : (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-            {favs.map((r) => (
-              <RuneCard key={r.id} rune={r} />
-            ))}
-          </div>
-        )}
-      </section>
+      {ready && favs.length === 0 ? (
+        <div
+          style={{
+            border: "1px dashed var(--border-chip)",
+            borderRadius: 6,
+            padding: 40,
+            textAlign: "center",
+            color: "var(--text-4)",
+            fontStyle: "italic",
+          }}
+        >
+          Ainda não guardaste nenhuma runa. Abre uma ficha e toca em ★.
+        </div>
+      ) : (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(185px,1fr))", gap: 10 }}>
+          {favs.map((r) => (
+            <RuneCard key={r.id} rune={r} />
+          ))}
+        </div>
+      )}
 
-      <section>
-        <Lab>
-          <span className="inline-flex items-center gap-1.5">
-            <NotebookPen size={14} /> As minhas notas
-          </span>
-        </Lab>
-        {ready && noted.length === 0 ? (
-          <p className="rounded-2xl border px-4 py-6 text-center text-[16px]" style={{ borderColor: "var(--line)", color: "var(--muted)" }}>
-            Sem notas por agora. Abre a ficha de uma runa e escreve no campo de notas.
-          </p>
-        ) : (
-          <div className="flex flex-col gap-2">
+      {noted.length > 0 && (
+        <div>
+          <SectionTitle title="As minhas notas" />
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {noted.map(({ rune, text }) => (
               <button
                 key={rune.id}
-                onClick={() => sheet.openRune(rune.id)}
-                className="flex w-full items-start gap-3 rounded-2xl border p-4 text-left"
-                style={{ borderColor: "var(--line)", background: "var(--card)" }}
+                onClick={() => modal.openRune(rune.id)}
+                className="cell-hover"
+                style={{
+                  background: "var(--surface)",
+                  border: "1px solid var(--border-card)",
+                  borderRadius: 5,
+                  padding: "13px 16px",
+                  display: "flex",
+                  gap: 12,
+                  alignItems: "flex-start",
+                  color: "inherit",
+                  textAlign: "left",
+                }}
               >
-                <RuneGlyph id={rune.id} className="h-[46px] w-[26px] shrink-0" />
+                <Glyph id={rune.id} size={26} origin="left top" />
                 <span>
-                  <b className="font-display text-[18px] font-semibold" style={{ color: "var(--ink)" }}>
-                    {rune.ed}
-                  </b>
-                  <span className="ml-2 text-[13px]" style={{ color: "var(--muted)" }}>
-                    {rune.mod} · {rune.deity}
+                  <span
+                    className="font-cinzel"
+                    style={{ display: "block", fontSize: 16, letterSpacing: 1, color: "var(--text-strong)" }}
+                  >
+                    {rune.ed}{" "}
+                    <span
+                      style={{
+                        fontFamily: "var(--font-garamond)",
+                        fontStyle: "italic",
+                        fontSize: 14,
+                        color: "var(--text-3)",
+                        letterSpacing: 0,
+                        textTransform: "none",
+                      }}
+                    >
+                      {rune.mod} · {rune.deity}
+                    </span>
                   </span>
-                  <span className="mt-1 block whitespace-pre-wrap text-[16px] leading-[1.55]" style={{ color: "var(--ink)" }}>
+                  <span
+                    style={{
+                      display: "block",
+                      marginTop: 4,
+                      fontSize: 15.5,
+                      lineHeight: 1.5,
+                      color: "var(--text-body2)",
+                      whiteSpace: "pre-wrap",
+                    }}
+                  >
                     {text}
                   </span>
                 </span>
               </button>
             ))}
           </div>
-        )}
-      </section>
-    </div>
+        </div>
+      )}
+    </section>
   );
 }

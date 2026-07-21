@@ -44,6 +44,13 @@ export const EVOCATION_TYPES: EvocationType[] = [
   "Sumonar Ser",
 ];
 
+/** Tipos que precisam de escolher um regente (handoff: só os 3 últimos). */
+export const NEEDS_REGENTE: EvocationType[] = [
+  "Poder Divino específico",
+  "Invocar Arma",
+  "Sumonar Ser",
+];
+
 const HEAD =
   "Supremo Criador do Universo, Sagradas Divindades Nórdicas e Mistérios Nórdicos a mim concedidos, em nome do meu sagrado Templo Nórdico eu peço que ";
 

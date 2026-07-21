@@ -3,16 +3,15 @@
 import { RUNES } from "@/lib/runes";
 import { ELEMENTS, POLES } from "@/lib/elements";
 import { elemsOf } from "@/lib/rules";
-import { accentOf, classColorOf, POLE_CLASS } from "@/lib/maps";
+import { CANDLE, POLE_CLASS } from "@/lib/maps";
 import type { ElementName, Pole, Rune } from "@/lib/types";
-import RuneGlyph from "@/components/RuneGlyph";
-import { useEnv } from "@/components/EnvContext";
-import { useSheet } from "@/components/Sheet";
+import Glyph from "@/components/Glyph";
+import { ScreenTitle, Vela } from "@/components/ui";
+import { useModal } from "@/components/Modal";
 
-// A espinha dorsal do sistema: 9 linhas (elementos) x 3 colunas (pólos).
-// Cada célula mostra o regente dessa combinação. O Odin, tríade, ocupa as
-// três células que faltam (Cristalino-Neutro, Vazio-Irradiador,
-// Temporal-Absorvedor) e é por isso que a matriz fecha certa.
+// Matriz 9x3 (handoff): grelha 110px + 3 colunas, células com border-top
+// da cor da vela, scroll horizontal em mobile. O Odin (tríade) preenche
+// as células de Cristalino-Neutro, Vazio-Irradiador e Temporal-Absorvedor.
 function cellRune(elem: ElementName, pole: Pole): Rune | undefined {
   const direct = RUNES.find((r) => r.elem === elem && r.pole === pole);
   if (direct) return direct;
@@ -22,81 +21,86 @@ function cellRune(elem: ElementName, pole: Pole): Rune | undefined {
 }
 
 export default function MatrizPage() {
-  const env = useEnv();
-  const sheet = useSheet();
+  const modal = useModal();
 
   return (
-    <div>
-      <h1 className="font-display text-[30px] font-semibold" style={{ color: "var(--ink)" }}>
-        Matriz 9×3
-      </h1>
-      <p className="mb-4 text-[15px] leading-[1.55]" style={{ color: "var(--muted)" }}>
-        Elemento (linha) dá a cor da vela; pólo (coluna) dá a classe. Toca numa célula para
-        abrir a ficha.
-      </p>
+    <section className="fade-up" style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+      <ScreenTitle title="Matriz 9×3">
+        O elemento (linha) dá a cor da vela; o pólo (coluna) dá a classe. Toca numa célula
+        para abrir a ficha.
+      </ScreenTitle>
 
-      {/* cabeçalho das colunas */}
-      <div className="grid grid-cols-[84px_1fr_1fr_1fr] gap-1.5 sm:grid-cols-[110px_1fr_1fr_1fr]">
-        <div />
-        {POLES.map((p) => (
-          <div key={p} className="pb-1 text-center">
-            <div className="text-[13px] font-semibold" style={{ color: "var(--ink)" }}>
-              {p}
+      <div style={{ overflowX: "auto" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "110px repeat(3,minmax(140px,1fr))",
+            gap: 6,
+            minWidth: 560,
+          }}
+        >
+          <div />
+          {POLES.map((p) => (
+            <div key={p} style={{ textAlign: "center", padding: "8px 4px" }}>
+              <div
+                className="font-cinzel"
+                style={{ fontSize: 12, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold)" }}
+              >
+                {p}
+              </div>
+              <div style={{ fontSize: 13, color: "var(--text-4)", fontStyle: "italic" }}>
+                {POLE_CLASS[p]}
+              </div>
             </div>
-            <div
-              className="mt-0.5 inline-flex items-center gap-1 text-[13px]"
-              style={{ color: "var(--muted)" }}
-            >
-              <span
-                className="inline-block h-2.5 w-2.5 rounded-[3px]"
-                style={{ background: classColorOf(POLE_CLASS[p], env), border: "1px solid var(--ring)" }}
-              />
-              {POLE_CLASS[p]}
-            </div>
-          </div>
-        ))}
+          ))}
 
-        {ELEMENTS.map((e) => (
-          <RowFor key={e.n} elemName={e.n} />
-        ))}
+          {ELEMENTS.map((e) => (
+            <Row key={e.n} elem={e.n} />
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 
-  function RowFor({ elemName }: { elemName: (typeof ELEMENTS)[number]["n"] }) {
+  function Row({ elem }: { elem: ElementName }) {
     return (
       <>
-        {/* etiqueta da linha, com a cor do elemento à esquerda */}
-        <div className="flex items-center gap-1.5 py-1">
+        <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 4px" }}>
+          <Vela color={CANDLE[elem]} flicker={false} />
           <span
-            className="h-full min-h-[44px] w-1.5 rounded-full"
-            style={{ background: accentOf(elemName, env), border: "1px solid var(--ring)" }}
-            aria-hidden
-          />
-          <span className="text-[13px] font-semibold leading-tight" style={{ color: "var(--ink)" }}>
-            {elemName}
+            className="font-cinzel"
+            style={{ fontSize: 12.5, letterSpacing: 1, color: "#bdb7c9" }}
+          >
+            {elem}
           </span>
         </div>
         {POLES.map((p) => {
-          const r = cellRune(elemName, p);
-          if (!r)
-            return <div key={p} className="rounded-xl border" style={{ borderColor: "var(--line)" }} />;
-          const isOdin = r.id === 24;
+          const r = cellRune(elem, p);
+          if (!r) return <div key={p} />;
           return (
             <button
               key={p}
-              onClick={() => sheet.openRune(r.id)}
-              className="flex min-h-[64px] flex-col items-center justify-center gap-0.5 rounded-xl border px-1 py-2 text-center"
+              onClick={() => modal.openRune(r.id)}
+              className="cell-hover"
               style={{
-                borderColor: isOdin ? classColorOf("Híbrido", env) : "var(--line)",
-                background: "var(--card)",
+                background: "var(--surface)",
+                border: "1px solid var(--border-card)",
+                borderTop: `2px solid ${CANDLE[elem]}`,
+                borderRadius: 5,
+                padding: "10px 8px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 2,
+                color: "inherit",
               }}
             >
-              <RuneGlyph id={r.id} className="h-[30px] w-[18px]" />
-              <span className="text-[13px] font-medium leading-tight" style={{ color: "var(--ink)" }}>
-                {r.deity}
-              </span>
-              <span className="text-[13px] leading-tight" style={{ color: "var(--muted)" }}>
+              <Glyph id={r.id} size={20} origin="center" />
+              <span style={{ fontSize: 15, color: "var(--text-strong)" }}>{r.deity}</span>
+              <span
+                className="font-cinzel"
+                style={{ fontSize: 11, letterSpacing: 1.5, textTransform: "uppercase", color: "var(--text-4)" }}
+              >
                 {r.ed}
               </span>
             </button>
