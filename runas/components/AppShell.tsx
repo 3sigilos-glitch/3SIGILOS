@@ -95,6 +95,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               ᚠᚢᚦᚨᚱᚲ
             </span>{" "}
             · Módulo Branco · Magia Nórdica
+            <span style={{ display: "block", marginTop: 6, fontSize: 13 }}>
+              Ensinamentos do manual de Magia Nórdica de Eduardo Gabriel · Templus ©. Todos os
+              direitos reservados. App de estudo pessoal.
+            </span>
           </footer>
         </ModalProvider>
       </GlyphScaleProvider>

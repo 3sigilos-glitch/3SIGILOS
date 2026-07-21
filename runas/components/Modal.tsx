@@ -10,6 +10,8 @@ import {
 import { runeById } from "@/lib/runes";
 import { WEAPONS } from "@/lib/weapons";
 import { BEINGS } from "@/lib/beings";
+import { ELEMENTS } from "@/lib/elements";
+import { MANUAL_BEINGS, MANUAL_RUNES, MANUAL_WEAPONS } from "@/lib/manual";
 import { classOf, elemsOf } from "@/lib/rules";
 import Glyph from "./Glyph";
 import { Lab } from "./ui";
@@ -92,6 +94,78 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Texto integral do manual, fechado por defeito para a ficha continuar
+// rápida no atendimento; quem estuda toca e expande.
+function Ensinamento({
+  title,
+  text,
+  small = false,
+}: {
+  title: string;
+  text: string;
+  small?: boolean;
+}) {
+  return (
+    <details className="group" style={{ marginTop: small ? 8 : 12 }}>
+      <summary
+        className="font-cinzel"
+        style={{
+          cursor: "pointer",
+          listStyle: "none",
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          fontSize: small ? 12 : 13,
+          letterSpacing: 2,
+          textTransform: "uppercase",
+          color: "var(--gold)",
+          padding: "6px 0",
+        }}
+      >
+        <span className="font-runic" aria-hidden style={{ fontSize: small ? 12 : 14 }}>
+          ᛟ
+        </span>
+        {title}
+        <span
+          aria-hidden
+          style={{ marginLeft: "auto", transition: "transform .15s", color: "var(--text-4)" }}
+          className="group-open:rotate-90"
+        >
+          ›
+        </span>
+      </summary>
+      <div
+        style={{
+          borderLeft: "2px solid rgba(201,168,106,0.35)",
+          paddingLeft: 14,
+          marginTop: 4,
+        }}
+      >
+        {text.split("\n\n").map((p, i) => (
+          <p
+            key={i}
+            style={{
+              margin: i === 0 ? 0 : "10px 0 0",
+              fontSize: small ? 15 : 16,
+              lineHeight: 1.6,
+              color: "var(--text-warm)",
+              textWrap: "pretty",
+            }}
+          >
+            {p}
+          </p>
+        ))}
+        <p
+          style={{ margin: "12px 0 0", fontSize: 13, fontStyle: "italic", color: "var(--text-4)" }}
+        >
+          Do manual de Magia Nórdica, Módulo Branco, de Eduardo Gabriel · Templus ©. Uso pessoal
+          de estudo.
+        </p>
+      </div>
+    </details>
+  );
+}
+
 function Row({ k, v }: { k: string; v: string }) {
   return (
     <div style={{ display: "flex", gap: 12, alignItems: "baseline" }}>
@@ -152,7 +226,15 @@ function RuneDetail({ id, onClose }: { id: number; onClose: () => void }) {
         <Row k="Classe" v={cls} />
         <Row k="Elemento" v={isTriad ? "Cristalino · Vazio · Temporal" : r.elem} />
         <Row k="Pólo" v={r.pole} />
-        <Row k="Vela" v={elems.map((e) => e.toLowerCase()).join(" · ")} />
+        <Row
+          k="Vela"
+          v={elems
+            .map((e) => {
+              const cor = ELEMENTS.find((x) => x.n === e)?.cor.toLowerCase();
+              return e.toLowerCase() + (cor ? ` (${cor})` : "");
+            })
+            .join(" · ")}
+        />
         <Row k="Intenções" v={r.intent.join(" · ")} />
         <Row k="Qualidades" v={r.kw.join(", ")} />
         {r.weapons.length > 0 && <Row k="Arma" v={r.weapons.join(" · ")} />}
@@ -170,10 +252,8 @@ function RuneDetail({ id, onClose }: { id: number; onClose: () => void }) {
         <p style={{ margin: 0, fontSize: 16.5, lineHeight: 1.55, color: "var(--text-warm)" }}>
           {r.essence}
         </p>
-        {r.deep && (
-          <p style={{ margin: "10px 0 0", fontSize: 16, lineHeight: 1.55, color: "var(--text-body2)" }}>
-            {r.deep}
-          </p>
+        {MANUAL_RUNES[r.id] && (
+          <Ensinamento title={`Ensinamento · ${r.deity}`} text={MANUAL_RUNES[r.id]} />
         )}
       </div>
 
@@ -188,6 +268,7 @@ function RuneDetail({ id, onClose }: { id: number; onClose: () => void }) {
                 {w.n} <span style={{ color: "var(--text-4)" }}>· {w.epi}</span>
               </div>
               <p style={{ margin: "6px 0 0", fontSize: 15, lineHeight: 1.5, color: "var(--text-body2)" }}>{w.d}</p>
+              {MANUAL_WEAPONS[w.n] && <Ensinamento title="Ensinamento" text={MANUAL_WEAPONS[w.n]} small />}
             </div>
           ))}
           {ser && (
@@ -198,6 +279,7 @@ function RuneDetail({ id, onClose }: { id: number; onClose: () => void }) {
                 {ser.n} <span style={{ color: "var(--text-4)" }}>· {ser.epi}</span>
               </div>
               <p style={{ margin: "6px 0 0", fontSize: 15, lineHeight: 1.5, color: "var(--text-body2)" }}>{ser.d}</p>
+              {MANUAL_BEINGS[ser.n] && <Ensinamento title="Ensinamento" text={MANUAL_BEINGS[ser.n]} small />}
             </div>
           )}
         </div>
