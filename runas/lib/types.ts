@@ -88,4 +88,5 @@ export type EvocationType =
   | "Abrir Templo"
   | "Poder Divino específico"
   | "Invocar Arma"
-  | "Sumonar Ser";
+  | "Sumonar Ser"
+  | "Consagrar Objeto ou Amuleto";

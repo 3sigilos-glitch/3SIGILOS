@@ -14,7 +14,7 @@ export const DETERM: Formula[] = [
   { t: "Limpeza dos campos mediúnicos", x: "Peço que envolvam e limpem por completo os campos mediúnicos desta pessoa, curando e encaminhando os espíritos sofredores neles presentes; que as energias divinas a tornem atratora do positivo e repulsora do negativo, e que os seus dons sejam vivificados." },
   { t: "Limpeza de ambientes", x: "Peço que envolvam este ambiente, fechem os portais negativos e cheguem à sua fonte, purificando e anulando as negatividades; que os espíritos sofredores sejam curados e encaminhados, e que as energias divinas se instalem nos quatro cantos, tornando o ambiente repelidor do negativo e atrator do positivo." },
   { t: "Magias negativas", x: "Peço que, havendo magias negativas contra esta pessoa, sejam dissolvidas com todos os seus elementos; que as energias divinas anulem e positivem o negativo nos domínios de onde partiram; que os espíritos sejam esgotados e encaminhados à Luz, e os seres retornem ao seu estado virtuoso." },
-  { t: "Consagração de objetos", x: "Peço que limpem totalmente este objeto, até então profano, e instalem nele as suas energias divinas, tornando-o irradiador das suas qualidades e repelidor do contrário; que crie um campo protetor a quem o use e ao ambiente onde estiver." },
+  { t: "Consagração de objetos e amuletos", x: "Peço que limpem totalmente este objeto, até então profano, e instalem nele as suas energias divinas, tornando-o irradiador das suas qualidades e repelidor do contrário; que crie um campo protetor a quem o use e ao ambiente onde estiver." },
 ];
 
 export const PROC: string[] = [
@@ -42,13 +42,15 @@ export const EVOCATION_TYPES: EvocationType[] = [
   "Poder Divino específico",
   "Invocar Arma",
   "Sumonar Ser",
+  "Consagrar Objeto ou Amuleto",
 ];
 
-/** Tipos que precisam de escolher um regente (handoff: só os 3 últimos). */
+/** Tipos que precisam de escolher um regente. */
 export const NEEDS_REGENTE: EvocationType[] = [
   "Poder Divino específico",
   "Invocar Arma",
   "Sumonar Ser",
+  "Consagrar Objeto ou Amuleto",
 ];
 
 const HEAD =
@@ -85,6 +87,18 @@ export function buildEvocation(type: EvocationType, r: Rune): EvoSegment[] {
       { text: " o(a) Sagrado(a) " },
       { text: r.deity, fill: true },
       { text: "... (determina a ação) " },
+      amen,
+    ];
+  }
+  if (type === "Consagrar Objeto ou Amuleto") {
+    // Composição de textos do manual: a evocação do poder divino do
+    // regente, seguida da determinação de consagração tal e qual.
+    return [
+      { text: HEAD + "através da Sagrada " },
+      { text: r.ed, fill: true },
+      { text: " o(a) Sagrado(a) " },
+      { text: r.deity, fill: true },
+      { text: ". " + DETERM[4].x + " " },
       amen,
     ];
   }
