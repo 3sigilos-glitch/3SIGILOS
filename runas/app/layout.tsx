@@ -26,6 +26,8 @@ export const metadata: Metadata = {
   title: "Magia Nórdica · Runas",
   description:
     "Códice interativo do Módulo Branco: as 25 runas, matriz elemento e pólo, modo Altar, montador de templo e favoritos.",
+  // Conteúdo reservado: não indexar em motores de busca.
+  robots: { index: false, follow: false, nocache: true },
 };
 
 export const viewport: Viewport = {

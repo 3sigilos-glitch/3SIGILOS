@@ -68,6 +68,23 @@ npm run dev      # abre em http://localhost:3000
 npm run build    # compila e valida os tipos
 ```
 
+## Acesso reservado (conteúdo fechado)
+
+O conteúdo do curso é fechado. A app inteira (páginas, dados e chunks)
+está protegida por um portão de acesso feito em edge middleware
+(`middleware.ts`): nada é servido sem o código de acesso, e a indexação
+por motores de busca está bloqueada (`robots.txt` + meta noindex).
+
+Define o código na variável de ambiente **`ACCESS_PASSWORD`**:
+
+- Na Vercel: Settings > Environment Variables > `ACCESS_PASSWORD` = o teu
+  código, para os ambientes Production (e Preview, se quiseres). Faz
+  Redeploy a seguir.
+- Localmente: `ACCESS_PASSWORD="o-teu-codigo" npm run dev`.
+
+Sem a variável definida usa-se um valor por defeito que DEVE ser mudado.
+O acesso guarda-se num cookie por 180 dias; `/sair` termina a sessão.
+
 ## Publicar (Vercel)
 
 Projeto Vercel próprio, separado da app de Tarot na raiz do repositório:
