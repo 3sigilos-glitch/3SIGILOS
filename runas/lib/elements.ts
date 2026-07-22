@@ -21,3 +21,17 @@ export const INTENTS: string[] = [
 
 export const POLES = ["Irradiador", "Neutro", "Absorvedor"] as const;
 export const CLASSES = ["Guerreiro", "Sacerdote", "Mago", "Híbrido"] as const;
+
+// Cor da vela por elemento, no feminino (concorda com "vela": vela preta,
+// vela roxa, vela vermelha...).
+export const VELA_COR: Record<Element["n"], string> = {
+  Cristalino: "branca",
+  Mineral: "amarela",
+  Vegetal: "verde",
+  "Eólico": "laranja",
+  "Ígneo": "vermelha",
+  Terreno: "castanha",
+  "Aquático": "azul",
+  Vazio: "preta",
+  Temporal: "roxa",
+};

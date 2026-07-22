@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { RUNES } from "@/lib/runes";
+import { VELA_COR } from "@/lib/elements";
 import { elemsOf } from "@/lib/rules";
 import { CANDLE } from "@/lib/maps";
 import { GLYPH } from "@/lib/glyphs";
@@ -135,7 +136,12 @@ export default function TemploPage() {
               <div key={el} style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 <Vela color={CANDLE[el as keyof typeof CANDLE]} size={10} />
                 <span style={{ fontSize: 16, color: "var(--text-warm)" }}>
-                  {(c > 1 ? c + "× " : "") + "vela " + el.toLowerCase()}
+                  {(c > 1 ? c + "× " : "") +
+                    "vela " +
+                    VELA_COR[el as keyof typeof VELA_COR] +
+                    " (" +
+                    el.toLowerCase() +
+                    ")"}
                 </span>
               </div>
             ))}

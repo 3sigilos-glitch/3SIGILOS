@@ -10,7 +10,7 @@ import {
 import { runeById } from "@/lib/runes";
 import { WEAPONS } from "@/lib/weapons";
 import { BEINGS } from "@/lib/beings";
-import { ELEMENTS } from "@/lib/elements";
+import { VELA_COR } from "@/lib/elements";
 import { MANUAL_BEINGS, MANUAL_RUNES, MANUAL_WEAPONS } from "@/lib/manual";
 import Ensinamento from "./Ensinamento";
 import { classOf, elemsOf } from "@/lib/rules";
@@ -157,12 +157,7 @@ function RuneDetail({ id, onClose }: { id: number; onClose: () => void }) {
         <Row k="Pólo" v={r.pole} />
         <Row
           k="Vela"
-          v={elems
-            .map((e) => {
-              const cor = ELEMENTS.find((x) => x.n === e)?.cor.toLowerCase();
-              return e.toLowerCase() + (cor ? ` (${cor})` : "");
-            })
-            .join(" · ")}
+          v={elems.map((e) => `${e.toLowerCase()} (${VELA_COR[e]})`).join(" · ")}
         />
         <Row k="Intenções" v={r.intent.join(" · ")} />
         <Row k="Qualidades" v={r.kw.join(", ")} />
