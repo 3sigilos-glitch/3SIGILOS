@@ -36,8 +36,11 @@ export function shieldGeometry(
   r2 = 186
 ): ShieldGeometry {
   const pts: ShieldPoint[] = [];
+  // Começa no topo (-90°), exceto com 2 runas: aí arranca em 0° para a
+  // linha ficar na horizontal (uma runa à direita, outra à esquerda).
+  const start = n === 2 ? 0 : -Math.PI / 2;
   for (let i = 0; i < n; i++) {
-    const a = -Math.PI / 2 + (i * 2 * Math.PI) / n;
+    const a = start + (i * 2 * Math.PI) / n;
     pts.push({
       x: cx + r1 * Math.cos(a),
       y: cy + r1 * Math.sin(a),
