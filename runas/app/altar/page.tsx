@@ -12,7 +12,9 @@ import {
   PROC,
 } from "@/lib/evocations";
 import type { EvocationType } from "@/lib/types";
+import { MANUAL_MUDRAS } from "@/lib/manual";
 import { Chip, RunicDivider, ScreenTitle, SectionTitle } from "@/components/ui";
+import Ensinamento from "@/components/Ensinamento";
 import { useModal } from "@/components/Modal";
 import { useAppStore } from "@/components/StoreProvider";
 
@@ -34,11 +36,16 @@ export default function AltarPage() {
         sub="O que pedir depois de ativar. Versões resumidas, adapta às tuas palavras."
         items={DETERM.map((d) => ({ t: d.t, b: d.x + " Que assim seja!" }))}
       />
-      <CardsGrid
-        title="Mudras"
-        sub="Referência rápida."
-        items={MUDRAS.map((m) => ({ t: m.n, b: m.p }))}
-      />
+      <div>
+        <CardsGrid
+          title="Mudras"
+          sub="Referência rápida."
+          items={MUDRAS.map((m) => ({ t: m.n, b: m.p }))}
+        />
+        <div style={{ marginTop: 12 }}>
+          <Ensinamento title="Ensinamento · Os Mudras" text={MANUAL_MUDRAS} />
+        </div>
+      </div>
     </section>
   );
 }

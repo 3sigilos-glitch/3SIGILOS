@@ -6,8 +6,10 @@ import { elemsOf } from "@/lib/rules";
 import { CANDLE } from "@/lib/maps";
 import { GLYPH } from "@/lib/glyphs";
 import { SHAPE_NAME, shieldGeometry } from "@/lib/temple";
+import { MANUAL_TEMPLO } from "@/lib/manual";
 import { useGlyphScale } from "@/components/GlyphScales";
 import Glyph from "@/components/Glyph";
+import Ensinamento from "@/components/Ensinamento";
 import { RunicDivider, ScreenTitle, Vela } from "@/components/ui";
 
 // Montador de Templo (handoff): tiles das 24 runas, escudo SVG 440x440
@@ -39,6 +41,17 @@ export default function TemploPage() {
           seis, 7 a 9 estrelas maiores.
         </ScreenTitle>
         <RunicDivider runes="ᛟᚦᛖᛚ" />
+        <div
+          style={{
+            marginTop: 14,
+            border: "1px solid var(--border)",
+            borderRadius: 6,
+            padding: "6px 16px",
+            background: "var(--panel)",
+          }}
+        >
+          <Ensinamento title="Ensinamento · O Templo Nórdico" text={MANUAL_TEMPLO} />
+        </div>
       </div>
 
       {/* tiles das 24 runas (o Wyrd congrega, não entra no escudo) */}
