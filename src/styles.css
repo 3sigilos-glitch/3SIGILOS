@@ -1176,6 +1176,11 @@ a {
 .panel-body {
   padding: 2px 14px 12px;
 }
+.cat-groups {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
 .suit-row {
   display: flex;
   gap: 6px;
@@ -1200,8 +1205,16 @@ a {
   background: rgba(184, 147, 68, 0.14);
 }
 .suit-glyph {
+  flex-direction: column;
+  gap: 3px;
+  min-height: 54px;
   color: var(--suit, var(--sepia));
-  opacity: 0.8;
+  opacity: 0.85;
+}
+.suit-name {
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  color: var(--sepia);
 }
 .suit-glyph.active {
   opacity: 1;
@@ -1209,11 +1222,26 @@ a {
   background: color-mix(in srgb, var(--suit) 16%, var(--panel));
   color: var(--suit);
 }
-.fav-btn {
-  flex: 0 0 48px;
-  color: var(--sepia);
+.suit-glyph.active .suit-name {
+  color: var(--suit);
 }
-.fav-btn.active {
+.fav-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 42px;
+  margin-top: 6px;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  color: var(--sepia);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.fav-toggle.active {
   color: var(--rev);
   border-color: var(--rev);
   background: rgba(201, 141, 152, 0.14);

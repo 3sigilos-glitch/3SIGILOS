@@ -47,7 +47,7 @@ export function FilterPanel({ count, collapsed, onToggleCollapsed }: Props) {
 
       {!collapsed && (
         <div className="panel-body">
-          <div className="suit-row" role="tablist" aria-label="Filtrar por categoria">
+          <div className="cat-groups" role="tablist" aria-label="Filtrar por grupo">
             <button
               type="button"
               role="tab"
@@ -64,34 +64,34 @@ export function FilterPanel({ count, collapsed, onToggleCollapsed }: Props) {
               className={"suit-btn" + (cat === "major" ? " active" : "")}
               onClick={() => setCat("major")}
             >
-              Maiores
+              Arcanos Maiores
             </button>
+          </div>
+          <div className="suit-row" role="tablist" aria-label="Filtrar por naipe">
             {SUIT_ORDER.map((s) => (
               <button
                 key={s}
                 type="button"
                 role="tab"
                 aria-selected={cat === s}
-                aria-label={SUITS[s].label}
-                title={SUITS[s].label}
                 className={"suit-btn suit-glyph" + (cat === s ? " active" : "")}
                 style={{ "--suit": SUITS[s].hex } as React.CSSProperties}
                 onClick={() => setCat(s)}
               >
                 <SuitGlyph cat={s} />
+                <span className="suit-name">{SUITS[s].label}</span>
               </button>
             ))}
-            <button
-              type="button"
-              className={"suit-btn fav-btn" + (favOnly ? " active" : "")}
-              aria-pressed={favOnly}
-              aria-label="Só favoritas"
-              title="Só favoritas"
-              onClick={() => setFavOnly(!favOnly)}
-            >
-              <Heart size={17} fill={favOnly ? "currentColor" : "none"} />
-            </button>
           </div>
+          <button
+            type="button"
+            className={"fav-toggle" + (favOnly ? " active" : "")}
+            aria-pressed={favOnly}
+            onClick={() => setFavOnly(!favOnly)}
+          >
+            <Heart size={15} fill={favOnly ? "currentColor" : "none"} />
+            Só as minhas favoritas
+          </button>
 
           <div
             className={"num-zone" + (numbersDisabled ? " disabled" : "")}
