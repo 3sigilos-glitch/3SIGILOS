@@ -495,6 +495,33 @@ button {
   align-items: center;
   gap: 2px;
 }
+/* Nas acções, o ícone leva um rótulo pequeno por baixo, para se perceber
+   o que faz sem alargar a barra: continua com a mesma altura de toque. */
+.detail-actions .icon-btn {
+  width: auto;
+  min-width: 46px;
+  height: auto;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px 5px;
+  border-radius: 13px;
+}
+.icon-label {
+  font-family: var(--sans);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  color: var(--sepia-2);
+}
+.detail-actions .icon-btn.on .icon-label {
+  color: var(--gold);
+}
+.detail-actions .icon-btn.fav.on .icon-label {
+  color: var(--rev);
+}
 .detail-bar-spacer {
   width: 42px;
 }
@@ -622,6 +649,13 @@ button {
   line-height: 1.68;
   margin: 0;
   color: var(--parch);
+}
+.rev-hint {
+  font-family: var(--sans);
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  color: var(--sepia-2) !important;
+  margin: 0 0 12px !important;
 }
 
 /* Capitular dourada no significado principal */
@@ -994,6 +1028,44 @@ a {
   padding: 18px 20px calc(var(--nav-h) + 26px);
   max-width: 560px;
   margin: 0 auto;
+}
+.welcome-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 18px;
+  padding: 13px 12px 13px 14px;
+  border: 1px solid var(--line-soft);
+  border-radius: 14px;
+  background: rgba(184, 147, 68, 0.07);
+}
+.welcome-tip .tip-icon {
+  flex: none;
+  margin-top: 1px;
+  color: var(--gold);
+}
+.welcome-tip .tip-text {
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--parch);
+}
+.welcome-tip .tip-text strong {
+  color: var(--gold-light);
+  font-weight: 600;
+}
+.welcome-tip .tip-close {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  margin: -4px -2px 0 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--sepia-2);
+}
+.welcome-tip .tip-close:active {
+  background: rgba(184, 147, 68, 0.14);
 }
 .home-date {
   font-family: var(--sans);

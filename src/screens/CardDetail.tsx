@@ -128,6 +128,7 @@ export function CardDetail() {
             disabled={!speech.supported}
           >
             {speech.status !== "idle" ? <Square size={19} /> : <Volume2 size={21} />}
+            <span className="icon-label">{speech.status !== "idle" ? "Parar" : "Ouvir"}</span>
           </button>
           <button
             type="button"
@@ -140,6 +141,7 @@ export function CardDetail() {
             }}
           >
             <Heart size={21} fill={fav ? "currentColor" : "none"} />
+            <span className="icon-label">Favorita</span>
           </button>
           <button
             type="button"
@@ -150,6 +152,7 @@ export function CardDetail() {
             }
           >
             <Share2 size={20} />
+            <span className="icon-label">Partilhar</span>
           </button>
         </div>
       </div>
@@ -184,6 +187,10 @@ export function CardDetail() {
 
         <section className="meaning meaning-rev">
           <h2>Invertido</h2>
+          <p className="rev-hint">
+            Quando a carta sai ao contrário, de cabeça para baixo, o mesmo tema vira-se para dentro:
+            costuma falar do que está bloqueado, adormecido, em excesso ou ainda por resolver.
+          </p>
           {reversed || revealed ? (
             <p>{card.rev}</p>
           ) : (

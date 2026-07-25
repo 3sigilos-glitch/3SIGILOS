@@ -1,13 +1,15 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { m, useReducedMotion } from "framer-motion";
-import { GraduationCap, History, ImageDown, Loader2 } from "lucide-react";
+import { GraduationCap, History, ImageDown, Loader2, Sparkles, X } from "lucide-react";
 import { cardBySlug, metaEyebrow, suitHex } from "../data";
 import { usePrefs } from "../lib/prefs";
 import { dailyCard, dayMessage, dailyHistory, recordDaily } from "../lib/dailyCard";
 import { shareDailyImage } from "../lib/shareCard";
-import { haptic } from "../lib/storage";
+import { haptic, load, save } from "../lib/storage";
 import { CardImg } from "../components/CardImg";
+
+const TIP_KEY = "ts-tip-inicio-v1";
 
 export function Home() {
   const { reversed } = usePrefs();
@@ -15,6 +17,13 @@ export function Home() {
   const reduced = useReducedMotion();
   const [sharing, setSharing] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [showTip, setShowTip] = useState(() => !load(TIP_KEY, false));
+
+  function dismissTip() {
+    haptic(8);
+    setShowTip(false);
+    save(TIP_KEY, true);
+  }
 
   const daily = useMemo(() => {
     const d = dailyCard(reversed);
@@ -43,6 +52,24 @@ export function Home() {
 
   return (
     <main className="home">
+      {showTip && (
+        <m.aside
+          className="welcome-tip"
+          initial={reduced ? false : { opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+        >
+          <Sparkles size={17} className="tip-icon" />
+          <div className="tip-text">
+            <strong>Bem-vindo ao Tarot by 3SIGILOS.</strong> Tens aqui as 78 cartas explicadas em
+            português e uma carta nova por dia. Toca em qualquer carta para a estudares. As Leituras
+            interpretam a tiragem que fazes com o teu próprio baralho: a app não baralha por ti.
+          </div>
+          <button type="button" className="tip-close" onClick={dismissTip} aria-label="Fechar a dica">
+            <X size={16} />
+          </button>
+        </m.aside>
+      )}
       <p className="home-date">{today}</p>
       <h1 className="home-heading">Carta do dia</h1>
 
