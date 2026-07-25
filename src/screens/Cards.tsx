@@ -11,10 +11,13 @@ export function Cards() {
   const navigate = useNavigate();
   const { cat, rank, query, setQuery, setCat, setRank, favOnly, setFavOnly, favorites } =
     usePrefs();
-  const [collapsed, setCollapsed] = useState(() => load("ts-panel-collapsed", false));
+  // Por defeito recolhido: as cartas ficam com o ecrã todo e o filtro
+  // abre-se com um toque na barra. Quem preferir, fica com a sua escolha.
+  // Chave nova (v2) para que a mudança de defeito chegue a quem já usou a app.
+  const [collapsed, setCollapsed] = useState(() => load("ts-panel-collapsed-v2", true));
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => save("ts-panel-collapsed", collapsed), [collapsed]);
+  useEffect(() => save("ts-panel-collapsed-v2", collapsed), [collapsed]);
 
   // Repõe a posição de leitura ao voltar do detalhe.
   useEffect(() => {

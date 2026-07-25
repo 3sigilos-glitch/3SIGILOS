@@ -1219,8 +1219,8 @@ a {
   align-items: center;
   gap: 10px;
   width: 100%;
-  min-height: 44px;
-  padding: 6px 18px;
+  min-height: 42px;
+  padding: 5px 18px;
   color: var(--sepia);
 }
 .panel-handle svg {
@@ -1246,23 +1246,23 @@ a {
   white-space: nowrap;
 }
 .panel-body {
-  padding: 2px 14px 12px;
+  padding: 2px 14px 10px;
 }
 .cat-groups {
   display: flex;
-  gap: 6px;
-  margin-bottom: 6px;
+  gap: 5px;
+  margin-bottom: 5px;
 }
 .suit-row {
   display: flex;
-  gap: 6px;
+  gap: 5px;
 }
 .suit-btn {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
+  min-height: 38px;
   font-family: var(--sans);
   font-size: 12.5px;
   color: var(--sepia);
@@ -1278,13 +1278,13 @@ a {
 }
 .suit-glyph {
   flex-direction: column;
-  gap: 3px;
-  min-height: 54px;
+  gap: 2px;
+  min-height: 46px;
   color: var(--suit, var(--sepia));
   opacity: 0.85;
 }
 .suit-name {
-  font-size: 10.5px;
+  font-size: 10px;
   letter-spacing: 0.02em;
   color: var(--sepia);
 }
@@ -1303,8 +1303,8 @@ a {
   justify-content: center;
   gap: 8px;
   width: 100%;
-  min-height: 42px;
-  margin-top: 6px;
+  min-height: 36px;
+  margin-top: 5px;
   font-family: var(--sans);
   font-size: 12.5px;
   color: var(--sepia);
@@ -1319,7 +1319,7 @@ a {
   background: rgba(201, 141, 152, 0.14);
 }
 .num-zone {
-  margin-top: 6px;
+  margin-top: 5px;
   transition: opacity 0.2s;
 }
 .num-zone.disabled {
@@ -1329,16 +1329,16 @@ a {
 .num-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 5px;
+  gap: 4px;
 }
 .court-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 5px;
-  margin-top: 5px;
+  gap: 4px;
+  margin-top: 4px;
 }
 .num-btn {
-  min-height: 42px;
+  min-height: 36px;
   font-family: var(--sans);
   font-size: 12.5px;
   color: var(--sepia);
