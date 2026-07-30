@@ -8,6 +8,40 @@ import { haptic } from "../lib/storage";
 import { CardImg } from "../components/CardImg";
 import { CardPicker } from "../components/CardPicker";
 
+/* Esconde pistas que entregariam a resposta: o nome da carta, os nomes
+   dos naipes (espadas, taças, bastões, pentáculos) e as figuras (valete,
+   cavaleiro, rainha, rei), incluindo combinações como "cinco espadas".
+   Assim o jogo obriga a reconhecer a carta pelo tema, não pelo rótulo. */
+const SUIT_WORDS = [
+  "bastões", "bastão", "bastoes", "bastao", "espadas", "espada", "taças", "taça",
+  "tacas", "taca", "cálices", "cálice", "calices", "calice", "copas", "copa",
+  "moedas", "moeda", "pentáculos", "pentáculo", "pentaculos", "pentaculo",
+  "discos", "disco", "ouros", "ouro", "varas", "vara",
+];
+const COURT_WORDS = ["valete", "cavaleiro", "rainha", "rei", "reis"];
+const NUM_WORDS = [
+  "um", "uma", "dois", "duas", "três", "tres", "quatro", "cinco", "seis",
+  "sete", "oito", "nove", "dez",
+];
+
+function esc(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function redact(card: Card, text: string): string {
+  const core = card.pt.replace(/^(O|A|Os|As)\s+/i, "");
+  const alts = [
+    esc(card.pt),
+    esc(card.en),
+    esc(core),
+    "(?:" + NUM_WORDS.join("|") + ")\\s+(?:" + SUIT_WORDS.join("|") + ")",
+    ...SUIT_WORDS.map(esc),
+    ...COURT_WORDS.map(esc),
+  ];
+  const re = new RegExp("\\b(?:" + alts.join("|") + ")\\b", "gi");
+  return text.replace(re, "…");
+}
+
 /* Sorteia a carta alvo, evitando repetir a anterior. */
 function drawTarget(pool: Card[], avoid?: string): Card {
   const usable = pool.length > 0 ? pool : filterCards("all", "all", "");
@@ -82,10 +116,14 @@ export function Guess() {
             <p className="guess-lead">Que carta é esta?</p>
             <ul className="kw-row guess-kw" aria-label="Palavras-chave">
               {answer.kw.map((k) => (
-                <li key={k}>{k}</li>
+                <li key={k}>{redact(answer, k)}</li>
               ))}
             </ul>
-            <p className="guess-meaning">{answer.up}</p>
+            <ul className="guess-clues" aria-label="Pistas para reflectir">
+              {answer.q.map((q) => (
+                <li key={q}>{redact(answer, q)}</li>
+              ))}
+            </ul>
 
             <button type="button" className="gold-btn guess-choose" onClick={() => setPickerOpen(true)}>
               <Layers size={17} /> Escolher entre as 78 cartas

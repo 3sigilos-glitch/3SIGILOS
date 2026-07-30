@@ -2289,6 +2289,29 @@ h3,
   margin: 0 auto;
   max-width: 44ch;
 }
+.guess-clues {
+  list-style: none;
+  margin: 4px auto 0;
+  padding: 0;
+  max-width: 42ch;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.guess-clues li {
+  font-size: 18px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--parch);
+}
+.guess-clues li::before {
+  content: "✦";
+  display: block;
+  color: var(--gold);
+  font-size: 12px;
+  font-style: normal;
+  margin-bottom: 4px;
+}
 .guess-reveal {
   text-align: center;
 }
