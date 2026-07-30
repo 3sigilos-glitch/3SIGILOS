@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { KeyRound, Volume2, VolumeX, X } from "lucide-react";
+import { Link } from "react-router-dom";
+import { KeyRound, Lock, Volume2, VolumeX, X } from "lucide-react";
 import { RESERVADO_PARA_TODOS } from "../config";
 import { AMBIENTS, ambientState, playAmbient, setAmbientVolume, stopAmbient } from "../lib/ambient";
 import { usePrefs } from "../lib/prefs";
@@ -146,6 +147,10 @@ export function SettingsSheet({ onClose }: { onClose: () => void }) {
             como as Leituras.
           </p>
         )}
+
+        <Link to="/admin" className="admin-entry" onClick={onClose}>
+          <Lock size={12} /> Administrador
+        </Link>
 
         <p className="sheet-version">Versão {__APP_VERSION__}</p>
       </div>

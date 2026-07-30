@@ -13,6 +13,8 @@ import { CardDetail } from "./screens/CardDetail";
 const Journey = lazy(() => import("./screens/Journey").then((mod) => ({ default: mod.Journey })));
 const Guide = lazy(() => import("./screens/Guide").then((mod) => ({ default: mod.Guide })));
 const Study = lazy(() => import("./screens/Study").then((mod) => ({ default: mod.Study })));
+const Guess = lazy(() => import("./screens/Guess").then((mod) => ({ default: mod.Guess })));
+const Admin = lazy(() => import("./screens/Admin").then((mod) => ({ default: mod.Admin })));
 const Readings = lazy(() => import("./screens/Readings").then((mod) => ({ default: mod.Readings })));
 const NewReading = lazy(() => import("./screens/NewReading").then((mod) => ({ default: mod.NewReading })));
 const ReadingView = lazy(() => import("./screens/ReadingView").then((mod) => ({ default: mod.ReadingView })));
@@ -62,6 +64,8 @@ function Screens() {
             <Route path="/jornada" element={<Journey />} />
             <Route path="/guia" element={<Guide />} />
             <Route path="/estudo" element={<Study />} />
+            <Route path="/adivinha" element={<Guess />} />
+            <Route path="/admin" element={<Admin />} />
             <Route path="/leituras" element={<Reserved><Readings /></Reserved>} />
             <Route path="/leituras/nova/:spreadId" element={<Reserved><NewReading /></Reserved>} />
             <Route path="/leituras/:id" element={<Reserved><ReadingView /></Reserved>} />

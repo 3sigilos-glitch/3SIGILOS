@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { m, useReducedMotion } from "framer-motion";
-import { GraduationCap, History, ImageDown, Loader2, Sparkles, X } from "lucide-react";
+import { GraduationCap, HelpCircle, History, ImageDown, Loader2, Sparkles, X } from "lucide-react";
 import { cardBySlug, metaEyebrow, suitHex } from "../data";
 import { usePrefs } from "../lib/prefs";
 import { dailyCard, dayMessage, dailyHistory, recordDaily } from "../lib/dailyCard";
@@ -119,7 +119,14 @@ export function Home() {
           <GraduationCap size={20} />
           <span>
             <strong>Modo estudo</strong>
-            <small>Flashcards para treinar os significados</small>
+            <small>Vê a carta e recorda o significado</small>
+          </span>
+        </Link>
+        <Link to="/adivinha" className="shortcut">
+          <HelpCircle size={20} />
+          <span>
+            <strong>Adivinha a carta</strong>
+            <small>Lê o significado e descobre que carta é</small>
           </span>
         </Link>
         <button type="button" className="shortcut" onClick={() => setShowHistory((v) => !v)}>
