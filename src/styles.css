@@ -2310,42 +2310,21 @@ h3,
 .guess-verdict.miss {
   color: var(--rev);
 }
-.guess-options {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin: 20px 0 0;
-}
-.guess-option {
-  display: flex;
+.guess-choose {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-height: 54px;
-  padding: 8px 10px;
-  font-family: var(--serif);
-  font-size: 16px;
-  color: var(--parch);
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  transition: color 0.15s, border-color 0.15s, background 0.15s, opacity 0.2s;
+  gap: 8px;
+  margin: 24px auto 0;
 }
-.guess-option.correct {
-  color: #a7d99a;
-  border-color: rgba(143, 191, 127, 0.6);
-  background: rgba(143, 191, 127, 0.14);
+.guess-your-pick {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  color: var(--sepia-2);
+  margin: 10px 0 0;
 }
-.guess-option.wrong {
+.guess-your-pick strong {
   color: var(--rev);
-  border-color: rgba(201, 141, 152, 0.6);
-  background: rgba(201, 141, 152, 0.14);
-}
-.guess-option.dim {
-  opacity: 0.45;
-}
-.guess-option-name {
-  line-height: 1.2;
+  font-weight: 600;
 }
 .guess-actions {
   display: flex;

@@ -25,17 +25,24 @@ export interface Msg {
   text: string;
 }
 
-/* Confirma o token no proxy, sem gastar nada da IA. */
-export async function validateAdmin(token: string): Promise<boolean> {
+export type ValidateResult = "ok" | "wrong" | "unconfigured" | "offline";
+
+/* Confirma o token no proxy, sem gastar nada da IA. Distingue os casos
+   para o ecra de entrada dizer o que se passa. */
+export async function validateAdmin(token: string): Promise<ValidateResult> {
   try {
     const res = await fetch("/api/analise", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token: token.trim(), validate: true }),
     });
-    return res.ok;
+    if (res.ok) return "ok";
+    if (res.status === 401) return "wrong";
+    if (res.status === 503) return "unconfigured";
+    if (res.status === 404) return "unconfigured";
+    return "offline";
   } catch {
-    return false;
+    return "offline";
   }
 }
 

@@ -1,30 +1,20 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { m, useReducedMotion } from "framer-motion";
-import { Check, ChevronLeft, X } from "lucide-react";
-import { Card, filterCards, metaEyebrow, suitHex } from "../data";
+import { ChevronLeft, Layers } from "lucide-react";
+import { Card, cardBySlug, filterCards, metaEyebrow, suitHex } from "../data";
 import { usePrefs } from "../lib/prefs";
 import { haptic } from "../lib/storage";
 import { CardImg } from "../components/CardImg";
+import { CardPicker } from "../components/CardPicker";
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-/* Monta uma ronda: a carta certa mais tres distractoras, baralhadas. */
-function makeRound(pool: Card[], avoid?: string): { answer: Card; options: Card[] } {
-  const usable = pool.length >= 4 ? pool : filterCards("all", "all", "");
-  let answer = usable[Math.floor(Math.random() * usable.length)];
-  if (avoid && usable.length > 1) {
-    while (answer.slug === avoid) answer = usable[Math.floor(Math.random() * usable.length)];
-  }
-  const distract = shuffle(usable.filter((c) => c.slug !== answer.slug)).slice(0, 3);
-  return { answer, options: shuffle([answer, ...distract]) };
+/* Sorteia a carta alvo, evitando repetir a anterior. */
+function drawTarget(pool: Card[], avoid?: string): Card {
+  const usable = pool.length > 0 ? pool : filterCards("all", "all", "");
+  if (usable.length === 1) return usable[0];
+  let c = usable[Math.floor(Math.random() * usable.length)];
+  while (c.slug === avoid) c = usable[Math.floor(Math.random() * usable.length)];
+  return c;
 }
 
 export function Guess() {
@@ -38,25 +28,28 @@ export function Guess() {
     return withFavs.length > 0 ? withFavs : filterCards("all", "all", "");
   }, [cat, rank, favOnly, favorites]);
 
-  const [round, setRound] = useState(() => makeRound(pool));
+  const [answer, setAnswer] = useState<Card>(() => drawTarget(pool));
   const [picked, setPicked] = useState<string | null>(null);
+  const [pickerOpen, setPickerOpen] = useState(false);
   const [score, setScore] = useState({ hits: 0, total: 0 });
 
   const filtered = cat !== "all" || rank !== "all" || favOnly;
   const answered = picked !== null;
-  const correct = picked === round.answer.slug;
+  const correct = picked === answer.slug;
+  const pickedCard = picked ? cardBySlug(picked) : null;
 
-  function pick(slug: string) {
+  function choose(card: Card) {
     if (answered) return;
-    const hit = slug === round.answer.slug;
+    const hit = card.slug === answer.slug;
     haptic(hit ? 18 : 8);
-    setPicked(slug);
+    setPicked(card.slug);
+    setPickerOpen(false);
     setScore((s) => ({ hits: s.hits + (hit ? 1 : 0), total: s.total + 1 }));
   }
 
   function next() {
     haptic(8);
-    setRound(makeRound(pool, round.answer.slug));
+    setAnswer(drawTarget(pool, answer.slug));
     setPicked(null);
     window.scrollTo(0, 0);
   }
@@ -74,11 +67,11 @@ export function Guess() {
       </div>
 
       {filtered && (
-        <p className="study-scope">A sortear dentro do filtro activo ({pool.length} cartas).</p>
+        <p className="study-scope">O alvo é sorteado dentro do filtro activo ({pool.length} cartas).</p>
       )}
 
       <m.div
-        key={round.answer.slug + String(answered)}
+        key={answer.slug + String(answered)}
         className="guess-body"
         initial={reduced ? false : { opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -88,63 +81,55 @@ export function Guess() {
           <>
             <p className="guess-lead">Que carta é esta?</p>
             <ul className="kw-row guess-kw" aria-label="Palavras-chave">
-              {round.answer.kw.map((k) => (
+              {answer.kw.map((k) => (
                 <li key={k}>{k}</li>
               ))}
             </ul>
-            <p className="guess-meaning">{round.answer.up}</p>
+            <p className="guess-meaning">{answer.up}</p>
+
+            <button type="button" className="gold-btn guess-choose" onClick={() => setPickerOpen(true)}>
+              <Layers size={17} /> Escolher entre as 78 cartas
+            </button>
           </>
         ) : (
           <div className="guess-reveal">
             <div className="guess-figure">
-              <CardImg card={round.answer} width={480} eager />
+              <CardImg card={answer} width={480} eager />
             </div>
             <p className={"guess-verdict " + (correct ? "hit" : "miss")}>
-              {correct ? "Certo!" : "Era esta"}
+              {correct ? "Certo!" : "Não era essa"}
             </p>
-            <p className="eyebrow" style={{ color: suitHex(round.answer.cat) }}>
-              {metaEyebrow(round.answer)}
+            <p className="eyebrow" style={{ color: suitHex(answer.cat) }}>
+              {metaEyebrow(answer)}
             </p>
-            <h1 className="card-title">{round.answer.pt}</h1>
-            <p className="card-en">{round.answer.en}</p>
-          </div>
-        )}
+            <h1 className="card-title">{answer.pt}</h1>
+            <p className="card-en">{answer.en}</p>
+            {!correct && pickedCard && (
+              <p className="guess-your-pick">
+                Escolheste <strong>{pickedCard.pt}</strong>.
+              </p>
+            )}
 
-        <div className="guess-options">
-          {round.options.map((o) => {
-            const isAnswer = o.slug === round.answer.slug;
-            const isPicked = o.slug === picked;
-            let cls = "guess-option";
-            if (answered && isAnswer) cls += " correct";
-            else if (answered && isPicked) cls += " wrong";
-            else if (answered) cls += " dim";
-            return (
-              <button
-                key={o.slug}
-                type="button"
-                className={cls}
-                onClick={() => pick(o.slug)}
-                disabled={answered}
-              >
-                <span className="guess-option-name">{o.pt}</span>
-                {answered && isAnswer && <Check size={17} />}
-                {answered && isPicked && !isAnswer && <X size={17} />}
+            <div className="guess-actions">
+              <button type="button" className="gold-btn" onClick={next}>
+                Próxima carta
               </button>
-            );
-          })}
-        </div>
-
-        {answered && (
-          <div className="guess-actions">
-            <button type="button" className="gold-btn" onClick={next}>
-              Próxima carta
-            </button>
-            <Link to={"/carta/" + round.answer.slug} className="ghost-btn">
-              Ver ficha completa
-            </Link>
+              <Link to={"/carta/" + answer.slug} className="ghost-btn">
+                Ver ficha completa
+              </Link>
+            </div>
           </div>
         )}
       </m.div>
+
+      {pickerOpen && (
+        <CardPicker
+          title="Qual é a carta?"
+          usedSlugs={[]}
+          onPick={choose}
+          onClose={() => setPickerOpen(false)}
+        />
+      )}
     </main>
   );
 }

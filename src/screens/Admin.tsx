@@ -39,15 +39,21 @@ export function Admin() {
     if (!pass.trim() || checking) return;
     setChecking(true);
     setLoginError("");
-    const ok = await validateAdmin(pass);
+    const result = await validateAdmin(pass);
     setChecking(false);
-    if (ok) {
+    if (result === "ok") {
       setAdmin(pass);
       setPass("");
       haptic(20);
       setUnlocked(true);
+    } else if (result === "wrong") {
+      setLoginError("Código incorrecto.");
+    } else if (result === "unconfigured") {
+      setLoginError(
+        "A área ainda não está ligada no servidor. Falta definir ADMIN_TOKEN no Vercel e fazer um novo deploy."
+      );
     } else {
-      setLoginError("Código incorrecto ou área ainda por configurar no servidor.");
+      setLoginError("Não foi possível validar agora. Verifica a ligação e tenta outra vez.");
     }
   }
 
