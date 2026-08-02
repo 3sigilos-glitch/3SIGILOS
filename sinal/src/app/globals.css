@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+/*
+  SINAL, sistema visual. A referencia e um instrumento analogico bem
+  feito: mostrador, arco, agulha, mate. Baixa saturacao por razoes
+  sensoriais. Nada de neon, nada de dourado, nada de serifas.
+*/
+
+@theme {
+  /* Cor */
+  --color-breu: #12161a;        /* fundo, azul ardosia muito escuro */
+  --color-placa: #1b2128;       /* superficies e cartoes */
+  --color-traco: #2a323b;       /* linhas e limites */
+  --color-tinta: #e8e4dc;       /* texto principal, off white quente */
+  --color-tinta-fraca: #8e979f; /* texto secundario */
+
+  --color-ac-despejo: #6e93a8;  /* azul cinza */
+  --color-ac-agora: #c8874e;    /* ocre queimado */
+  --color-ac-bateria: #7fa37a;  /* musgo */
+  --color-ac-nos: #a87c9b;      /* malva */
+
+  --color-alerta: #b5654f;      /* so no sinal vermelho, terroso */
+
+  /* Tipografia. As variaveis --fonte-* vem do next/font no layout. */
+  --font-sans: var(--fonte-inter), system-ui, sans-serif;
+  --font-mono: var(--fonte-mono), ui-monospace, monospace;
+
+  /* Forma */
+  --radius-cartao: 12px;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-breu);
+  color: var(--color-tinta);
+  font-family: var(--font-sans);
+  /* Evitar salto de conteudo por baixo da barra inferior fixa */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Numeros, horas, valores e temporizadores em mono, para alinhar em coluna */
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Movimento so onde transporta informacao. Respeitar sempre a preferencia. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Alvos de toque generosos. Nenhum texto accionavel abaixo de 16px. */
+button {
+  font: inherit;
+  cursor: pointer;
+}

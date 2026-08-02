@@ -1,0 +1,25 @@
+# dependencias
+/node_modules
+
+# next
+/.next/
+/out/
+next-env.d.ts
+
+# producao
+/build
+
+# ambiente, contem segredos e dados de saude, nunca versionar
+.env
+.env.*
+!.env.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+
+# logs e sistema
+*.log
+.DS_Store

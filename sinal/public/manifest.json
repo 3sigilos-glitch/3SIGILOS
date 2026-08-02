@@ -1,0 +1,44 @@
+{
+  "name": "SINAL",
+  "short_name": "SINAL",
+  "description": "Porta de entrada unica para a casa.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#12161a",
+  "theme_color": "#12161a",
+  "lang": "pt-PT",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/icons/icone-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icone-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icone-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icone-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    { "name": "Registar bateria", "url": "/bateria?rapido=1" },
+    { "name": "Despejar", "url": "/despejo?gravar=1" },
+    { "name": "Sinal", "url": "/nos?sinal=1" }
+  ]
+}

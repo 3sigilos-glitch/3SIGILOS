@@ -3,3 +3,10 @@ dist/
 dev-dist/
 *.log
 tsconfig.tsbuildinfo
+
+# ambiente, nunca versionar (contem segredos e dados de saude)
+.env
+.env.*
+!.env.example
+.next/
+.vercel
