@@ -25,12 +25,17 @@ passam por Route Handlers.
 
 ## Estado, por fases
 
-- **Fase 0 (feita):** projecto, autenticacao Google com refresh token
-  guardado, esquema SQL, RLS activa em todas as tabelas, PWA instalavel.
-- Fase 1: ecra Bateria (arcos, contextos, grafico, PDF).
-- Fase 2: Despejo com voz, escrita offline, triagem.
-- Fase 3: Nos, com escrita real no Google Calendar e push.
-- Fase 4: Agora, temporizador resistente a bloqueio e desdobramento por IA.
+Todas as fases estao construidas e a compilar. Falta ligar as
+credenciais (Supabase, Google, VAPID, Anthropic) e testar em uso real.
+
+- **Fase 0:** projecto, autenticacao Google com refresh token guardado,
+  esquema SQL, RLS activa em todas as tabelas, PWA instalavel.
+- **Fase 1:** ecra Bateria (arcos, contextos, grafico semanal, PDF).
+- **Fase 2:** Despejo com voz, escrita offline em IndexedDB, triagem.
+- **Fase 3:** Nos, com sinal do dia, tarefas da casa, obrigacoes com
+  escrita real no Google Calendar, parqueadas e push das obrigacoes.
+- **Fase 4:** Agora, com escolha de tarefa, temporizador resistente a
+  bloqueio de ecra e desdobramento por IA.
 
 ## Arranque local
 
@@ -105,6 +110,18 @@ npx web-push generate-vapid-keys
 
 Colocar a chave publica em `NEXT_PUBLIC_VAPID_PUBLIC_KEY` e a privada em
 `VAPID_PRIVATE_KEY`. `VAPID_SUBJECT` e um `mailto:` da conta da casa.
+
+O cron das obrigacoes (`/api/cron/lembretes`) esta agendado em
+`vercel.json` para as 06:30 UTC, que corresponde a 07:30 em Lisboa no
+horario de verao. No inverno passa a 06:30 em Lisboa, ajusta se precisares.
+Protege se com `CRON_SECRET`: a Vercel envia esse valor no cabecalho
+`Authorization` quando a variavel esta definida.
+
+### Anthropic (desdobramento, fase 4)
+
+Colocar `ANTHROPIC_API_KEY` em `.env.local`. Sem esta chave, o botao
+Desdobrar mostra uma mensagem a dizer que ainda nao esta configurado, e o
+resto da app funciona na mesma.
 
 ## Semente do espaco da casa
 
