@@ -17,13 +17,13 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SINAL",
-  description: "Porta de entrada unica para a casa.",
+  title: "Maré",
+  description: "Sobe e desce, sem culpa. A porta de entrada da casa.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "SINAL",
+    title: "Maré",
   },
 };
 

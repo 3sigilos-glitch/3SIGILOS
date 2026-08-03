@@ -65,3 +65,16 @@ button {
   font: inherit;
   cursor: pointer;
 }
+
+/* A mare do ecra de entrada. Movimento lento, so nesta pagina, e que
+   para sozinho quando o utilizador prefere menos movimento. */
+@keyframes mare-deriva {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.mare-onda {
+  transform-box: fill-box;
+  will-change: transform;
+}
+.mare-onda-a { animation: mare-deriva 13s linear infinite; }
+.mare-onda-b { animation: mare-deriva 9s linear infinite; }

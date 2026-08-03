@@ -207,7 +207,7 @@ export function documentoBateria(dados: DadosPdf) {
       ),
       ...linhasTabela,
 
-      h(Text, { style: estilos.nota }, "Documento gerado pela app SINAL. Valores em escala de 1 a 5. Sem interpretacao clinica.")
+      h(Text, { style: estilos.nota }, "Documento gerado pela app Mare. Valores em escala de 1 a 5. Sem interpretacao clinica.")
     )
   );
 }

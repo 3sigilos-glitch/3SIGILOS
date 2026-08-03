@@ -1,7 +1,7 @@
 {
-  "name": "SINAL",
-  "short_name": "SINAL",
-  "description": "Porta de entrada unica para a casa.",
+  "name": "Maré",
+  "short_name": "Maré",
+  "description": "Sobe e desce, sem culpa. A porta de entrada da casa.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

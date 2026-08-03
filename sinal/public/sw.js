@@ -61,9 +61,9 @@ self.addEventListener("push", (evento) => {
   try {
     dados = evento.data ? evento.data.json() : {};
   } catch (e) {
-    dados = { titulo: "SINAL", corpo: evento.data ? evento.data.text() : "" };
+    dados = { titulo: "Maré", corpo: evento.data ? evento.data.text() : "" };
   }
-  const titulo = dados.titulo || "SINAL";
+  const titulo = dados.titulo || "Maré";
   const opcoes = {
     body: dados.corpo || "",
     icon: "/icons/icone-192.png",

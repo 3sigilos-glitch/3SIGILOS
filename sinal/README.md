@@ -1,4 +1,4 @@
-# SINAL
+# Maré
 
 Aplicacao web progressiva (PWA) para duas pessoas que partilham casa.
 Porta de entrada unica: captura, bateria, sinal do dia e obrigacoes da
@@ -9,7 +9,9 @@ Isto nao e uma app de produtividade. E um instrumento. O criterio de
 sucesso e continuar a ser usada ao fim de tres meses. Menos friccao,
 menos culpa, menos decisoes.
 
-O nome "SINAL" e provisorio.
+O nome, Maré, vem da bateria social e sensorial que sobe e desce ao
+longo do dia, sem sequencias nem culpa. A pasta do projecto mantem se
+como `sinal/` por conveniencia, mas a app chama se Maré.
 
 ## Stack
 
