@@ -10,7 +10,12 @@ import { guardarRefreshToken } from "@/lib/google/tokens";
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const proximo = searchParams.get("next") ?? "/";
+
+  // So aceitamos caminhos internos. Um "next" com barra dupla ou com
+  // esquema (//outro.site, https://outro.site) sairia da aplicacao e
+  // servia para atirar alguem para um site parecido depois do login.
+  const pedido = searchParams.get("next") ?? "/";
+  const proximo = /^\/(?!\/)/.test(pedido) ? pedido : "/";
 
   if (!code) {
     return NextResponse.redirect(`${origin}/?erro=sem_codigo`);

@@ -15,9 +15,12 @@ export const dynamic = "force-dynamic";
 const JANELA_DIAS = 2;
 
 export async function GET(request: NextRequest) {
+  // Fecha por omissao. Sem CRON_SECRET definido, ninguem entra, nem
+  // sequer a Vercel. Antes, a falta do segredo abria a rota a toda a
+  // gente, e esta rota corre com a chave de servico.
   const segredo = process.env.CRON_SECRET;
   const autorizacao = request.headers.get("authorization");
-  if (segredo && autorizacao !== `Bearer ${segredo}`) {
+  if (!segredo || autorizacao !== `Bearer ${segredo}`) {
     return NextResponse.json({ erro: "nao autorizado" }, { status: 401 });
   }
 

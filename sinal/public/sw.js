@@ -3,7 +3,9 @@
 // mesmo sem rede. A escrita offline em si (capturas) e tratada com
 // IndexedDB na Fase 2. Aqui garantimos apenas que a app arranca.
 
-const CACHE = "sinal-casca-v1";
+// Ao subir a versao, o activate apaga as caches antigas. Subimos para
+// v2 para limpar do telemovel o que a versao anterior guardou a mais.
+const CACHE = "mare-casca-v2";
 const ESSENCIAIS = ["/", "/manifest.json"];
 
 self.addEventListener("install", (evento) => {
@@ -40,7 +42,21 @@ self.addEventListener("fetch", (evento) => {
     return;
   }
 
-  // Restantes GET: cache primeiro, depois rede.
+  // So guardamos ficheiros estaticos: codigo, tipos de letra, icones,
+  // manifest. Nunca paginas nem respostas com dados.
+  //
+  // Isto e deliberado. Antes guardavamos qualquer GET, e as navegacoes
+  // internas do Next trazem os dados da pagina (bateria, capturas) numa
+  // resposta que ficava gravada no telemovel, legivel mesmo depois de
+  // sair da sessao. Registos de bateria sao dados de saude e nao devem
+  // sobreviver em cache.
+  const estatico =
+    url.pathname.startsWith("/_next/static/") ||
+    url.pathname.startsWith("/icons/") ||
+    url.pathname === "/manifest.json";
+
+  if (!estatico) return;
+
   evento.respondWith(
     caches.match(pedido).then((emCache) => {
       if (emCache) return emCache;

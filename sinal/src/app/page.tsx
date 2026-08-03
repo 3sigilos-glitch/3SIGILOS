@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { criarClienteServidor } from "@/lib/supabase/server";
 import BotaoEntrar from "./entrar";
 import MareVisual from "@/components/MareVisual";
+import Wordmark from "@/components/Wordmark";
 
 export const dynamic = "force-dynamic";
 
@@ -20,8 +21,10 @@ export default async function Pagina() {
   return (
     <main className="min-h-dvh flex flex-col justify-center gap-10 max-w-md mx-auto">
       <div className="flex flex-col gap-4">
-        <div className="px-6 flex flex-col gap-2">
-          <h1 className="text-5xl font-semibold tracking-tight">maré</h1>
+        <div className="px-6 flex flex-col gap-4">
+          <h1 className="m-0">
+            <Wordmark className="w-44 h-auto text-[var(--color-tinta)]" />
+          </h1>
           <p className="text-[var(--color-tinta-fraca)] text-lg leading-relaxed">
             Sobe e desce, sem culpa. A porta de entrada da casa.
           </p>
