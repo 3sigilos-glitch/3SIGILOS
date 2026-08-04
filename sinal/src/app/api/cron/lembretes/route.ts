@@ -71,15 +71,18 @@ export async function GET(request: NextRequest) {
       .in("user_id", ids);
     if (!subs) continue;
 
-    // Um aviso por pessoa, nao um por obrigacao. O texto e generico de
-    // proposito: o titulo da obrigacao aparecia no ecra bloqueado,
-    // visivel a quem pegasse no telemovel. Quem abre a app ve o que e,
-    // quem so olha de relance nao ve nada. Como o texto e sempre igual,
-    // varios avisos seguidos so davam ruido.
-    const alguemHoje = lista.some((o) => o.data_limite === dataDe(hoje));
-    const corpo = alguemHoje
-      ? "Ver tarefa da casa hoje"
-      : "Ver tarefa da casa nos proximos dias";
+    // Um aviso por pessoa, nao um por obrigacao. Sem titulos: o nome da
+    // obrigacao aparecia no ecra bloqueado, visivel a quem pegasse no
+    // telemovel. Quem abre a app ve o que e, quem olha de relance nao.
+    //
+    // O numero conta so o que vence nesta janela de dias, nunca a lista
+    // por fazer. E uma indicacao de tamanho para hoje, nao uma divida
+    // acumulada.
+    const paraHoje = lista.filter((o) => o.data_limite === dataDe(hoje)).length;
+    const quantas = paraHoje > 0 ? paraHoje : lista.length;
+    const quando = paraHoje > 0 ? "hoje" : "nos proximos dias";
+    const palavra = quantas === 1 ? "tarefa" : "tarefas";
+    const corpo = `${quantas} ${palavra} da casa ${quando}`;
 
     for (const s of subs) {
       try {
