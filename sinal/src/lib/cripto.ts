@@ -2,6 +2,7 @@ import "server-only";
 import {
   createCipheriv,
   createDecipheriv,
+  createHash,
   randomBytes,
   timingSafeEqual,
 } from "node:crypto";
@@ -20,6 +21,18 @@ import {
 
 const FORMATO = "v1";
 
+const MINIMO = 32;
+
+// Aceita duas formas, para nao obrigar a gerar nada num formato exacto:
+//
+//   1. 32 bytes em base64, a forma canonica, usada tal e qual.
+//   2. Qualquer segredo com pelo menos 32 caracteres, do qual derivamos
+//      os 32 bytes por SHA 256.
+//
+// A derivacao e simples de proposito: isto nao e uma palavra passe
+// escolhida por uma pessoa, e um segredo aleatorio comprido, por isso
+// nao precisa de alongamento por scrypt. O minimo de 32 caracteres
+// existe para travar segredos curtos e adivinhaveis.
 function chave(): Buffer {
   const bruta = process.env.TOKEN_ENCRYPTION_KEY;
   if (!bruta) {
@@ -27,13 +40,19 @@ function chave(): Buffer {
       "Falta TOKEN_ENCRYPTION_KEY. Sem ela nao e possivel guardar nem ler a ligacao ao calendario."
     );
   }
-  const buf = Buffer.from(bruta, "base64");
-  if (buf.length !== 32) {
+
+  const base64 = Buffer.from(bruta, "base64");
+  if (base64.length === 32 && base64.toString("base64") === bruta) {
+    return base64;
+  }
+
+  if (bruta.length < MINIMO) {
     throw new Error(
-      "TOKEN_ENCRYPTION_KEY tem de ser 32 bytes em base64. Gera uma nova."
+      `TOKEN_ENCRYPTION_KEY e demasiado curta. Usa pelo menos ${MINIMO} caracteres aleatorios.`
     );
   }
-  return buf;
+
+  return createHash("sha256").update(bruta, "utf8").digest();
 }
 
 // Devolve "v1.<iv>.<etiqueta>.<cifrado>", tudo em base64url.
