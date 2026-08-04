@@ -1,5 +1,6 @@
 import { google } from "googleapis";
 import { criarClienteAdmin } from "@/lib/supabase/admin";
+import { cifrar, decifrar, porCifrar } from "@/lib/cripto";
 
 // Erro lancado quando o refresh token deixa de ser valido e e preciso
 // pedir nova autenticacao ao utilizador.
@@ -31,7 +32,8 @@ export async function guardarRefreshToken(
   const { error } = await admin.from("tokens_google").upsert(
     {
       user_id: userId,
-      refresh_token: refreshToken,
+      // Nunca gravamos o token em claro.
+      refresh_token: cifrar(refreshToken),
       scope,
       actualizado_em: new Date().toISOString(),
     },
@@ -54,8 +56,27 @@ export async function obterClienteAutenticado(userId: string) {
   if (error) throw error;
   if (!data?.refresh_token) throw new ReautenticacaoNecessaria();
 
+  const guardado = data.refresh_token as string;
+  let token: string;
+  try {
+    token = decifrar(guardado);
+  } catch {
+    // Chave errada ou valor adulterado. Nao da para recuperar aqui, so
+    // voltando a autorizar na Google.
+    throw new ReautenticacaoNecessaria();
+  }
+
+  // Ligacao criada antes da cifra: passa a cifrada, sem incomodar o
+  // utilizador.
+  if (porCifrar(guardado)) {
+    await admin
+      .from("tokens_google")
+      .update({ refresh_token: cifrar(token) })
+      .eq("user_id", userId);
+  }
+
   const oauth2 = criarOAuth2();
-  oauth2.setCredentials({ refresh_token: data.refresh_token });
+  oauth2.setCredentials({ refresh_token: token });
 
   try {
     const { credentials } = await oauth2.refreshAccessToken();

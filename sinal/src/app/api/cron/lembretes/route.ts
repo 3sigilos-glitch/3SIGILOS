@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { criarClienteAdmin } from "@/lib/supabase/admin";
 import { enviarPush } from "@/lib/push/vapid";
+import { segredoIgual } from "@/lib/cripto";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,7 +21,7 @@ export async function GET(request: NextRequest) {
   // gente, e esta rota corre com a chave de servico.
   const segredo = process.env.CRON_SECRET;
   const autorizacao = request.headers.get("authorization");
-  if (!segredo || autorizacao !== `Bearer ${segredo}`) {
+  if (!segredo || !autorizacao || !segredoIgual(autorizacao, `Bearer ${segredo}`)) {
     return NextResponse.json({ erro: "nao autorizado" }, { status: 401 });
   }
 
@@ -70,22 +71,26 @@ export async function GET(request: NextRequest) {
       .in("user_id", ids);
     if (!subs) continue;
 
-    for (const o of lista) {
-      const corpo =
-        o.data_limite === dataDe(hoje)
-          ? `Hoje: ${o.titulo}`
-          : `Em breve: ${o.titulo}`;
-      for (const s of subs) {
-        try {
-          const vivo = await enviarPush(
-            { endpoint: s.endpoint, p256dh: s.p256dh, auth: s.auth },
-            { titulo: "Obrigacao da casa", corpo, url: "/nos" }
-          );
-          if (vivo) enviadas++;
-          else await admin.from("subscricoes_push").delete().eq("id", s.id);
-        } catch {
-          // segue para a proxima
-        }
+    // Um aviso por pessoa, nao um por obrigacao. O texto e generico de
+    // proposito: o titulo da obrigacao aparecia no ecra bloqueado,
+    // visivel a quem pegasse no telemovel. Quem abre a app ve o que e,
+    // quem so olha de relance nao ve nada. Como o texto e sempre igual,
+    // varios avisos seguidos so davam ruido.
+    const alguemHoje = lista.some((o) => o.data_limite === dataDe(hoje));
+    const corpo = alguemHoje
+      ? "Ver tarefa da casa hoje"
+      : "Ver tarefa da casa nos proximos dias";
+
+    for (const s of subs) {
+      try {
+        const vivo = await enviarPush(
+          { endpoint: s.endpoint, p256dh: s.p256dh, auth: s.auth },
+          { titulo: "Maré", corpo, url: "/nos" }
+        );
+        if (vivo) enviadas++;
+        else await admin.from("subscricoes_push").delete().eq("id", s.id);
+      } catch {
+        // segue para a proxima subscricao
       }
     }
   }
