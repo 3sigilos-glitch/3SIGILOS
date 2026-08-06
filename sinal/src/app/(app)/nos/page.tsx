@@ -5,6 +5,7 @@ import Obrigacoes, { type Obrigacao } from "./Obrigacoes";
 import Parqueadas, { type Decisao } from "./Parqueadas";
 import AvisosPush from "./AvisosPush";
 import BotaoSair from "../../sair";
+import Ecra from "@/components/Ecra";
 
 export const dynamic = "force-dynamic";
 
@@ -109,9 +110,10 @@ export default async function PaginaNos() {
   }));
 
   return (
-    <main className="px-5 pt-6 flex flex-col gap-8 pb-4">
-      <h1 className="text-2xl font-semibold tracking-tight">Nos</h1>
-
+    <Ecra
+      titulo="Nos"
+      proposito="O que e dos dois. Tudo o que tem data vai parar ao calendario da casa."
+    >
       <SinalDia meuNivel={(meu?.nivel as Nivel) ?? null} outro={outro} />
 
       <div className="border-t border-[var(--color-traco)]" />
@@ -127,6 +129,6 @@ export default async function PaginaNos() {
         <AvisosPush />
         <BotaoSair />
       </div>
-    </main>
+    </Ecra>
   );
 }

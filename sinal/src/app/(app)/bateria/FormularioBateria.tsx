@@ -51,7 +51,11 @@ export default function FormularioBateria() {
         <Arco rotulo="Sensorial" valor={sensorial} aoMudar={(v) => { setSensorial(v); if (estado !== "parado") setEstado("parado"); }} acento="var(--color-ac-nos)" />
       </div>
 
-      <div className="flex flex-wrap gap-2 justify-center px-1">
+      <div className="flex flex-col gap-2">
+        <p className="text-sm text-[var(--color-tinta-fraca)] leading-relaxed">
+          O que pesou, se quiseres dizer. Podes escolher varios ou nenhum.
+        </p>
+        <div className="flex flex-wrap gap-2">
         {CONTEXTOS.map((c) => {
           const activo = contexto.includes(c);
           return (
@@ -68,8 +72,9 @@ export default function FormularioBateria() {
             >
               {c}
             </button>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
       <button
@@ -84,9 +89,27 @@ export default function FormularioBateria() {
         {aGuardar ? "A guardar..." : "Registar"}
       </button>
 
-      <div className="min-h-6 text-center text-base" aria-live="polite">
+      <div className="min-h-10 text-center text-base" aria-live="polite">
         {estado === "guardado" && (
-          <span className="text-[var(--color-tinta-fraca)]">Registado.</span>
+          <span
+            className="inline-flex items-center gap-2 rounded-full px-4 py-2"
+            style={{
+              backgroundColor:
+                "color-mix(in srgb, var(--color-ac-bateria) 18%, transparent)",
+              color: "var(--color-tinta)",
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <path
+                d="M4 12.5 L9.5 18 L20 7"
+                stroke="var(--color-ac-bateria)"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Registado
+          </span>
         )}
         {estado === "erro" && (
           <span className="text-[var(--color-alerta)]">

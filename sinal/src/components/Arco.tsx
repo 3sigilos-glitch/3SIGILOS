@@ -10,6 +10,11 @@ const R = 80;
 const CX = 100;
 const CY = 100;
 
+// Uma palavra por valor. So um numero de 1 a 5 obriga a decidir o que
+// significa cada ponto, e a decisao muda de dia para dia, o que torna o
+// registo inutil para comparar. A palavra fixa o significado.
+const NIVEIS = ["", "no fundo", "fraca", "media", "boa", "cheia"];
+
 // Angulo (graus) para um valor. Valor 1 a esquerda (180), 5 a direita (0).
 function anguloDe(valor: number): number {
   const f = (valor - 1) / 4; // 0..1
@@ -82,11 +87,14 @@ export default function Arco({
   return (
     <div className="flex flex-col items-center gap-1 select-none">
       <div className="flex items-baseline gap-3 w-full max-w-xs justify-between px-2">
-        <span className="text-base text-[var(--color-tinta-fraca)] uppercase tracking-wide">
-          {rotulo}
-        </span>
-        <span className="mono text-2xl" style={{ color: acento }}>
-          {valor}
+        <span className="text-base text-[var(--color-tinta)]">{rotulo}</span>
+        <span className="flex items-baseline gap-2">
+          <span className="text-sm text-[var(--color-tinta-fraca)]">
+            {NIVEIS[valor]}
+          </span>
+          <span className="mono text-2xl" style={{ color: acento }}>
+            {valor}
+          </span>
         </span>
       </div>
       <svg
@@ -98,6 +106,7 @@ export default function Arco({
         aria-valuemin={1}
         aria-valuemax={5}
         aria-valuenow={valor}
+        aria-valuetext={`${valor} de 5, ${NIVEIS[valor]}`}
         tabIndex={0}
         onPointerDown={aoApontar}
         onPointerMove={aoMover}
@@ -118,6 +127,25 @@ export default function Arco({
         {/* Agulha */}
         <circle cx={tx} cy={ty} r="11" fill={acento} />
         <circle cx={tx} cy={ty} r="4" fill="var(--color-breu)" />
+        {/* Extremos nomeados. Sem isto nao se sabe de que lado e pouco. */}
+        <text
+          x={CX - R}
+          y="118"
+          textAnchor="middle"
+          fontSize="11"
+          fill="var(--color-tinta-fraca)"
+        >
+          vazia
+        </text>
+        <text
+          x={CX + R}
+          y="118"
+          textAnchor="middle"
+          fontSize="11"
+          fill="var(--color-tinta-fraca)"
+        >
+          cheia
+        </text>
       </svg>
     </div>
   );

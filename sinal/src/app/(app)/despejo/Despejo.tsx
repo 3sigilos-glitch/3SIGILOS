@@ -130,7 +130,13 @@ export default function Despejo({ contagemInicial }: { contagemInicial: number }
 
   return (
     <main className="min-h-[calc(100dvh-6rem)] flex flex-col px-5 pt-6">
-      <h1 className="sr-only">Despejo</h1>
+      <header className="flex flex-col gap-1">
+        <h1 className="text-2xl font-semibold tracking-tight">Despejo</h1>
+        <p className="text-sm text-[var(--color-tinta-fraca)] leading-relaxed">
+          Tira da cabeca e larga aqui. Nao decides nada agora, nem
+          categorias nem prazos: isso e noutro dia.
+        </p>
+      </header>
 
       <div className="flex-1 flex flex-col items-center justify-center gap-8">
         <button
@@ -203,9 +209,14 @@ export default function Despejo({ contagemInicial }: { contagemInicial: number }
 
       <button
         onClick={() => setTriagem(true)}
-        className="py-4 text-center text-[var(--color-tinta-fraca)] mono text-base"
+        className="py-4 flex flex-col items-center gap-0.5"
       >
-        {contagem} por triar
+        <span className="mono text-base text-[var(--color-tinta-fraca)]">
+          {contagem} por triar
+        </span>
+        <span className="text-xs text-[var(--color-tinta-fraca)]">
+          toca para decidir uma de cada vez
+        </span>
       </button>
 
       {triagem && (

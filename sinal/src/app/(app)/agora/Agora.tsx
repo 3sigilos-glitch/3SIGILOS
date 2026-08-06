@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Temporizador from "@/components/Temporizador";
+import Ecra from "@/components/Ecra";
 import {
   escolher,
   iniciarTemporizador,
@@ -106,9 +107,10 @@ export default function Agora({ candidatas }: { candidatas: Candidata[] }) {
   // Ecra de escolha: tres cartoes.
   if (!tarefa) {
     return (
-      <main className="px-5 pt-6 flex flex-col gap-6">
-        <h1 className="text-2xl font-semibold tracking-tight">Agora</h1>
-
+      <Ecra
+        titulo="Agora"
+        proposito="Uma coisa so, comecada ja. Escolhe uma, ou deixa a app escolher por ti."
+      >
         {candidatas.length === 0 ? (
           <p className="text-[var(--color-tinta-fraca)] text-base leading-relaxed">
             Nada marcado para hoje. Na triagem do Despejo, poe algo em Hoje.
@@ -135,7 +137,7 @@ export default function Agora({ candidatas }: { candidatas: Candidata[] }) {
           </>
         )}
         {erro && <p className="text-[var(--color-alerta)] text-base">{erro}</p>}
-      </main>
+      </Ecra>
     );
   }
 
@@ -145,8 +147,13 @@ export default function Agora({ candidatas }: { candidatas: Candidata[] }) {
     <main className="px-5 pt-6 flex flex-col items-center gap-8">
       <h1 className="text-xl font-medium text-center leading-relaxed">{tarefa.titulo}</h1>
 
-      <button onClick={arrancar} aria-label="Arrancar temporizador" className="touch-none">
+      <button onClick={arrancar} aria-label="Arrancar temporizador" className="touch-none flex flex-col items-center gap-1">
         <Temporizador iniciadaEm={tarefa.iniciada_em} duracaoMin={tarefa.duracao_alvo_min} />
+        {!tarefa.iniciada_em && (
+          <span className="text-sm text-[var(--color-tinta-fraca)]">
+            toca no circulo para comecar
+          </span>
+        )}
       </button>
 
       {passo && (

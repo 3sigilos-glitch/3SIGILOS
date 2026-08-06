@@ -48,7 +48,9 @@ export default function ModoTriagem({ aoFechar }: { aoFechar: () => void }) {
       {acabou && (
         <div className="flex-1 flex flex-col items-center justify-center gap-6 px-8 text-center">
           <p className="text-xl">Triado.</p>
-          <p className="text-[var(--color-tinta-fraca)]">Nada por triar de momento.</p>
+          <p className="text-[var(--color-tinta-fraca)] leading-relaxed">
+            Passaste tudo o que estava a espera. Nada por triar de momento.
+          </p>
           <button
             onClick={aoFechar}
             className="min-h-14 px-8 rounded-[var(--radius-cartao)] border border-[var(--color-traco)] text-[var(--color-tinta)] text-lg"
@@ -65,10 +67,10 @@ export default function ModoTriagem({ aoFechar }: { aoFechar: () => void }) {
           </div>
 
           <div className="grid grid-cols-2 gap-3 p-4" style={{ opacity: aProcessar ? 0.6 : 1 }}>
-            <BotaoTriagem rotulo="Hoje" acento="var(--color-ac-agora)" onClick={() => decidir("hoje")} />
-            <BotaoTriagem rotulo="Um dia" acento="var(--color-ac-despejo)" onClick={() => decidir("um_dia")} />
-            <BotaoTriagem rotulo="Casa" acento="var(--color-ac-nos)" onClick={() => decidir("casa")} />
-            <BotaoTriagem rotulo="Apagar" acento="var(--color-tinta-fraca)" onClick={() => decidir("apagar")} />
+            <BotaoTriagem rotulo="Hoje" ajuda="fazer hoje" acento="var(--color-ac-agora)" onClick={() => decidir("hoje")} />
+            <BotaoTriagem rotulo="Um dia" ajuda="fica para depois" acento="var(--color-ac-despejo)" onClick={() => decidir("um_dia")} />
+            <BotaoTriagem rotulo="Casa" ajuda="passa para os dois" acento="var(--color-ac-nos)" onClick={() => decidir("casa")} />
+            <BotaoTriagem rotulo="Apagar" ajuda="ja nao interessa" acento="var(--color-tinta-fraca)" onClick={() => decidir("apagar")} />
           </div>
         </div>
       )}
@@ -76,22 +78,28 @@ export default function ModoTriagem({ aoFechar }: { aoFechar: () => void }) {
   );
 }
 
+// Cada botao diz o que faz. "Um dia" e "Casa" sozinhos nao se explicam,
+// e a triagem e para correr depressa, sem parar a pensar no que cada
+// palavra queria dizer.
 function BotaoTriagem({
   rotulo,
+  ajuda,
   acento,
   onClick,
 }: {
   rotulo: string;
+  ajuda: string;
   acento: string;
   onClick: () => void;
 }) {
   return (
     <button
       onClick={onClick}
-      className="min-h-24 rounded-[var(--radius-cartao)] border text-xl font-medium"
+      className="min-h-24 rounded-[var(--radius-cartao)] border flex flex-col items-center justify-center gap-1 px-2"
       style={{ borderColor: acento, color: "var(--color-tinta)" }}
     >
-      {rotulo}
+      <span className="text-xl font-medium">{rotulo}</span>
+      <span className="text-xs text-[var(--color-tinta-fraca)]">{ajuda}</span>
     </button>
   );
 }
