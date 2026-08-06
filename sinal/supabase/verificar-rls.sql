@@ -23,7 +23,13 @@ declare
   visto int;
   proprios int;
   avisos text := '';
+  papel text;
 begin
+  -- Guardar o papel de origem. A meio do teste passamos a authenticated,
+  -- que e o papel do navegador, e a partir dai perdemos as permissoes de
+  -- administracao. Sem voltar atras no fim, qualquer escrita falha por
+  -- falta de permissao e o teste rebenta sem chegar a dar veredicto.
+  papel := current_user;
   select id, nome into a, nome_a from perfis order by criado_em limit 1;
   select id, nome into b, nome_b from perfis where id <> a order by criado_em limit 1;
 
@@ -89,6 +95,9 @@ begin
   if visto > 0 then
     avisos := avisos || format('%s ve %s tokens da Google. ', nome_b, visto);
   end if;
+
+  -- Voltar ao papel de origem antes de escrever seja o que for.
+  perform set_config('role', papel, true);
 
   if avisos <> '' then
     raise exception 'FALHA DE ISOLAMENTO: %', avisos;
