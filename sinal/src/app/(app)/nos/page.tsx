@@ -6,6 +6,8 @@ import Parqueadas, { type Decisao } from "./Parqueadas";
 import AvisosPush from "./AvisosPush";
 import BotaoSair from "../../sair";
 import Ecra from "@/components/Ecra";
+import ProximosEventos from "./ProximosEventos";
+import { eventosProximos, type EventoVista } from "@/lib/google/calendario";
 
 export const dynamic = "force-dynamic";
 
@@ -20,11 +22,15 @@ export default async function PaginaNos() {
 
   const { data: membro } = await supabase
     .from("espaco_membros")
-    .select("espaco_id")
+    .select("espaco_id, espacos(calendario_google_id, calendarios_vista)")
     .eq("user_id", user!.id)
     .maybeSingle();
 
   const espacoId = membro?.espaco_id as string | undefined;
+  const dadosEspaco = membro?.espacos as unknown as {
+    calendario_google_id: string | null;
+    calendarios_vista: string[] | null;
+  } | null;
 
   // Sem espaco ainda: mensagem sobria, sem alarme.
   if (!espacoId) {
@@ -109,12 +115,36 @@ export default async function PaginaNos() {
     notas: (d.notas as string | null) ?? null,
   }));
 
+  // Calendarios a mostrar: o da casa mais os que forem so de leitura.
+  // Uma falha aqui nao pode derrubar o ecra inteiro, por isso fica
+  // apanhada e o resto da pagina continua a servir.
+  const paraVer = [
+    ...(dadosEspaco?.calendario_google_id ? [dadosEspaco.calendario_google_id] : []),
+    ...(dadosEspaco?.calendarios_vista ?? []),
+  ];
+  let eventos: EventoVista[] = [];
+  let falhouCalendario = false;
+  if (paraVer.length > 0) {
+    try {
+      eventos = await eventosProximos(user!.id, paraVer, 7);
+    } catch {
+      falhouCalendario = true;
+    }
+  }
+
   return (
     <Ecra
       titulo="Nos"
       proposito="O que e dos dois. Tudo o que tem data vai parar ao calendario da casa."
     >
       <SinalDia meuNivel={(meu?.nivel as Nivel) ?? null} outro={outro} />
+
+      {paraVer.length > 0 && (
+        <>
+          <div className="border-t border-[var(--color-traco)]" />
+          <ProximosEventos eventos={eventos} falhou={falhouCalendario} />
+        </>
+      )}
 
       <div className="border-t border-[var(--color-traco)]" />
       <TarefasCasa tarefas={tarefas} />

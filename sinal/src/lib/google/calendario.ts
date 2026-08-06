@@ -107,6 +107,66 @@ export async function criarEventoObrigacao(
   }
 }
 
+export type EventoVista = {
+  id: string;
+  titulo: string;
+  inicio: string; // ISO, ou YYYY-MM-DD se for de dia inteiro
+  diaInteiro: boolean;
+  calendario: string;
+};
+
+// Le os proximos dias de varios calendarios ao mesmo tempo, so para
+// mostrar. Nunca escreve.
+//
+// Um calendario que falhe (deixou de estar partilhado, foi apagado) nao
+// pode derrubar os outros nem o ecra: falha em silencio e mostra se o
+// resto. Ver o que ha e melhor do que nao ver nada por causa de um.
+export async function eventosProximos(
+  userId: string,
+  calendarios: string[],
+  dias = 7
+): Promise<EventoVista[]> {
+  if (calendarios.length === 0) return [];
+
+  const auth = await obterClienteAutenticado(userId);
+  const calendar = google.calendar({ version: "v3", auth });
+
+  const inicio = new Date();
+  inicio.setHours(0, 0, 0, 0);
+  const fim = new Date(inicio);
+  fim.setDate(fim.getDate() + dias);
+
+  const listas = await Promise.all(
+    calendarios.map(async (id) => {
+      try {
+        const r = await calendar.events.list({
+          calendarId: id,
+          timeMin: inicio.toISOString(),
+          timeMax: fim.toISOString(),
+          singleEvents: true,
+          orderBy: "startTime",
+          maxResults: 50,
+        });
+        return (r.data.items ?? []).map((e) => ({
+          id: e.id ?? "",
+          titulo: e.summary ?? "(sem titulo)",
+          inicio: e.start?.dateTime ?? e.start?.date ?? "",
+          diaInteiro: !e.start?.dateTime,
+          calendario: id,
+        }));
+      } catch (erro) {
+        console.error("Calendario ilegivel:", id, classificar(erro).detalhe);
+        return [] as EventoVista[];
+      }
+    })
+  );
+
+  return listas
+    .flat()
+    .filter((e) => e.inicio)
+    .sort((a, b) => a.inicio.localeCompare(b.inicio));
+}
+
 // Eventos de hoje dos calendarios do utilizador. Leitura, para apoio.
 export async function eventosDeHoje(userId: string, calendarioId: string) {
   const auth = await obterClienteAutenticado(userId);
