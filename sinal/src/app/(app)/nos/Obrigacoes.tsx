@@ -8,7 +8,13 @@ export type Obrigacao = { id: string; titulo: string; data_limite: string };
 
 const MENSAGENS: Record<string, string> = {
   sem_calendario: "Falta ligar o calendario da casa. Fala com quem configurou.",
-  reautenticar: "A ligacao a Google expirou. Entra outra vez para religar o calendario.",
+  reautenticar:
+    "A ligacao a Google expirou. Termina sessao e entra outra vez para religar o calendario.",
+  sem_ambito:
+    "Esta conta entrou sem dar permissao ao calendario. Termina sessao, entra outra vez e aceita o pedido do calendario.",
+  sem_acesso:
+    "Esta conta nao consegue escrever no calendario da casa. Confirma que o calendario esta partilhado com ela, com permissao de fazer alteracoes a eventos, e que o convite foi aceite.",
+  desconhecido: "Nao foi possivel escrever no calendario agora. Tenta outra vez.",
   calendario: "Nao foi possivel escrever no calendario agora. Tenta outra vez.",
   incompleto: "Falta o titulo ou a data.",
 };

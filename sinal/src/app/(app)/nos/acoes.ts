@@ -1,7 +1,7 @@
 "use server";
 
 import { criarClienteServidor } from "@/lib/supabase/server";
-import { criarEventoObrigacao } from "@/lib/google/calendario";
+import { criarEventoObrigacao, ErroCalendario } from "@/lib/google/calendario";
 import { ReautenticacaoNecessaria } from "@/lib/google/tokens";
 import { revalidatePath } from "next/cache";
 
@@ -115,6 +115,9 @@ export async function criarObrigacao(dados: {
   } catch (e) {
     if (e instanceof ReautenticacaoNecessaria) {
       return { erro: "reautenticar" };
+    }
+    if (e instanceof ErroCalendario) {
+      return { erro: e.motivo };
     }
     return { erro: "calendario" };
   }
