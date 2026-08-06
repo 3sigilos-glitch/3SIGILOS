@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { criarTarefaCasa, pegarTarefa, concluirTarefa } from "./acoes";
+import Seccao, { Vazio } from "@/components/Seccao";
 
 export type TarefaCasa = {
   id: string;
@@ -29,16 +30,11 @@ export default function TarefasCasa({ tarefas }: { tarefas: TarefaCasa[] }) {
   }
 
   return (
-    <section className="flex flex-col gap-3">
-      <h2 className="text-base text-[var(--color-tinta-fraca)] uppercase tracking-wide">
-        Tarefas da casa
-      </h2>
-
-      {tarefas.length === 0 && (
-        <p className="text-[var(--color-tinta-fraca)] text-base">
-          Nada na lista. Fica bem assim.
-        </p>
-      )}
+    <Seccao
+      titulo="Tarefas da casa"
+      ajuda="Coisas por fazer que nao tem dono. Quem puder, carrega em Eu pego. Ninguem atribui nada a ninguem."
+    >
+      {tarefas.length === 0 && <Vazio>Nada na lista. Fica bem assim.</Vazio>}
 
       <ul className="flex flex-col gap-2">
         {tarefas.map((t) => (
@@ -104,6 +100,6 @@ export default function TarefasCasa({ tarefas }: { tarefas: TarefaCasa[] }) {
           Juntar tarefa
         </button>
       )}
-    </section>
+    </Seccao>
   );
 }

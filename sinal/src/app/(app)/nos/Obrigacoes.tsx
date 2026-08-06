@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { criarObrigacao } from "./acoes";
+import Seccao, { Vazio } from "@/components/Seccao";
 
 export type Obrigacao = { id: string; titulo: string; data_limite: string };
 
@@ -46,10 +47,13 @@ export default function Obrigacoes({ obrigacoes }: { obrigacoes: Obrigacao[] }) 
   }
 
   return (
-    <section className="flex flex-col gap-3">
-      <h2 className="text-base text-[var(--color-tinta-fraca)] uppercase tracking-wide">
-        Obrigacoes com data
-      </h2>
+    <Seccao
+      titulo="Obrigacoes com data"
+      ajuda="Coisas marcadas: consultas, revisoes, prazos. Vao para o calendario da casa e aparecem sozinhas na roda dos dois telemoveis."
+    >
+      {obrigacoes.length === 0 && (
+        <Vazio>Nada marcado. O que tiver data entra aqui e vai para o calendario.</Vazio>
+      )}
 
       <ul className="flex flex-col gap-2">
         {obrigacoes.map((o) => (
@@ -130,6 +134,6 @@ export default function Obrigacoes({ obrigacoes }: { obrigacoes: Obrigacao[] }) 
           {resultado}
         </p>
       )}
-    </section>
+    </Seccao>
   );
 }

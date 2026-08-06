@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { criarDecisao, resolverDecisao } from "./acoes";
+import Seccao, { Vazio } from "@/components/Seccao";
 
 export type Decisao = { id: string; titulo: string; notas: string | null };
 
@@ -26,16 +27,11 @@ export default function Parqueadas({ decisoes }: { decisoes: Decisao[] }) {
   }
 
   return (
-    <section className="flex flex-col gap-3">
-      <h2 className="text-base text-[var(--color-tinta-fraca)] uppercase tracking-wide">
-        Parqueadas
-      </h2>
-
-      {decisoes.length === 0 && (
-        <p className="text-[var(--color-tinta-fraca)] text-base">
-          Nada a decidir por agora.
-        </p>
-      )}
+    <Seccao
+      titulo="Para falar a dois"
+      ajuda="Assuntos que precisam de conversa e nao se resolvem sozinhos. Escreve aqui em vez de trazer ao jantar, e falam no ponto da semana."
+    >
+      {decisoes.length === 0 && <Vazio>Nada a decidir por agora.</Vazio>}
 
       <ul className="flex flex-col gap-2">
         {decisoes.map((d) => (
@@ -65,7 +61,7 @@ export default function Parqueadas({ decisoes }: { decisoes: Decisao[] }) {
             value={titulo}
             onChange={(e) => setTitulo(e.target.value)}
             autoFocus
-            placeholder="O que ha a conversar?"
+            placeholder="O que ha a falar?"
             className="w-full rounded-[var(--radius-cartao)] bg-[var(--color-placa)] border border-[var(--color-traco)] p-3 text-base text-[var(--color-tinta)] outline-none"
           />
           <textarea
@@ -81,7 +77,7 @@ export default function Parqueadas({ decisoes }: { decisoes: Decisao[] }) {
               className="flex-1 min-h-12 rounded-[var(--radius-cartao)]"
               style={{ backgroundColor: "var(--color-ac-nos)", color: "var(--color-breu)" }}
             >
-              Parquear
+              Guardar
             </button>
             <button
               onClick={() => setAberto(false)}
@@ -96,9 +92,9 @@ export default function Parqueadas({ decisoes }: { decisoes: Decisao[] }) {
           onClick={() => setAberto(true)}
           className="self-start text-[var(--color-tinta-fraca)] text-base underline underline-offset-4"
         >
-          Parquear assunto
+          Juntar assunto
         </button>
       )}
-    </section>
+    </Seccao>
   );
 }

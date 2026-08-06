@@ -3,6 +3,7 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { definirSinal } from "./acoes";
+import Seccao from "@/components/Seccao";
 
 type Nivel = "verde" | "amarelo" | "vermelho";
 
@@ -30,7 +31,10 @@ export default function SinalDia({
   }
 
   return (
-    <section className="flex flex-col gap-3">
+    <Seccao
+      titulo="Sinal de hoje"
+      ajuda="Como estas hoje, num toque. Vermelho quer dizer sem capacidade para conversas dificeis nem tarefas partilhadas. Ninguem pergunta porque, e apaga se sozinho ao fim de 10 horas."
+    >
       {/* Barra fina com o estado do outro, sem texto, so cor e hora. */}
       {outro && (
         <div
@@ -66,6 +70,6 @@ export default function SinalDia({
           );
         })}
       </div>
-    </section>
+    </Seccao>
   );
 }
