@@ -7,7 +7,12 @@ import AvisosPush from "./AvisosPush";
 import BotaoSair from "../../sair";
 import Ecra from "@/components/Ecra";
 import ProximosEventos from "./ProximosEventos";
-import { eventosProximos, type EventoVista } from "@/lib/google/calendario";
+import {
+  eventosProximos,
+  calendariosVisiveis,
+  type EventoVista,
+  type CalendarioVisivel,
+} from "@/lib/google/calendario";
 
 export const dynamic = "force-dynamic";
 
@@ -115,19 +120,39 @@ export default async function PaginaNos() {
     notas: (d.notas as string | null) ?? null,
   }));
 
-  // Calendarios a mostrar: o da casa mais os que forem so de leitura.
-  // Uma falha aqui nao pode derrubar o ecra inteiro, por isso fica
-  // apanhada e o resto da pagina continua a servir.
-  const paraVer = [
-    ...(dadosEspaco?.calendario_google_id ? [dadosEspaco.calendario_google_id] : []),
-    ...(dadosEspaco?.calendarios_vista ?? []),
-  ];
+  // Os calendarios sao os que esta pessoa tem ligados no seu Google
+  // Calendar. Nao ha lista a manter na app.
+  //
+  // Quem tiver entrado antes de a app pedir esta permissao ainda nao a
+  // tem no token. Nesse caso recuamos para os calendarios guardados no
+  // espaco, para continuar a mostrar alguma coisa, e assinalamos que
+  // basta voltar a entrar para ver tudo.
   let eventos: EventoVista[] = [];
   let falhouCalendario = false;
-  if (paraVer.length > 0) {
-    try {
-      eventos = await eventosProximos(user!.id, paraVer, 7);
-    } catch {
+  let precisaReentrar = false;
+
+  try {
+    const meus = await calendariosVisiveis(user!.id);
+    eventos = await eventosProximos(user!.id, meus, 7);
+  } catch {
+    precisaReentrar = true;
+    const recuo: CalendarioVisivel[] = [
+      ...(dadosEspaco?.calendario_google_id
+        ? [{ id: dadosEspaco.calendario_google_id, nome: "Casa", cor: null }]
+        : []),
+      ...(dadosEspaco?.calendarios_vista ?? []).map((id) => ({
+        id,
+        nome: "",
+        cor: null,
+      })),
+    ];
+    if (recuo.length > 0) {
+      try {
+        eventos = await eventosProximos(user!.id, recuo, 7);
+      } catch {
+        falhouCalendario = true;
+      }
+    } else {
       falhouCalendario = true;
     }
   }
@@ -139,12 +164,12 @@ export default async function PaginaNos() {
     >
       <SinalDia meuNivel={(meu?.nivel as Nivel) ?? null} outro={outro} />
 
-      {paraVer.length > 0 && (
-        <>
-          <div className="border-t border-[var(--color-traco)]" />
-          <ProximosEventos eventos={eventos} falhou={falhouCalendario} />
-        </>
-      )}
+      <div className="border-t border-[var(--color-traco)]" />
+      <ProximosEventos
+        eventos={eventos}
+        falhou={falhouCalendario}
+        precisaReentrar={precisaReentrar}
+      />
 
       <div className="border-t border-[var(--color-traco)]" />
       <TarefasCasa tarefas={tarefas} />

@@ -15,7 +15,14 @@ export default function BotaoEntrar() {
       provider: "google",
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
-        scopes: "https://www.googleapis.com/auth/calendar.events",
+        // events: criar as obrigacoes da casa.
+        // calendarlist.readonly: saber que calendarios esta pessoa tem
+        // ligados, para a app mostrar os mesmos. E o ambito mais
+        // estreito que serve, nao da acesso ao conteudo de nada.
+        scopes: [
+          "https://www.googleapis.com/auth/calendar.events",
+          "https://www.googleapis.com/auth/calendar.calendarlist.readonly",
+        ].join(" "),
         queryParams: {
           access_type: "offline",
           prompt: "consent",

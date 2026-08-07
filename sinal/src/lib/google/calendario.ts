@@ -113,7 +113,43 @@ export type EventoVista = {
   inicio: string; // ISO, ou YYYY-MM-DD se for de dia inteiro
   diaInteiro: boolean;
   calendario: string;
+  nomeCalendario: string;
+  cor: string | null;
 };
+
+export type CalendarioVisivel = {
+  id: string;
+  nome: string;
+  cor: string | null;
+};
+
+// Os calendarios que esta pessoa tem ligados no seu Google Calendar.
+//
+// Nao ha lista a configurar na app: cada um ja escolheu no Google quais
+// quer ver, e a app respeita essa escolha. E a mesma logica do
+// Sectograph, e evita um ecra de definicoes que ninguem quer manter.
+// Consequencia desejada: o calendario da banda aparece a quem o tem
+// ligado e nao aparece a quem nao tem.
+export async function calendariosVisiveis(
+  userId: string
+): Promise<CalendarioVisivel[]> {
+  const auth = await obterClienteAutenticado(userId);
+  const calendar = google.calendar({ version: "v3", auth });
+
+  const r = await calendar.calendarList.list({
+    minAccessRole: "reader",
+    showHidden: false,
+  });
+
+  return (r.data.items ?? [])
+    .filter((c) => c.selected !== false && !c.deleted)
+    .map((c) => ({
+      id: c.id ?? "",
+      nome: c.summaryOverride ?? c.summary ?? "",
+      cor: c.backgroundColor ?? null,
+    }))
+    .filter((c) => c.id);
+}
 
 // Le os proximos dias de varios calendarios ao mesmo tempo, so para
 // mostrar. Nunca escreve.
@@ -123,7 +159,7 @@ export type EventoVista = {
 // resto. Ver o que ha e melhor do que nao ver nada por causa de um.
 export async function eventosProximos(
   userId: string,
-  calendarios: string[],
+  calendarios: CalendarioVisivel[],
   dias = 7
 ): Promise<EventoVista[]> {
   if (calendarios.length === 0) return [];
@@ -137,10 +173,10 @@ export async function eventosProximos(
   fim.setDate(fim.getDate() + dias);
 
   const listas = await Promise.all(
-    calendarios.map(async (id) => {
+    calendarios.map(async (c) => {
       try {
         const r = await calendar.events.list({
-          calendarId: id,
+          calendarId: c.id,
           timeMin: inicio.toISOString(),
           timeMax: fim.toISOString(),
           singleEvents: true,
@@ -152,10 +188,12 @@ export async function eventosProximos(
           titulo: e.summary ?? "(sem titulo)",
           inicio: e.start?.dateTime ?? e.start?.date ?? "",
           diaInteiro: !e.start?.dateTime,
-          calendario: id,
+          calendario: c.id,
+          nomeCalendario: c.nome,
+          cor: c.cor,
         }));
       } catch (erro) {
-        console.error("Calendario ilegivel:", id, classificar(erro).detalhe);
+        console.error("Calendario ilegivel:", c.id, classificar(erro).detalhe);
         return [] as EventoVista[];
       }
     })

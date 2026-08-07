@@ -1,11 +1,17 @@
 import Seccao, { Vazio } from "@/components/Seccao";
 import type { EventoVista } from "@/lib/google/calendario";
 
-// O que ja esta marcado, vindo dos calendarios partilhados. So leitura.
+// O que ja esta marcado, vindo dos calendarios que cada um tem ligados
+// no seu Google Calendar. So leitura.
 //
 // Nao substitui a roda do Sectograph, que continua a ser o sitio para
 // ver a forma do dia. Aqui ve se a semana em lista, para o ponto a dois
 // e para saber o que ai vem sem ter de sair da app.
+//
+// Cada evento leva um ponto com a cor do calendario a que pertence, a
+// mesma cor que ja escolheram no Google. Serve para distinguir de
+// relance a que parte da vida pertence, sem ler. E so um ponto pequeno:
+// as cores da Google sao saturadas e nao devem tomar conta do ecra.
 
 const DIAS = ["domingo", "segunda", "terca", "quarta", "quinta", "sexta", "sabado"];
 
@@ -32,11 +38,12 @@ function hora(e: EventoVista): string {
 export default function ProximosEventos({
   eventos,
   falhou,
+  precisaReentrar,
 }: {
   eventos: EventoVista[];
   falhou: boolean;
+  precisaReentrar: boolean;
 }) {
-  // Agrupar por dia, mantendo a ordem.
   const porDia = new Map<string, EventoVista[]>();
   for (const e of eventos) {
     const chave = rotuloDia(e.inicio);
@@ -46,11 +53,19 @@ export default function ProximosEventos({
   return (
     <Seccao
       titulo="Os proximos dias"
-      ajuda="O que ja esta marcado nos calendarios partilhados. So para veres, nao se mexe daqui."
+      ajuda="O que ja esta marcado nos calendarios que tens ligados no Google. So para veres, nao se mexe daqui."
     >
+      {precisaReentrar && !falhou && (
+        <Vazio>
+          Estas a ver so o calendario da casa. Termina sessao e entra outra
+          vez para veres tambem os teus.
+        </Vazio>
+      )}
+
       {falhou && (
         <Vazio>
-          Nao foi possivel ler os calendarios agora. A app continua a funcionar.
+          Nao foi possivel ler os calendarios agora. O resto da app continua
+          a funcionar.
         </Vazio>
       )}
 
@@ -68,10 +83,18 @@ export default function ProximosEventos({
                   key={e.calendario + e.id}
                   className="flex items-baseline gap-3 rounded-[var(--radius-cartao)] bg-[var(--color-placa)] border border-[var(--color-traco)] px-4 py-2.5"
                 >
+                  <span
+                    className="shrink-0 w-2 h-2 rounded-full translate-y-[-1px]"
+                    style={{
+                      backgroundColor: e.cor ?? "var(--color-traco)",
+                      opacity: 0.85,
+                    }}
+                    aria-hidden
+                  />
                   <span className="mono text-sm text-[var(--color-tinta-fraca)] shrink-0 w-16">
                     {hora(e)}
                   </span>
-                  <span className="text-base">{e.titulo}</span>
+                  <span className="text-base flex-1">{e.titulo}</span>
                 </li>
               ))}
             </ul>
