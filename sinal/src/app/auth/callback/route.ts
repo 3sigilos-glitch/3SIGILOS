@@ -42,7 +42,15 @@ export async function GET(request: NextRequest) {
   const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
   if (error) {
-    return NextResponse.redirect(`${origin}/?erro=sessao`);
+    // O gatilho da base de dados recusa contas fora da lista da casa.
+    // Vale a pena separar esse caso: nao e uma falha, e a porta fechada
+    // de proposito, e a mensagem tem de dizer isso.
+    const privada = /privada|insufficient_privilege|not allowed/i.test(
+      error.message ?? ""
+    );
+    return NextResponse.redirect(
+      `${origin}/?erro=${privada ? "privada" : "sessao"}`
+    );
   }
 
   // Guardar o refresh token da Google, se veio. So vem na primeira

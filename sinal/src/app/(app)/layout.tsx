@@ -1,9 +1,11 @@
 import { redirect } from "next/navigation";
 import { criarClienteServidor } from "@/lib/supabase/server";
+import { emailPermitido } from "@/lib/supabase/permitido";
 import BarraInferior from "@/components/BarraInferior";
 
-// Grupo autenticado. Quem nao tem sessao volta para a entrada.
-// A barra inferior vive aqui, por baixo de todos os separadores.
+// Grupo autenticado. Quem nao tem sessao volta para a entrada, e quem
+// nao esta na lista da casa tambem. A barra inferior vive aqui, por
+// baixo de todos os separadores.
 export default async function LayoutApp({
   children,
 }: {
@@ -16,6 +18,10 @@ export default async function LayoutApp({
 
   if (!user) {
     redirect("/");
+  }
+
+  if (!(await emailPermitido(user.email))) {
+    redirect("/?erro=privada");
   }
 
   return (

@@ -27,14 +27,13 @@ export default async function PaginaNos() {
 
   const { data: membro } = await supabase
     .from("espaco_membros")
-    .select("espaco_id, espacos(calendario_google_id, calendarios_vista)")
+    .select("espaco_id, espacos(calendario_google_id)")
     .eq("user_id", user!.id)
     .maybeSingle();
 
   const espacoId = membro?.espaco_id as string | undefined;
   const dadosEspaco = membro?.espacos as unknown as {
     calendario_google_id: string | null;
-    calendarios_vista: string[] | null;
   } | null;
 
   // Sem espaco ainda: mensagem sobria, sem alarme.
@@ -136,16 +135,9 @@ export default async function PaginaNos() {
     eventos = await eventosProximos(user!.id, meus, 7);
   } catch {
     precisaReentrar = true;
-    const recuo: CalendarioVisivel[] = [
-      ...(dadosEspaco?.calendario_google_id
-        ? [{ id: dadosEspaco.calendario_google_id, nome: "Casa", cor: null }]
-        : []),
-      ...(dadosEspaco?.calendarios_vista ?? []).map((id) => ({
-        id,
-        nome: "",
-        cor: null,
-      })),
-    ];
+    const recuo: CalendarioVisivel[] = dadosEspaco?.calendario_google_id
+      ? [{ id: dadosEspaco.calendario_google_id, nome: "Casa", cor: null }]
+      : [];
     if (recuo.length > 0) {
       try {
         eventos = await eventosProximos(user!.id, recuo, 7);

@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   title: "Maré",
   description: "Sobe e desce, sem culpa. A porta de entrada da casa.",
   manifest: "/manifest.json",
+  // Aplicacao privada: fora dos motores de busca. Nao substitui a lista
+  // de entrada, so evita que o endereco apareca a quem nao o procura.
+  robots: { index: false, follow: false, nocache: true },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",

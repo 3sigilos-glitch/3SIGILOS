@@ -1,0 +1,3 @@
+# Aplicacao privada de uma casa. Nao ha nada aqui para indexar.
+User-agent: *
+Disallow: /
