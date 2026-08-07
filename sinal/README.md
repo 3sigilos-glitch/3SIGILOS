@@ -25,17 +25,20 @@ como `sinal/` por conveniencia, mas a app chama se Maré.
 Zero chaves de API no cliente. Todas as chamadas a servicos externos
 passam por Route Handlers.
 
-## Estado, por fases
+## Estado
 
-Todas as fases estao construidas e a compilar. Falta ligar as
-credenciais (Supabase, Google, VAPID, Anthropic) e testar em uso real.
+Em uso. As quatro fases estao construidas e verificadas de ponta a
+ponta: dois utilizadores isolados um do outro, ligacao a Google cifrada,
+obrigacoes a chegar ao calendario partilhado, e entrada limitada a uma
+lista de emails.
 
-- **Fase 0:** projecto, autenticacao Google com refresh token guardado,
+- **Fase 0:** projecto, autenticacao Google com refresh token cifrado,
   esquema SQL, RLS activa em todas as tabelas, PWA instalavel.
 - **Fase 1:** ecra Bateria (arcos, contextos, grafico semanal, PDF).
 - **Fase 2:** Despejo com voz, escrita offline em IndexedDB, triagem.
-- **Fase 3:** Nos, com sinal do dia, tarefas da casa, obrigacoes com
-  escrita real no Google Calendar, parqueadas e push das obrigacoes.
+- **Fase 3:** Nos, com sinal do dia, tarefas da casa, obrigacoes que
+  escrevem no Google Calendar, parqueadas, push das obrigacoes, e a
+  lista dos proximos dias dos calendarios de cada um.
 - **Fase 4:** Agora, com escolha de tarefa, temporizador resistente a
   bloqueio de ecra e desdobramento por IA.
 
@@ -152,3 +155,44 @@ definida em `supabase/migrations/0001_esquema.sql`.
 - Todo o texto da interface em portugues de Portugal.
 - Nunca usar travessao em texto nenhum, nem em codigo, nem em
   comentarios. Usar virgula, dois pontos ou ponto final.
+
+
+## Armadilhas que ja custaram tempo
+
+Escrito depois de as encontrar, para nao voltar a perder o dia nelas.
+
+**A Calendar API tem de estar ligada no mesmo projecto Google onde vive
+o cliente OAuth.** Ligar a API num projecto e criar o cliente noutro da
+um 403 com razao `accessNotConfigured`, que se parece com um problema de
+permissoes e leva a procurar no sitio errado, na partilha do calendario.
+O numero do projecto vem no proprio erro. A app ja distingue este caso e
+di lo por palavras.
+
+**Variaveis de ambiente na Vercel nao aceitam quebras de linha.** Copiar
+varios valores de uma vez da tabela de resultados do SQL cola tudo com
+mudancas de linha e o deploy falha antes de compilar. Copiar celula a
+celula.
+
+**O calendario tem de estar partilhado com a conta pessoal de cada
+pessoa, com "Fazer alteracoes a eventos".** A app escreve com o token de
+quem esta a criar a obrigacao, nunca com o da conta que detem o
+calendario.
+
+**Cada pessoa tem de definir as suas notificacoes** no calendario da
+casa, na app Google Calendar do seu telemovel. Sem isso os avisos so
+chegam a quem criou o evento.
+
+**Adicionar um ambito novo ao login nao afecta quem ja entrou.** O token
+guardado nao ganha ambitos sozinho: e preciso terminar sessao e entrar
+outra vez. O ecra Nos deteta isso e diz o que fazer em vez de falhar.
+
+**Uma consulta que peca uma coluna inexistente falha inteira.** Uma
+migracao por aplicar fez o ecra Nos anunciar que nao havia espaco da
+casa, quando o espaco existia e estava correcto.
+
+## Quem pode entrar
+
+A entrada e limitada a tabela `emails_permitidos`. Um gatilho em
+auth.users recusa qualquer conta fora dessa lista, e a aplicacao volta a
+verificar do seu lado. Ver, autorizar e retirar autorizacao: instrucoes
+no fim de `supabase/migrations/0005_lista_de_entrada.sql`.
