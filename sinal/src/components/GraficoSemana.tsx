@@ -60,10 +60,10 @@ export default function GraficoSemana({
 }) {
   const dados = agruparPorDia(registos, dias);
 
-  const L = 46; // margem esquerda, com espaco para a escala
+  const L = 62; // margem esquerda, com espaco para a escala
   const R = 8; // margem direita
-  const T = 10;
-  const B = 22;
+  const T = 14;
+  const B = 28;
   const W = 320;
   const H = 150;
   const areaW = W - L - R;
@@ -101,27 +101,30 @@ export default function GraficoSemana({
         ))}
 
         {/* Escala a esquerda. Sem isto a altura de um ponto nao diz
-            nada, e o grafico fica bonito mas ilegivel. As palavras sao
-            as mesmas dos arcos, para nao haver dois vocabularios. */}
-        {[1, 2, 3, 4, 5].map((v) => (
+            nada, e o grafico fica bonito mas ilegivel.
+            Cada marca e um so texto, palavra e numero juntos, alinhados
+            a direita sobre a linha da grelha. Antes eram dois textos
+            separados, um por cima do outro, e chocavam entre si e com os
+            dias do eixo de baixo. */}
+        {[
+          { v: 5, rotulo: "cheia 5" },
+          { v: 4, rotulo: "4" },
+          { v: 3, rotulo: "3" },
+          { v: 2, rotulo: "2" },
+          { v: 1, rotulo: "vazia 1" },
+        ].map(({ v, rotulo }) => (
           <text
             key={`e${v}`}
-            x={L - 8}
-            y={y(v) + 3}
+            x={L - 10}
+            y={y(v)}
             textAnchor="end"
+            dominantBaseline="middle"
             fontSize="9"
             fill="var(--color-tinta-fraca)"
-            fontFamily="var(--font-mono)"
           >
-            {v}
+            {rotulo}
           </text>
         ))}
-        <text x={L - 8} y={y(5) - 8} textAnchor="end" fontSize="8" fill="var(--color-tinta-fraca)">
-          cheia
-        </text>
-        <text x={L - 8} y={y(1) + 14} textAnchor="end" fontSize="8" fill="var(--color-tinta-fraca)">
-          vazia
-        </text>
         {/* Serie social */}
         <path d={caminhoSuave(social)} fill="none" stroke="var(--color-ac-bateria)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
         {social.map((p, i) => (

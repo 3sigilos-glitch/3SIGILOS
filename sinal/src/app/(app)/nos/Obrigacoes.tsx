@@ -11,6 +11,8 @@ const MENSAGENS: Record<string, string> = {
   sem_calendario: "Falta ligar o calendário da casa. Fala com quem configurou.",
   reautenticar:
     "A ligação à Google expirou. Termina sessão e entra outra vez para religar o calendário.",
+  api_desligada:
+    "A Google Calendar API não está ligada no projeto Google desta app. Quem a configurou tem de a ligar na Google Cloud Console. Nada aqui está mal.",
   sem_ambito:
     "Esta conta entrou sem dar permissão ao calendário. Termina sessão, entra outra vez e aceita o pedido do calendário.",
   sem_acesso:

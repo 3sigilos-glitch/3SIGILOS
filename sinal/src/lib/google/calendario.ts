@@ -5,6 +5,7 @@ import { obterClienteAutenticado } from "./tokens";
 // falta de permissao de partilha e uma autorizacao sem o ambito do
 // calendario davam a mesma mensagem, e nao havia como distinguir.
 export type MotivoCalendario =
+  | "api_desligada" // a Calendar API nao esta ligada no projecto Google
   | "sem_ambito" // a conta autorizou a entrada mas nao o calendario
   | "sem_acesso" // o calendario nao esta partilhado com esta conta, ou so em leitura
   | "desconhecido";
@@ -40,6 +41,13 @@ function classificar(e: unknown): ErroCalendario {
   const mensagem =
     erro?.response?.data?.error?.message ?? erro?.message ?? "sem detalhe";
   const detalhe = `estado ${estado ?? "?"}, razao ${razao ?? "?"}, ${mensagem}`;
+
+  // A Calendar API desligada no projecto responde 403, o mesmo estado de
+  // uma falta de permissao. Sem distinguir, mandava se procurar o
+  // problema na partilha do calendario, que podia estar impecavel.
+  if (razao === "accessNotConfigured" || /has not been used in project/i.test(mensagem)) {
+    return new ErroCalendario("api_desligada", detalhe);
+  }
 
   if (
     razao === "insufficientPermissions" ||
