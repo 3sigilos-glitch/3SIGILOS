@@ -18,7 +18,7 @@ export default function BotaoSair() {
     <button
       onClick={sair}
       disabled={aSair}
-      className="text-[var(--color-tinta-fraca)] text-base underline underline-offset-4 disabled:opacity-60"
+      className="min-h-12 w-full rounded-[var(--radius-cartao)] border border-[var(--color-traco)] text-[var(--color-tinta)] text-base disabled:opacity-60"
     >
       Terminar sessão
     </button>

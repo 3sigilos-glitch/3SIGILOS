@@ -5,6 +5,7 @@ import Obrigacoes, { type Obrigacao } from "./Obrigacoes";
 import Parqueadas, { type Decisao } from "./Parqueadas";
 import AvisosPush from "./AvisosPush";
 import BotaoSair from "../../sair";
+import Sessao from "@/components/Sessao";
 import Ecra from "@/components/Ecra";
 import ProximosEventos from "./ProximosEventos";
 import {
@@ -172,9 +173,9 @@ export default async function PaginaNos() {
       <div className="border-t border-[var(--color-traco)]" />
       <Parqueadas decisoes={decisoes} />
 
-      <div className="border-t border-[var(--color-traco)] pt-6 flex flex-col gap-4 items-center">
+      <div className="border-t border-[var(--color-traco)] pt-6 flex flex-col gap-5 items-center">
         <AvisosPush />
-        <BotaoSair />
+        <Sessao email={user?.email} />
       </div>
     </Ecra>
   );
