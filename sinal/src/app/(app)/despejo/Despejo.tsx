@@ -133,8 +133,8 @@ export default function Despejo({ contagemInicial }: { contagemInicial: number }
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold tracking-tight">Despejo</h1>
         <p className="text-sm text-[var(--color-tinta-fraca)] leading-relaxed">
-          Tira da cabeca e larga aqui. Nao decides nada agora, nem
-          categorias nem prazos: isso e noutro dia.
+          Tira da cabeça e larga aqui. Não decides nada agora, nem
+          categorias nem prazos: isso é noutro dia.
         </p>
       </header>
 
@@ -175,11 +175,40 @@ export default function Despejo({ contagemInicial }: { contagemInicial: number }
           {interim}
         </div>
 
+        {/* Botao a serio, nao um link discreto. Escrever nao e a opcao
+            de recurso: pode ser a preferida de quem nao gosta de falar,
+            e e tambem o caminho de quem usa um teclado de ditado, que
+            escreve por si no campo de texto. */}
         <button
           onClick={() => setTecladoAberto((a) => !a)}
-          className="text-[var(--color-tinta-fraca)] text-base underline underline-offset-4"
+          aria-expanded={tecladoAberto}
+          className="min-h-14 px-6 rounded-[var(--radius-cartao)] border flex items-center gap-3 text-lg"
+          style={{
+            borderColor: tecladoAberto
+              ? "var(--color-ac-despejo)"
+              : "var(--color-traco)",
+            color: "var(--color-tinta)",
+            backgroundColor: tecladoAberto
+              ? "color-mix(in srgb, var(--color-ac-despejo) 12%, transparent)"
+              : "var(--color-placa)",
+          }}
         >
-          Escrever
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <rect
+              x="2.5"
+              y="6"
+              width="19"
+              height="12"
+              rx="2.5"
+              stroke="var(--color-ac-despejo)"
+              strokeWidth="1.8"
+            />
+            <line x1="7" y1="14.5" x2="17" y2="14.5" stroke="var(--color-ac-despejo)" strokeWidth="1.8" strokeLinecap="round" />
+            <circle cx="7" cy="10" r="1" fill="var(--color-ac-despejo)" />
+            <circle cx="12" cy="10" r="1" fill="var(--color-ac-despejo)" />
+            <circle cx="17" cy="10" r="1" fill="var(--color-ac-despejo)" />
+          </svg>
+          {tecladoAberto ? "Fechar teclado" : "Escrever"}
         </button>
 
         {tecladoAberto && (
@@ -189,7 +218,7 @@ export default function Despejo({ contagemInicial }: { contagemInicial: number }
               onChange={(e) => setTextoTeclado(e.target.value)}
               rows={3}
               autoFocus
-              placeholder="Escreve e guarda."
+              placeholder="Escreve, ou dita pelo teclado."
               className="w-full rounded-[var(--radius-cartao)] bg-[var(--color-placa)] border border-[var(--color-traco)] p-3 text-lg text-[var(--color-tinta)] outline-none"
             />
             <button

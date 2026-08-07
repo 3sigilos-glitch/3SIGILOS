@@ -5,15 +5,19 @@ import { useRouter } from "next/navigation";
 import Arco from "@/components/Arco";
 import { registarBateria } from "./acoes";
 
+// O valor e o que fica guardado, o rotulo e o que se le. Separados de
+// proposito: acentuar o valor partiria a comparacao com os registos ja
+// gravados sem acento, e o resumo do PDF passaria a contar duas coisas
+// diferentes para a mesma etiqueta.
 const CONTEXTOS = [
-  "trabalho",
-  "casa",
-  "rua",
-  "pessoas",
-  "ruido",
-  "sozinho",
-  "viagem",
-  "ecra",
+  { valor: "trabalho", rotulo: "trabalho" },
+  { valor: "casa", rotulo: "casa" },
+  { valor: "rua", rotulo: "rua" },
+  { valor: "pessoas", rotulo: "pessoas" },
+  { valor: "ruido", rotulo: "ruído" },
+  { valor: "sozinho", rotulo: "sozinho" },
+  { valor: "viagem", rotulo: "viagem" },
+  { valor: "ecra", rotulo: "ecrã" },
 ];
 
 export default function FormularioBateria() {
@@ -53,15 +57,15 @@ export default function FormularioBateria() {
 
       <div className="flex flex-col gap-2">
         <p className="text-sm text-[var(--color-tinta-fraca)] leading-relaxed">
-          O que pesou, se quiseres dizer. Podes escolher varios ou nenhum.
+          O que pesou, se quiseres dizer. Podes escolher vários ou nenhum.
         </p>
         <div className="flex flex-wrap gap-2">
         {CONTEXTOS.map((c) => {
-          const activo = contexto.includes(c);
+          const activo = contexto.includes(c.valor);
           return (
             <button
-              key={c}
-              onClick={() => alternar(c)}
+              key={c.valor}
+              onClick={() => alternar(c.valor)}
               aria-pressed={activo}
               className="min-h-11 px-4 rounded-full border text-base"
               style={{
@@ -70,7 +74,7 @@ export default function FormularioBateria() {
                 backgroundColor: activo ? "color-mix(in srgb, var(--color-ac-bateria) 18%, transparent)" : "transparent",
               }}
             >
-              {c}
+              {c.rotulo}
             </button>
             );
           })}
@@ -113,7 +117,7 @@ export default function FormularioBateria() {
         )}
         {estado === "erro" && (
           <span className="text-[var(--color-alerta)]">
-            Nao foi possivel guardar agora. Tenta outra vez.
+            Não foi possível guardar agora. Tenta outra vez.
           </span>
         )}
       </div>

@@ -33,7 +33,7 @@ export default function SinalDia({
   return (
     <Seccao
       titulo="Sinal de hoje"
-      ajuda="Como estas hoje, num toque. Vermelho quer dizer sem capacidade para conversas dificeis nem tarefas partilhadas. Ninguem pergunta porque, e apaga se sozinho ao fim de 10 horas."
+      ajuda="Como estás hoje, num toque. Vermelho quer dizer sem capacidade para conversas difíceis nem tarefas partilhadas. Ninguém pergunta porquê, e apaga se sozinho ao fim de 10 horas."
     >
       {/* Barra fina com o estado do outro, sem texto, so cor e hora. */}
       {outro && (

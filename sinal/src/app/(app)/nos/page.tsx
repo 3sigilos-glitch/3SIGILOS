@@ -40,9 +40,9 @@ export default async function PaginaNos() {
   if (!espacoId) {
     return (
       <main className="px-5 pt-6 flex flex-col gap-6">
-        <h1 className="text-2xl font-semibold tracking-tight">Nos</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Nós</h1>
         <p className="text-[var(--color-tinta-fraca)]">
-          Ainda sem espaco da casa. Falta a configuracao inicial.
+          Ainda sem espaço da casa. Falta a configuração inicial.
         </p>
         <BotaoSair />
       </main>
@@ -151,8 +151,8 @@ export default async function PaginaNos() {
 
   return (
     <Ecra
-      titulo="Nos"
-      proposito="O que e dos dois. Tudo o que tem data vai parar ao calendario da casa."
+      titulo="Nós"
+      proposito="O que é dos dois. Tudo o que tem data vai parar ao calendário da casa."
     >
       <SinalDia meuNivel={(meu?.nivel as Nivel) ?? null} outro={outro} />
 

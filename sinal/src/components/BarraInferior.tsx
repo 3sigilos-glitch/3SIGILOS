@@ -41,7 +41,7 @@ const separadores: Sep[] = [
   },
   {
     href: "/nos",
-    rotulo: "Nos",
+    rotulo: "Nós",
     acento: "var(--color-ac-nos)",
     icone: (a) => (
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden>

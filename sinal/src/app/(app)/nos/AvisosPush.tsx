@@ -68,19 +68,19 @@ export default function AvisosPush() {
     <div className="text-center">
       {estado === "ligado" ? (
         <p className="text-sm text-[var(--color-tinta-fraca)]">
-          Avisos das obrigacoes ligados.
+          Avisos das obrigações ligados.
         </p>
       ) : (
         <button
           onClick={ligar}
           className="text-[var(--color-tinta-fraca)] text-base underline underline-offset-4"
         >
-          Receber avisos das obrigacoes
+          Receber avisos das obrigações
         </button>
       )}
       {estado === "erro" && (
         <p className="text-sm text-[var(--color-alerta)] mt-1">
-          Nao foi possivel ligar os avisos. Tenta outra vez.
+          Não foi possível ligar os avisos. Tenta outra vez.
         </p>
       )}
     </div>

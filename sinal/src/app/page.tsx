@@ -42,7 +42,7 @@ export default async function Pagina({
           </h1>
           <p className="text-[var(--color-tinta-fraca)] text-lg leading-relaxed">
             {barrado
-              ? "Esta aplicacao e de uma casa em particular, e essa conta nao faz parte dela."
+              ? "Esta aplicação é de uma casa em particular, e essa conta não faz parte dela."
               : "Sobe e desce, sem culpa. A porta de entrada da casa."}
           </p>
         </div>
@@ -53,7 +53,7 @@ export default async function Pagina({
         {barrado ? <BotaoSair /> : <BotaoEntrar />}
         {erro === "sessao" && (
           <p className="text-base text-[var(--color-alerta)] text-center">
-            Nao foi possivel entrar. Tenta outra vez.
+            Não foi possível entrar. Tenta outra vez.
           </p>
         )}
       </div>

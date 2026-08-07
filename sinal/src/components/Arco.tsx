@@ -13,7 +13,7 @@ const CY = 100;
 // Uma palavra por valor. So um numero de 1 a 5 obriga a decidir o que
 // significa cada ponto, e a decisao muda de dia para dia, o que torna o
 // registo inutil para comparar. A palavra fixa o significado.
-const NIVEIS = ["", "no fundo", "fraca", "media", "boa", "cheia"];
+const NIVEIS = ["", "no fundo", "fraca", "média", "boa", "cheia"];
 
 // Angulo (graus) para um valor. Valor 1 a esquerda (180), 5 a direita (0).
 function anguloDe(valor: number): number {

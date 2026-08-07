@@ -1,6 +1,6 @@
 // Cabecalho de ecra: nome e uma linha a dizer para que serve.
 //
-// Os ecras tinham so o nome ("Bateria", "Nos", "Agora"). Um nome sozinho
+// Os ecras tinham so o nome ("Bateria", "Nós", "Agora"). Um nome sozinho
 // obriga a lembrar o que aquilo faz, e essa memoria e exactamente o que
 // falha nos dias maus. Uma linha por baixo resolve, e deixa de ser
 // preciso lembrar seja o que for.

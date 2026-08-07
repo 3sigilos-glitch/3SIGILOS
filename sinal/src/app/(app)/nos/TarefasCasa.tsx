@@ -32,7 +32,7 @@ export default function TarefasCasa({ tarefas }: { tarefas: TarefaCasa[] }) {
   return (
     <Seccao
       titulo="Tarefas da casa"
-      ajuda="Coisas por fazer que nao tem dono. Quem puder, carrega em Eu pego. Ninguem atribui nada a ninguem."
+      ajuda="Coisas por fazer que não têm dono. Quem puder, carrega em Eu pego. Ninguém atribui nada a ninguém."
     >
       {tarefas.length === 0 && <Vazio>Nada na lista. Fica bem assim.</Vazio>}
 

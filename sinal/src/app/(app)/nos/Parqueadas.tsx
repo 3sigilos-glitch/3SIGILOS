@@ -29,7 +29,7 @@ export default function Parqueadas({ decisoes }: { decisoes: Decisao[] }) {
   return (
     <Seccao
       titulo="Para falar a dois"
-      ajuda="Assuntos que precisam de conversa e nao se resolvem sozinhos. Escreve aqui em vez de trazer ao jantar, e falam no ponto da semana."
+      ajuda="Assuntos que precisam de conversa e não se resolvem sozinhos. Escreve aqui em vez de trazer ao jantar, e falam no ponto da semana."
     >
       {decisoes.length === 0 && <Vazio>Nada a decidir por agora.</Vazio>}
 
@@ -61,7 +61,7 @@ export default function Parqueadas({ decisoes }: { decisoes: Decisao[] }) {
             value={titulo}
             onChange={(e) => setTitulo(e.target.value)}
             autoFocus
-            placeholder="O que ha a falar?"
+            placeholder="O que há a falar?"
             className="w-full rounded-[var(--radius-cartao)] bg-[var(--color-placa)] border border-[var(--color-traco)] p-3 text-base text-[var(--color-tinta)] outline-none"
           />
           <textarea

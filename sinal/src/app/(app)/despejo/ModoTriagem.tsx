@@ -49,7 +49,7 @@ export default function ModoTriagem({ aoFechar }: { aoFechar: () => void }) {
         <div className="flex-1 flex flex-col items-center justify-center gap-6 px-8 text-center">
           <p className="text-xl">Triado.</p>
           <p className="text-[var(--color-tinta-fraca)] leading-relaxed">
-            Passaste tudo o que estava a espera. Nada por triar de momento.
+            Passaste tudo o que estava à espera. Nada por triar de momento.
           </p>
           <button
             onClick={aoFechar}
@@ -70,7 +70,7 @@ export default function ModoTriagem({ aoFechar }: { aoFechar: () => void }) {
             <BotaoTriagem rotulo="Hoje" ajuda="fazer hoje" acento="var(--color-ac-agora)" onClick={() => decidir("hoje")} />
             <BotaoTriagem rotulo="Um dia" ajuda="fica para depois" acento="var(--color-ac-despejo)" onClick={() => decidir("um_dia")} />
             <BotaoTriagem rotulo="Casa" ajuda="passa para os dois" acento="var(--color-ac-nos)" onClick={() => decidir("casa")} />
-            <BotaoTriagem rotulo="Apagar" ajuda="ja nao interessa" acento="var(--color-tinta-fraca)" onClick={() => decidir("apagar")} />
+            <BotaoTriagem rotulo="Apagar" ajuda="já não interessa" acento="var(--color-tinta-fraca)" onClick={() => decidir("apagar")} />
           </div>
         </div>
       )}

@@ -28,7 +28,7 @@ export default function Agora({ candidatas }: { candidatas: Candidata[] }) {
     iniciar(async () => {
       const r = await escolher(id);
       if ("erro" in r) {
-        setErro("Nao foi possivel abrir a tarefa. Tenta outra vez.");
+        setErro("Não foi possível abrir a tarefa. Tenta outra vez.");
         return;
       }
       setCapturaId(id);
@@ -67,8 +67,8 @@ export default function Agora({ candidatas }: { candidatas: Candidata[] }) {
       if (!resposta.ok || !Array.isArray(dados.passos)) {
         setErro(
           dados.erro === "sem_ia"
-            ? "O desdobramento por IA ainda nao esta configurado."
-            : "Nao foi possivel desdobrar agora."
+            ? "O desdobramento por IA ainda não está configurado."
+            : "Não foi possível desdobrar agora."
         );
         setADesdobrar(false);
         return;
@@ -84,7 +84,7 @@ export default function Agora({ candidatas }: { candidatas: Candidata[] }) {
         }
       }
     } catch {
-      setErro("Nao foi possivel desdobrar agora.");
+      setErro("Não foi possível desdobrar agora.");
     } finally {
       setADesdobrar(false);
     }
@@ -109,11 +109,11 @@ export default function Agora({ candidatas }: { candidatas: Candidata[] }) {
     return (
       <Ecra
         titulo="Agora"
-        proposito="Uma coisa so, comecada ja. Escolhe uma, ou deixa a app escolher por ti."
+        proposito="Uma coisa só, começada já. Escolhe uma, ou deixa a app escolher por ti."
       >
         {candidatas.length === 0 ? (
           <p className="text-[var(--color-tinta-fraca)] text-base leading-relaxed">
-            Nada marcado para hoje. Na triagem do Despejo, poe algo em Hoje.
+            Nada marcado para hoje. Na triagem do Despejo, põe algo em Hoje.
           </p>
         ) : (
           <>
@@ -151,7 +151,7 @@ export default function Agora({ candidatas }: { candidatas: Candidata[] }) {
         <Temporizador iniciadaEm={tarefa.iniciada_em} duracaoMin={tarefa.duracao_alvo_min} />
         {!tarefa.iniciada_em && (
           <span className="text-sm text-[var(--color-tinta-fraca)]">
-            toca no circulo para comecar
+            toca no círculo para começar
           </span>
         )}
       </button>
@@ -197,7 +197,7 @@ export default function Agora({ candidatas }: { candidatas: Candidata[] }) {
           onClick={() => voltar("um_dia")}
           className="min-h-14 rounded-[var(--radius-cartao)] text-[var(--color-tinta-fraca)]"
         >
-          Nao e hoje
+          Não é hoje
         </button>
       </div>
 

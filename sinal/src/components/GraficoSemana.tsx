@@ -60,7 +60,7 @@ export default function GraficoSemana({
 }) {
   const dados = agruparPorDia(registos, dias);
 
-  const L = 24; // margem esquerda
+  const L = 46; // margem esquerda, com espaco para a escala
   const R = 8; // margem direita
   const T = 10;
   const B = 22;
@@ -85,8 +85,8 @@ export default function GraficoSemana({
 
   return (
     <div className="w-full">
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Bateria da ultima semana">
-        {/* Linhas de grelha horizontais discretas */}
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Bateria da última semana">
+        {/* Grelha, uma linha por valor */}
         {[1, 2, 3, 4, 5].map((v) => (
           <line
             key={v}
@@ -96,9 +96,32 @@ export default function GraficoSemana({
             y2={y(v)}
             stroke="var(--color-traco)"
             strokeWidth="1"
-            opacity={v === 2 ? 0.9 : 0.4}
+            opacity={v === 1 || v === 5 ? 0.9 : 0.35}
           />
         ))}
+
+        {/* Escala a esquerda. Sem isto a altura de um ponto nao diz
+            nada, e o grafico fica bonito mas ilegivel. As palavras sao
+            as mesmas dos arcos, para nao haver dois vocabularios. */}
+        {[1, 2, 3, 4, 5].map((v) => (
+          <text
+            key={`e${v}`}
+            x={L - 8}
+            y={y(v) + 3}
+            textAnchor="end"
+            fontSize="9"
+            fill="var(--color-tinta-fraca)"
+            fontFamily="var(--font-mono)"
+          >
+            {v}
+          </text>
+        ))}
+        <text x={L - 8} y={y(5) - 8} textAnchor="end" fontSize="8" fill="var(--color-tinta-fraca)">
+          cheia
+        </text>
+        <text x={L - 8} y={y(1) + 14} textAnchor="end" fontSize="8" fill="var(--color-tinta-fraca)">
+          vazia
+        </text>
         {/* Serie social */}
         <path d={caminhoSuave(social)} fill="none" stroke="var(--color-ac-bateria)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
         {social.map((p, i) => (
@@ -117,30 +140,35 @@ export default function GraficoSemana({
             y={H - 6}
             textAnchor="middle"
             fontSize="9"
-            fill="var(--color-tinta-fraca)"
+            fill={i === dados.length - 1 ? "var(--color-tinta)" : "var(--color-tinta-fraca)"}
             fontFamily="var(--font-mono)"
           >
-            {d.rotulo}
+            {i === dados.length - 1 ? "hoje" : d.rotulo}
           </text>
         ))}
       </svg>
-      <div className="flex gap-4 justify-center mt-1">
+      <div className="flex gap-5 justify-center mt-2">
         <Legenda cor="var(--color-ac-bateria)" texto="Social" />
         <Legenda cor="var(--color-ac-nos)" texto="Sensorial" />
       </div>
       {!temDados && (
         <p className="text-center text-[var(--color-tinta-fraca)] text-sm mt-3">
-          Ainda sem registos nesta semana. Sao tres toques.
+          Ainda sem registos nesta semana. São três toques.
         </p>
       )}
     </div>
   );
 }
 
+// Legenda com a mesma forma da serie: linha e ponto, na cor da linha.
+// Um traco sozinho nao se liga ao grafico tao depressa.
 function Legenda({ cor, texto }: { cor: string; texto: string }) {
   return (
-    <span className="flex items-center gap-2 text-sm text-[var(--color-tinta-fraca)]">
-      <span className="inline-block w-3 h-0.5 rounded" style={{ backgroundColor: cor }} />
+    <span className="flex items-center gap-2 text-sm text-[var(--color-tinta)]">
+      <svg width="22" height="10" viewBox="0 0 22 10" aria-hidden>
+        <line x1="1" y1="5" x2="21" y2="5" stroke={cor} strokeWidth="2.5" strokeLinecap="round" />
+        <circle cx="11" cy="5" r="3" fill={cor} />
+      </svg>
       {texto}
     </span>
   );

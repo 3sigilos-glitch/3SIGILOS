@@ -13,7 +13,7 @@ import type { EventoVista } from "@/lib/google/calendario";
 // relance a que parte da vida pertence, sem ler. E so um ponto pequeno:
 // as cores da Google sao saturadas e nao devem tomar conta do ecra.
 
-const DIAS = ["domingo", "segunda", "terca", "quarta", "quinta", "sexta", "sabado"];
+const DIAS = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
 
 function rotuloDia(iso: string): string {
   const d = new Date(iso.length === 10 ? iso + "T00:00:00" : iso);
@@ -23,7 +23,7 @@ function rotuloDia(iso: string): string {
   alvo.setHours(0, 0, 0, 0);
   const diff = Math.round((+alvo - +hoje) / 86400000);
   if (diff === 0) return "hoje";
-  if (diff === 1) return "amanha";
+  if (diff === 1) return "amanhã";
   return `${DIAS[alvo.getDay()]}, ${alvo.getDate()}`;
 }
 
@@ -52,25 +52,25 @@ export default function ProximosEventos({
 
   return (
     <Seccao
-      titulo="Os proximos dias"
-      ajuda="O que ja esta marcado nos calendarios que tens ligados no Google. So para veres, nao se mexe daqui."
+      titulo="Os próximos dias"
+      ajuda="O que já está marcado nos calendários que tens ligados no Google. Só para veres, não se mexe daqui."
     >
       {precisaReentrar && !falhou && (
         <Vazio>
-          Estas a ver so o calendario da casa. Termina sessao e entra outra
-          vez para veres tambem os teus.
+          Estás a ver só o calendário da casa. Termina sessão e entra outra
+          vez para veres também os teus.
         </Vazio>
       )}
 
       {falhou && (
         <Vazio>
-          Nao foi possivel ler os calendarios agora. O resto da app continua
+          Não foi possível ler os calendários agora. O resto da app continua
           a funcionar.
         </Vazio>
       )}
 
       {!falhou && eventos.length === 0 && (
-        <Vazio>Nada marcado para os proximos dias.</Vazio>
+        <Vazio>Nada marcado para os próximos dias.</Vazio>
       )}
 
       <div className="flex flex-col gap-4">

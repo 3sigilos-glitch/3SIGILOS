@@ -8,16 +8,16 @@ import Seccao, { Vazio } from "@/components/Seccao";
 export type Obrigacao = { id: string; titulo: string; data_limite: string };
 
 const MENSAGENS: Record<string, string> = {
-  sem_calendario: "Falta ligar o calendario da casa. Fala com quem configurou.",
+  sem_calendario: "Falta ligar o calendário da casa. Fala com quem configurou.",
   reautenticar:
-    "A ligacao a Google expirou. Termina sessao e entra outra vez para religar o calendario.",
+    "A ligação à Google expirou. Termina sessão e entra outra vez para religar o calendário.",
   sem_ambito:
-    "Esta conta entrou sem dar permissao ao calendario. Termina sessao, entra outra vez e aceita o pedido do calendario.",
+    "Esta conta entrou sem dar permissão ao calendário. Termina sessão, entra outra vez e aceita o pedido do calendário.",
   sem_acesso:
-    "Esta conta nao consegue escrever no calendario da casa. Confirma que o calendario esta partilhado com ela, com permissao de fazer alteracoes a eventos, e que o convite foi aceite.",
-  desconhecido: "Nao foi possivel escrever no calendario agora. Tenta outra vez.",
-  calendario: "Nao foi possivel escrever no calendario agora. Tenta outra vez.",
-  incompleto: "Falta o titulo ou a data.",
+    "Esta conta não consegue escrever no calendário da casa. Confirma que o calendário está partilhado com ela, com permissão de fazer alterações a eventos, e que o convite foi aceite.",
+  desconhecido: "Não foi possível escrever no calendário agora. Tenta outra vez.",
+  calendario: "Não foi possível escrever no calendário agora. Tenta outra vez.",
+  incompleto: "Falta o título ou a data.",
 };
 
 export default function Obrigacoes({ obrigacoes }: { obrigacoes: Obrigacao[] }) {
@@ -34,10 +34,10 @@ export default function Obrigacoes({ obrigacoes }: { obrigacoes: Obrigacao[] }) 
     iniciar(async () => {
       const r = await criarObrigacao({ titulo, data, avisarDias: avisar });
       if (r?.erro) {
-        setResultado(MENSAGENS[r.erro] ?? "Nao foi possivel guardar agora.");
+        setResultado(MENSAGENS[r.erro] ?? "Não foi possível guardar agora.");
         return;
       }
-      setResultado("Guardado no calendario da casa.");
+      setResultado("Guardado no calendário da casa.");
       setTitulo("");
       setData("");
       setAvisar(1);
@@ -48,11 +48,11 @@ export default function Obrigacoes({ obrigacoes }: { obrigacoes: Obrigacao[] }) 
 
   return (
     <Seccao
-      titulo="Obrigacoes com data"
-      ajuda="Coisas marcadas: consultas, revisoes, prazos. Vao para o calendario da casa e aparecem sozinhas na roda dos dois telemoveis."
+      titulo="Obrigações com data"
+      ajuda="Coisas marcadas: consultas, revisões, prazos. Vão para o calendário da casa e aparecem sozinhas na roda dos dois telemóveis."
     >
       {obrigacoes.length === 0 && (
-        <Vazio>Nada marcado. O que tiver data entra aqui e vai para o calendario.</Vazio>
+        <Vazio>Nada marcado. O que tiver data entra aqui e vai para o calendário.</Vazio>
       )}
 
       <ul className="flex flex-col gap-2">
@@ -77,7 +77,7 @@ export default function Obrigacoes({ obrigacoes }: { obrigacoes: Obrigacao[] }) 
           <input
             value={titulo}
             onChange={(e) => setTitulo(e.target.value)}
-            placeholder="O que e?"
+            placeholder="O que é?"
             className="w-full rounded-[var(--radius-cartao)] bg-[var(--color-placa)] border border-[var(--color-traco)] p-3 text-base text-[var(--color-tinta)] outline-none"
           />
           <label className="flex items-center justify-between gap-3 text-base">
@@ -125,7 +125,7 @@ export default function Obrigacoes({ obrigacoes }: { obrigacoes: Obrigacao[] }) 
           onClick={() => setAberto(true)}
           className="self-start text-[var(--color-tinta-fraca)] text-base underline underline-offset-4"
         >
-          Marcar obrigacao
+          Marcar obrigação
         </button>
       )}
 

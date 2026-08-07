@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { criarClienteBrowser } from "@/lib/supabase/browser";
 
-// Terminar sessao. Discreto, sem cerimonia.
+// Terminar sessão. Discreto, sem cerimonia.
 export default function BotaoSair() {
   const [aSair, setASair] = useState(false);
 
@@ -20,7 +20,7 @@ export default function BotaoSair() {
       disabled={aSair}
       className="text-[var(--color-tinta-fraca)] text-base underline underline-offset-4 disabled:opacity-60"
     >
-      Terminar sessao
+      Terminar sessão
     </button>
   );
 }

@@ -24,15 +24,15 @@ export default async function PaginaBateria() {
   return (
     <Ecra
       titulo="Bateria"
-      proposito="Quanta capacidade te resta agora. Dois arcos, uma etiqueta se quiseres, registar. Nao ha respostas certas nem erradas."
+      proposito="Quanta capacidade te resta agora. Dois arcos, uma etiqueta se quiseres, registar. Não há respostas certas nem erradas."
     >
       <FormularioBateria />
 
       <section className="flex flex-col gap-3 border-t border-[var(--color-traco)] pt-6">
         <div className="flex flex-col gap-1">
-          <h2 className="text-lg font-medium tracking-tight">Ultima semana</h2>
+          <h2 className="text-lg font-medium tracking-tight">Última semana</h2>
           <p className="text-sm text-[var(--color-tinta-fraca)] leading-relaxed">
-            A forma das duas linhas, so para veres. Nao e para comparar com
+            A forma das duas linhas, só para veres. Não é para comparar com
             ontem nem para melhorar.
           </p>
         </div>
@@ -42,7 +42,7 @@ export default async function PaginaBateria() {
       <div className="pb-2 flex flex-col gap-2 items-center">
         <ExportarPdf />
         <p className="text-xs text-[var(--color-tinta-fraca)] text-center leading-relaxed">
-          Documento limpo para levar a consulta, sem interpretacao.
+          Documento limpo para levar à consulta, sem interpretação.
         </p>
       </div>
     </Ecra>
