@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { guardarLocal, sincronizarFila, contarLocal } from "@/lib/offline/fila";
 import { contarPorTriar } from "./acoes";
 import ModoTriagem from "./ModoTriagem";
+import BotaoSair from "@/app/sair";
 
 type Modo = "parado" | "a_ouvir" | "guardado";
 
@@ -131,7 +132,10 @@ export default function Despejo({ contagemInicial }: { contagemInicial: number }
   return (
     <main className="min-h-[calc(100dvh-6rem)] flex flex-col px-5 pt-6">
       <header className="flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Despejo</h1>
+        <div className="flex items-start justify-between gap-3">
+          <h1 className="text-2xl font-semibold tracking-tight">Despejo</h1>
+          <BotaoSair variante="compacta" />
+        </div>
         <p className="text-sm text-[var(--color-tinta-fraca)] leading-relaxed">
           Tira da cabeça e larga aqui. Não decides nada agora, nem
           categorias nem prazos: isso é noutro dia.
