@@ -1,5 +1,12 @@
-// Grafico da ultima semana: duas linhas suaves, eixo do tempo em dias.
+// Grafico da ultima semana. Dois paineis empilhados, um por escala.
 // Sem numeros por cima dos pontos, por opcao. So a forma interessa.
+//
+// Antes era um so painel com as duas linhas. Deixou de dar quando a
+// escala sensorial passou a medir carga em vez de bateria: as duas
+// linhas passaram a subir por motivos opostos, e um eixo so nao pode
+// dizer "cheia" em cima para uma e "saturado" em cima para a outra.
+// Dois paineis alinhados na mesma coluna de dias resolvem sem obrigar a
+// segurar duas regras ao mesmo tempo.
 
 export type Registo = {
   registado_em: string;
@@ -51,6 +58,17 @@ function caminhoSuave(pontos: { x: number; y: number }[]): string {
   return d;
 }
 
+const L = 66; // margem esquerda, com espaco para as palavras da escala
+const R = 22; // espaco para o rotulo "hoje" nao sair pela borda
+const W = 320;
+const ALTURA_PAINEL = 78;
+const ESPACO = 30; // entre o fim de um painel e o titulo do seguinte
+const TOPO = 16; // do titulo ate a primeira linha da grelha
+const BASE_DIAS = 18; // altura reservada aos nomes dos dias
+const H = TOPO + ALTURA_PAINEL + ESPACO + TOPO + ALTURA_PAINEL + BASE_DIAS;
+
+const areaW = W - L - R;
+
 export default function GraficoSemana({
   registos,
   dias = 7,
@@ -59,88 +77,59 @@ export default function GraficoSemana({
   dias?: number;
 }) {
   const dados = agruparPorDia(registos, dias);
-
-  const L = 62; // margem esquerda, com espaco para a escala
-  const R = 8; // margem direita
-  const T = 14;
-  const B = 28;
-  const W = 320;
-  const H = 150;
-  const areaW = W - L - R;
-  const areaH = H - T - B;
-
   const x = (i: number) => L + (areaW * i) / Math.max(1, dias - 1);
-  const y = (v: number) => T + areaH * (1 - (v - 1) / 4); // 1 em baixo, 5 em cima
 
-  const pontosDe = (chave: "social" | "sensorial") =>
-    dados
-      .map((d, i) => ({ v: d[chave], i }))
-      .filter((p) => p.v !== null)
-      .map((p) => ({ x: x(p.i), y: y(p.v as number) }));
+  // Topo de cada painel, dentro do SVG
+  const topoSocial = TOPO;
+  const topoSensorial = TOPO + ALTURA_PAINEL + ESPACO + TOPO;
 
-  const social = pontosDe("social");
-  const sensorial = pontosDe("sensorial");
-
-  const temDados = social.length > 0 || sensorial.length > 0;
+  const temDados = dados.some((d) => d.social !== null || d.sensorial !== null);
 
   return (
     <div className="w-full">
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Bateria da última semana">
-        {/* Grelha, uma linha por valor */}
-        {[1, 2, 3, 4, 5].map((v) => (
-          <line
-            key={v}
-            x1={L}
-            y1={y(v)}
-            x2={W - R}
-            y2={y(v)}
-            stroke="var(--color-traco)"
-            strokeWidth="1"
-            opacity={v === 1 || v === 5 ? 0.9 : 0.35}
-          />
-        ))}
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="w-full"
+        role="img"
+        aria-label="Social e sensorial da última semana"
+      >
+        <Painel
+          topo={topoSocial}
+          cor="var(--color-ac-bateria)"
+          titulo="Social, quanto restou"
+          escala={[
+            { v: 5, rotulo: "cheia 5" },
+            { v: 3, rotulo: "3" },
+            { v: 1, rotulo: "vazia 1" },
+          ]}
+          pontos={dados
+            .map((d, i) => ({ v: d.social, i }))
+            .filter((p) => p.v !== null)
+            .map((p) => ({ x: x(p.i), y: yEm(topoSocial, p.v as number) }))}
+        />
 
-        {/* Escala a esquerda. Sem isto a altura de um ponto nao diz
-            nada, e o grafico fica bonito mas ilegivel.
-            Cada marca e um so texto, palavra e numero juntos, alinhados
-            a direita sobre a linha da grelha. Antes eram dois textos
-            separados, um por cima do outro, e chocavam entre si e com os
-            dias do eixo de baixo. */}
-        {[
-          { v: 5, rotulo: "cheia 5" },
-          { v: 4, rotulo: "4" },
-          { v: 3, rotulo: "3" },
-          { v: 2, rotulo: "2" },
-          { v: 1, rotulo: "vazia 1" },
-        ].map(({ v, rotulo }) => (
-          <text
-            key={`e${v}`}
-            x={L - 10}
-            y={y(v)}
-            textAnchor="end"
-            dominantBaseline="middle"
-            fontSize="9"
-            fill="var(--color-tinta-fraca)"
-          >
-            {rotulo}
-          </text>
-        ))}
-        {/* Serie social */}
-        <path d={caminhoSuave(social)} fill="none" stroke="var(--color-ac-bateria)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        {social.map((p, i) => (
-          <circle key={`so${i}`} cx={p.x} cy={p.y} r="3" fill="var(--color-ac-bateria)" />
-        ))}
-        {/* Serie sensorial */}
-        <path d={caminhoSuave(sensorial)} fill="none" stroke="var(--color-ac-nos)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        {sensorial.map((p, i) => (
-          <circle key={`se${i}`} cx={p.x} cy={p.y} r="3" fill="var(--color-ac-nos)" />
-        ))}
-        {/* Rotulos dos dias */}
+        <Painel
+          topo={topoSensorial}
+          cor="var(--color-ac-nos)"
+          titulo="Sensorial, quanto entrou"
+          escala={[
+            { v: 5, rotulo: "saturado 5" },
+            { v: 3, rotulo: "3" },
+            { v: 1, rotulo: "calmo 1" },
+          ]}
+          pontos={dados
+            .map((d, i) => ({ v: d.sensorial, i }))
+            .filter((p) => p.v !== null)
+            .map((p) => ({ x: x(p.i), y: yEm(topoSensorial, p.v as number) }))}
+        />
+
+        {/* Nomes dos dias, uma vez so. Os dois paineis partilham a
+            mesma coluna, por isso um eixo chega para os dois. */}
         {dados.map((d, i) => (
           <text
             key={i}
             x={x(i)}
-            y={H - 6}
+            y={H - 5}
             textAnchor="middle"
             fontSize="9"
             fill={i === dados.length - 1 ? "var(--color-tinta)" : "var(--color-tinta-fraca)"}
@@ -150,10 +139,7 @@ export default function GraficoSemana({
           </text>
         ))}
       </svg>
-      <div className="flex gap-5 justify-center mt-2">
-        <Legenda cor="var(--color-ac-bateria)" texto="Social" />
-        <Legenda cor="var(--color-ac-nos)" texto="Sensorial" />
-      </div>
+
       {!temDados && (
         <p className="text-center text-[var(--color-tinta-fraca)] text-sm mt-3">
           Ainda sem registos nesta semana. São três toques.
@@ -163,16 +149,78 @@ export default function GraficoSemana({
   );
 }
 
-// Legenda com a mesma forma da serie: linha e ponto, na cor da linha.
-// Um traco sozinho nao se liga ao grafico tao depressa.
-function Legenda({ cor, texto }: { cor: string; texto: string }) {
+// Posicao vertical de um valor dentro de um painel que comeca em `topo`.
+function yEm(topo: number, valor: number): number {
+  return topo + ALTURA_PAINEL * (1 - (valor - 1) / 4);
+}
+
+function Painel({
+  topo,
+  cor,
+  titulo,
+  escala,
+  pontos,
+}: {
+  topo: number;
+  cor: string;
+  titulo: string;
+  escala: { v: number; rotulo: string }[];
+  pontos: { x: number; y: number }[];
+}) {
   return (
-    <span className="flex items-center gap-2 text-sm text-[var(--color-tinta)]">
-      <svg width="22" height="10" viewBox="0 0 22 10" aria-hidden>
-        <line x1="1" y1="5" x2="21" y2="5" stroke={cor} strokeWidth="2.5" strokeLinecap="round" />
-        <circle cx="11" cy="5" r="3" fill={cor} />
-      </svg>
-      {texto}
-    </span>
+    <g>
+      {/* Titulo do painel, com a cor da linha ao lado. A legenda vive
+          aqui em cima e nao no fundo: assim le se antes do grafico e nao
+          e preciso voltar atras para saber o que se esta a ver. */}
+      <circle cx={L + 4} cy={topo - 9} r="3.5" fill={cor} />
+      <text
+        x={L + 13}
+        y={topo - 9}
+        dominantBaseline="middle"
+        fontSize="10"
+        fill="var(--color-tinta)"
+      >
+        {titulo}
+      </text>
+
+      {[1, 2, 3, 4, 5].map((v) => (
+        <line
+          key={v}
+          x1={L}
+          y1={yEm(topo, v)}
+          x2={W - R}
+          y2={yEm(topo, v)}
+          stroke="var(--color-traco)"
+          strokeWidth="1"
+          opacity={v === 1 || v === 5 ? 0.9 : 0.3}
+        />
+      ))}
+
+      {escala.map(({ v, rotulo }) => (
+        <text
+          key={`e${v}`}
+          x={L - 8}
+          y={yEm(topo, v)}
+          textAnchor="end"
+          dominantBaseline="middle"
+          fontSize="9"
+          fill="var(--color-tinta-fraca)"
+        >
+          {rotulo}
+        </text>
+      ))}
+
+      <path
+        d={caminhoSuave(pontos)}
+        fill="none"
+        stroke={cor}
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {pontos.map((p, i) => (
+        <circle key={i} cx={p.x} cy={p.y} r="3" fill={cor} />
+      ))}
+    </g>
   );
 }

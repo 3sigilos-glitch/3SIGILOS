@@ -20,6 +20,14 @@ const CONTEXTOS = [
   { valor: "ecra", rotulo: "ecrã" },
 ];
 
+// A escala sensorial anda ao contrario da social, de proposito.
+//
+// Sensorialmente nao ha bateria que se gaste: ha estimulo que entra. Um
+// 5 quer dizer saturado, ruido a mais, luz a mais, gente a mais. Um 1
+// quer dizer calmo. Antes as duas escalas usavam as mesmas palavras e um
+// 5 sensorial parecia bom, quando e o pior sitio da escala.
+const NIVEIS_SENSORIAL = ["", "calmo", "tranquilo", "médio", "carregado", "saturado"];
+
 export default function FormularioBateria() {
   const router = useRouter();
   const [social, setSocial] = useState(3);
@@ -51,8 +59,20 @@ export default function FormularioBateria() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-4 pt-2">
-        <Arco rotulo="Social" valor={social} aoMudar={(v) => { setSocial(v); if (estado !== "parado") setEstado("parado"); }} acento="var(--color-ac-bateria)" />
-        <Arco rotulo="Sensorial" valor={sensorial} aoMudar={(v) => { setSensorial(v); if (estado !== "parado") setEstado("parado"); }} acento="var(--color-ac-nos)" />
+        <Arco
+          rotulo="Social, quanto te resta"
+          valor={social}
+          aoMudar={(v) => { setSocial(v); if (estado !== "parado") setEstado("parado"); }}
+          acento="var(--color-ac-bateria)"
+        />
+        <Arco
+          rotulo="Sensorial, quanto está a entrar"
+          valor={sensorial}
+          aoMudar={(v) => { setSensorial(v); if (estado !== "parado") setEstado("parado"); }}
+          acento="var(--color-ac-nos)"
+          niveis={NIVEIS_SENSORIAL}
+          extremos={["calmo", "saturado"]}
+        />
       </div>
 
       <div className="flex flex-col gap-2">

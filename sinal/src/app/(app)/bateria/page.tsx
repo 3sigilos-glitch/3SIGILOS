@@ -24,7 +24,7 @@ export default async function PaginaBateria() {
   return (
     <Ecra
       titulo="Bateria"
-      proposito="Quanta capacidade te resta agora. Dois arcos, uma etiqueta se quiseres, registar. Não há respostas certas nem erradas."
+      proposito="Como estás agora. O arco de cima é a capacidade que te resta, o de baixo é o estímulo que está a entrar. Não há respostas certas nem erradas."
     >
       <FormularioBateria />
 
@@ -32,8 +32,9 @@ export default async function PaginaBateria() {
         <div className="flex flex-col gap-1">
           <h2 className="text-lg font-medium tracking-tight">Última semana</h2>
           <p className="text-sm text-[var(--color-tinta-fraca)] leading-relaxed">
-            A forma das duas linhas, só para veres. Não é para comparar com
-            ontem nem para melhorar.
+            A forma das linhas, só para veres. Não é para comparar com ontem
+            nem para melhorar. As duas escalas andam em sentidos contrários,
+            por isso vão separadas.
           </p>
         </div>
         <GraficoSemana registos={registos} dias={7} />

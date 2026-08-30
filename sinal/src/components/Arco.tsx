@@ -13,7 +13,13 @@ const CY = 100;
 // Uma palavra por valor. So um numero de 1 a 5 obriga a decidir o que
 // significa cada ponto, e a decisao muda de dia para dia, o que torna o
 // registo inutil para comparar. A palavra fixa o significado.
-const NIVEIS = ["", "no fundo", "fraca", "média", "boa", "cheia"];
+//
+// As palavras vem de fora porque as duas escalas nao medem a mesma
+// coisa. A social e uma carga que se gasta, sobe quando ha mais. A
+// sensorial e o contrario: sobe quando ha mais estimulo a entrar, ou
+// seja, quando esta pior. Chamar "cheia" as duas era a mesma palavra
+// para significados opostos.
+const NIVEIS_BATERIA = ["", "no fundo", "fraca", "média", "boa", "cheia"];
 
 // Angulo (graus) para um valor. Valor 1 a esquerda (180), 5 a direita (0).
 function anguloDe(valor: number): number {
@@ -46,11 +52,15 @@ export default function Arco({
   valor,
   aoMudar,
   acento,
+  niveis = NIVEIS_BATERIA,
+  extremos = ["vazia", "cheia"],
 }: {
   rotulo: string;
   valor: number;
   aoMudar: (v: number) => void;
   acento: string;
+  niveis?: string[];
+  extremos?: [string, string];
 }) {
   const refSvg = useRef<SVGSVGElement>(null);
 
@@ -90,7 +100,7 @@ export default function Arco({
         <span className="text-base text-[var(--color-tinta)]">{rotulo}</span>
         <span className="flex items-baseline gap-2">
           <span className="text-sm text-[var(--color-tinta-fraca)]">
-            {NIVEIS[valor]}
+            {niveis[valor]}
           </span>
           <span className="mono text-2xl" style={{ color: acento }}>
             {valor}
@@ -106,7 +116,7 @@ export default function Arco({
         aria-valuemin={1}
         aria-valuemax={5}
         aria-valuenow={valor}
-        aria-valuetext={`${valor} de 5, ${NIVEIS[valor]}`}
+        aria-valuetext={`${valor} de 5, ${niveis[valor]}`}
         tabIndex={0}
         onPointerDown={aoApontar}
         onPointerMove={aoMover}
@@ -135,7 +145,7 @@ export default function Arco({
           fontSize="11"
           fill="var(--color-tinta-fraca)"
         >
-          vazia
+          {extremos[0]}
         </text>
         <text
           x={CX + R}
@@ -144,7 +154,7 @@ export default function Arco({
           fontSize="11"
           fill="var(--color-tinta-fraca)"
         >
-          cheia
+          {extremos[1]}
         </text>
       </svg>
     </div>

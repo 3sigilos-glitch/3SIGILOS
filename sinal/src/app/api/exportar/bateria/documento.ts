@@ -117,11 +117,16 @@ export function documentoBateria(dados: DadosPdf) {
     return { rot, social: media(doDia.map((r) => r.social)), sensorial: media(doDia.map((r) => r.sensorial)) };
   });
 
-  // Dias abaixo de 2 (media diaria) e contextos frequentes nesses dias
+  // Dias dificeis (media diaria) e contextos frequentes nesses dias.
+  //
+  // As duas escalas andam em sentidos contrarios: um dia dificil e
+  // social baixa (pouca capacidade) ou sensorial alta (muito estimulo a
+  // entrar). Tratar as duas como "abaixo de 2" contava ao contrario do
+  // lado sensorial e escondia justamente os dias de saturacao.
   const hoje = new Date();
   let diasBaixosSocial = 0;
-  let diasBaixosSensorial = 0;
-  const ctxBaixos: Record<string, number> = {};
+  let diasAltosSensorial = 0;
+  const ctxDificeis: Record<string, number> = {};
   for (let i = 0; i < dias; i++) {
     const d = new Date(hoje);
     d.setDate(hoje.getDate() - i);
@@ -131,12 +136,12 @@ export function documentoBateria(dados: DadosPdf) {
     const mSoc = doDia.reduce((a, r) => a + r.social, 0) / doDia.length;
     const mSen = doDia.reduce((a, r) => a + r.sensorial, 0) / doDia.length;
     if (mSoc < 2) diasBaixosSocial++;
-    if (mSen < 2) diasBaixosSensorial++;
-    if (mSoc < 2 || mSen < 2) {
-      doDia.forEach((r) => r.contexto.forEach((c) => (ctxBaixos[c] = (ctxBaixos[c] ?? 0) + 1)));
+    if (mSen > 4) diasAltosSensorial++;
+    if (mSoc < 2 || mSen > 4) {
+      doDia.forEach((r) => r.contexto.forEach((c) => (ctxDificeis[c] = (ctxDificeis[c] ?? 0) + 1)));
     }
   }
-  const topCtx = Object.entries(ctxBaixos)
+  const topCtx = Object.entries(ctxDificeis)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 5)
     .map(([c, n]) => `${c} (${n})`)
@@ -172,8 +177,8 @@ export function documentoBateria(dados: DadosPdf) {
       h(
         View,
         { style: { flexDirection: "row", gap: 16, marginTop: 4 } },
-        h(Text, { style: { fontSize: 8, color: "#5a7a55" } }, "Social"),
-        h(Text, { style: { fontSize: 8, color: "#8a6480" } }, "Sensorial")
+        h(Text, { style: { fontSize: 8, color: "#5a7a55" } }, "Social (5 = cheia)"),
+        h(Text, { style: { fontSize: 8, color: "#8a6480" } }, "Sensorial (5 = saturado)")
       ),
 
       h(Text, { style: estilos.seccao }, "Resumo"),
@@ -191,11 +196,12 @@ export function documentoBateria(dados: DadosPdf) {
       ),
       h(View, { style: { marginTop: 8 } },
         h(Text, null, `Dias com media social abaixo de 2: ${diasBaixosSocial}`),
-        h(Text, null, `Dias com media sensorial abaixo de 2: ${diasBaixosSensorial}`),
-        h(Text, null, `Contextos mais frequentes nos dias baixos: ${topCtx || "sem dados"}`)
+        h(Text, null, `Dias com media sensorial acima de 4: ${diasAltosSensorial}`),
+        h(Text, null, `Contextos mais frequentes nesses dias: ${topCtx || "sem dados"}`)
       ),
 
       h(Text, { style: estilos.seccao }, "Registos"),
+      h(Text, { style: estilos.sub }, "Social: 1 vazia, 5 cheia.  Sensorial: 1 calmo, 5 saturado.  As escalas correm em sentidos contrarios."),
       h(
         View,
         { style: estilos.cabTabela },
