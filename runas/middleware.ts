@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 // Settings > Environment Variables). Sem ela, usa-se um valor por defeito
 // que DEVE ser mudado.
 
-const PASSWORD = process.env.ACCESS_PASSWORD || "runas-modulo-branco";
+const PASSWORD = process.env.ACCESS_PASSWORD || "LOKI1989";
 const COOKIE = "runas_acesso";
 const LOGIN_PATH = "/entrar";
 const LOGOUT_PATH = "/sair";
