@@ -52,6 +52,10 @@ export function Admin() {
       setLoginError(
         "A área ainda não está ligada no servidor. Falta definir ADMIN_TOKEN no Vercel e fazer um novo deploy."
       );
+    } else if (result === "stale") {
+      setLoginError(
+        "A app parece estar numa versão antiga guardada. Fecha-a por completo e reabre (ou recarrega a página) e tenta outra vez."
+      );
     } else {
       setLoginError("Não foi possível validar agora. Verifica a ligação e tenta outra vez.");
     }

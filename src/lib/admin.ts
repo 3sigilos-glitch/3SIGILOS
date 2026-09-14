@@ -25,21 +25,41 @@ export interface Msg {
   text: string;
 }
 
-export type ValidateResult = "ok" | "wrong" | "unconfigured" | "offline";
+/* POST com tempo limite e sem cache, para o service worker nao servir
+   uma pagina guardada em vez da resposta do proxy. */
+async function postAnalise(payload: unknown, timeoutMs: number): Promise<Response> {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    return await fetch("/api/analise", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      cache: "no-store",
+      signal: ctrl.signal,
+    });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function isJson(res: Response): boolean {
+  return (res.headers.get("content-type") ?? "").includes("application/json");
+}
+
+export type ValidateResult = "ok" | "wrong" | "unconfigured" | "offline" | "stale";
 
 /* Confirma o token no proxy, sem gastar nada da IA. Distingue os casos
    para o ecra de entrada dizer o que se passa. */
 export async function validateAdmin(token: string): Promise<ValidateResult> {
   try {
-    const res = await fetch("/api/analise", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token: token.trim(), validate: true }),
-    });
+    const res = await postAnalise({ token: token.trim(), validate: true }, 20000);
+    // Resposta que nao e JSON: quase sempre a pagina em cache do service
+    // worker, ou seja, a app esta numa versao antiga.
+    if (!isJson(res) && res.ok) return "stale";
     if (res.ok) return "ok";
     if (res.status === 401) return "wrong";
-    if (res.status === 503) return "unconfigured";
-    if (res.status === 404) return "unconfigured";
+    if (res.status === 503 || res.status === 404) return "unconfigured";
     return "offline";
   } catch {
     return "offline";
@@ -61,18 +81,20 @@ function diagnose(status: number, error?: string, googleMessage?: string): strin
   return "erro " + status + (error ? " (" + error + ")" : "");
 }
 
+const STALE =
+  "a app parece estar numa versao antiga guardada. Fecha-a por completo e reabre (ou recarrega a pagina) e tenta outra vez.";
+
 /* Envia toda a conversa e devolve a resposta seguinte da app. */
 export async function requestAnalise(messages: Msg[]): Promise<AnaliseResult> {
   const token = adminToken();
   if (!token) return { ok: false, detail: "sessao de administrador terminada", unauthorized: true };
   try {
-    const res = await fetch("/api/analise", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token, messages }),
-    });
+    const res = await postAnalise({ token, messages }, 45000);
     if (res.status === 401) {
       return { ok: false, detail: "token de administrador invalido", unauthorized: true };
+    }
+    if (!isJson(res)) {
+      return { ok: false, detail: STALE };
     }
     if (!res.ok) {
       const body = (await res.json().catch(() => ({}))) as {
@@ -82,10 +104,16 @@ export async function requestAnalise(messages: Msg[]): Promise<AnaliseResult> {
       };
       return { ok: false, detail: diagnose(res.status, body.error, body.googleMessage) };
     }
-    const body = (await res.json()) as { text?: string };
+    const body = (await res.json().catch(() => ({}))) as { text?: string };
     if (!body.text) return { ok: false, detail: "resposta sem texto" };
     return { ok: true, text: body.text };
-  } catch {
-    return { ok: false, detail: "sem ligacao ao proxy" };
+  } catch (e) {
+    if (e instanceof DOMException && e.name === "AbortError") {
+      return { ok: false, detail: "a resposta demorou demasiado. Tenta outra vez." };
+    }
+    if (typeof navigator !== "undefined" && navigator.onLine === false) {
+      return { ok: false, detail: "estas sem ligacao a internet." };
+    }
+    return { ok: false, detail: "nao foi possivel falar com o servidor. Tenta outra vez daqui a pouco." };
   }
 }

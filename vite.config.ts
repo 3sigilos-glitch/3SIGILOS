@@ -42,6 +42,9 @@ export default defineConfig({
       },
       workbox: {
         navigateFallback: base + "index.html",
+        // Nunca servir a pagina em cache para as rotas /api/: sao funcoes
+        // no servidor (proxy do Gemini) e tem de ir sempre a rede.
+        navigateFallbackDenylist: [/^\/api\//],
         // Os sons de ambiente (mp3) NÃO entram no cache inicial: só se
         // descarregam quando o utilizador escolhe um ambiente.
         globIgnores: ["**/*.mp3"],
