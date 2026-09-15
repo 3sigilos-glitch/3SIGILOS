@@ -2537,3 +2537,79 @@ h3,
 .admin-send:disabled {
   opacity: 0.4;
 }
+
+/* ---------- Historico das analises ---------- */
+.admin-history {
+  max-width: 640px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px 16px calc(20px + env(safe-area-inset-bottom));
+}
+.admin-hist-new {
+  width: 100%;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.admin-hist-empty {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--sepia-2);
+  text-align: center;
+  margin: 32px 12px 0;
+}
+.admin-hist-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.admin-hist-list li {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+}
+.hist-item {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  text-align: left;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.hist-item:active {
+  border-color: var(--gold-dim);
+  background: rgba(184, 147, 68, 0.08);
+}
+.hist-title {
+  font-family: var(--serif);
+  font-size: 15.5px;
+  line-height: 1.4;
+  color: var(--parch);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.hist-meta {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--sepia-2);
+}
+.hist-del {
+  flex: none;
+  align-self: center;
+  color: var(--sepia-2);
+}
+.hist-del:active {
+  color: var(--rev);
+}

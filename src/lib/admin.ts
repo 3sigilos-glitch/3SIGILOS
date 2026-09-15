@@ -25,6 +25,48 @@ export interface Msg {
   text: string;
 }
 
+/* Historico das analises, guardado so neste dispositivo. */
+export interface SavedReading {
+  id: string;
+  created: number;
+  updated: number;
+  title: string;
+  messages: Msg[];
+}
+
+const HIST_KEY = "ts-admin-history";
+const HIST_CAP = 80;
+
+export function newReadingId(): string {
+  return crypto.randomUUID?.() ?? Date.now().toString(36) + Math.random().toString(36).slice(2);
+}
+
+export function readingTitle(messages: Msg[]): string {
+  const first = messages.find((m) => m.role === "user");
+  const t = (first?.text ?? "").trim().replace(/\s+/g, " ");
+  if (!t) return "Análise sem título";
+  return t.length > 72 ? t.slice(0, 72).trimEnd() + "…" : t;
+}
+
+export function loadHistory(): SavedReading[] {
+  const list = load<SavedReading[]>(HIST_KEY, []);
+  return Array.isArray(list) ? list : [];
+}
+
+/* Grava (ou atualiza) uma analise, deixando a mais recente no topo. */
+export function saveReading(reading: SavedReading): void {
+  const rest = loadHistory().filter((r) => r.id !== reading.id);
+  rest.unshift(reading);
+  save(HIST_KEY, rest.slice(0, HIST_CAP));
+}
+
+export function deleteReading(id: string): void {
+  save(
+    HIST_KEY,
+    loadHistory().filter((r) => r.id !== id)
+  );
+}
+
 /* POST com tempo limite e sem cache, para o service worker nao servir
    uma pagina guardada em vez da resposta do proxy. */
 async function postAnalise(payload: unknown, timeoutMs: number): Promise<Response> {

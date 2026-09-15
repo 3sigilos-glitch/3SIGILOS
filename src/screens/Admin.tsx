@@ -1,11 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, Loader2, Lock, LogOut, Send, Sparkles } from "lucide-react";
+import { ChevronLeft, History, Loader2, Lock, LogOut, Send, Sparkles, Trash2 } from "lucide-react";
 import {
   Msg,
+  SavedReading,
   clearAdmin,
+  deleteReading,
   isAdmin,
+  loadHistory,
+  newReadingId,
+  readingTitle,
   requestAnalise,
+  saveReading,
   setAdmin,
   validateAdmin,
 } from "../lib/admin";
@@ -14,6 +20,15 @@ import { haptic } from "../lib/storage";
 const HINT =
   "Descreve o que perguntaste e que cartas saíram. Se souberes, diz a posição de cada uma e " +
   "se está direita ou invertida. Podes continuar a conversa para afinar a leitura.";
+
+function whenLabel(ts: number): string {
+  const d = new Date(ts);
+  return (
+    d.toLocaleDateString("pt-PT", { day: "2-digit", month: "short" }) +
+    " · " +
+    d.toLocaleTimeString("pt-PT", { hour: "2-digit", minute: "2-digit" })
+  );
+}
 
 export function Admin() {
   const navigate = useNavigate();
@@ -26,14 +41,35 @@ export function Admin() {
 
   // Conversa
   const [messages, setMessages] = useState<Msg[]>([]);
+  const [currentId, setCurrentId] = useState<string>(() => newReadingId());
   const [draft, setDraft] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const threadRef = useRef<HTMLDivElement>(null);
 
+  // Histórico
+  const [showHistory, setShowHistory] = useState(false);
+  const [history, setHistory] = useState<SavedReading[]>(() => loadHistory());
+
   useEffect(() => {
+    if (showHistory) return;
     threadRef.current?.scrollTo({ top: threadRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages, loading]);
+  }, [messages, loading, showHistory]);
+
+  /* Grava a conversa atual no histórico, mantendo a data de criação. */
+  function persist(msgs: Msg[]) {
+    if (msgs.length === 0) return;
+    const existing = loadHistory().find((r) => r.id === currentId);
+    const now = Date.now();
+    saveReading({
+      id: currentId,
+      created: existing?.created ?? now,
+      updated: now,
+      title: readingTitle(msgs),
+      messages: msgs,
+    });
+    setHistory(loadHistory());
+  }
 
   async function tryLogin() {
     if (!pass.trim() || checking) return;
@@ -73,7 +109,9 @@ export function Admin() {
     const res = await requestAnalise(next);
     setLoading(false);
     if (res.ok) {
-      setMessages([...next, { role: "model", text: res.text }]);
+      const done = [...next, { role: "model" as const, text: res.text }];
+      setMessages(done);
+      persist(done);
     } else {
       setError(res.detail);
       if (res.unauthorized) {
@@ -87,14 +125,34 @@ export function Admin() {
   function newReading() {
     haptic(8);
     setMessages([]);
+    setCurrentId(newReadingId());
     setError("");
     setDraft("");
+    setShowHistory(false);
+  }
+
+  function openReading(r: SavedReading) {
+    haptic(8);
+    setMessages(r.messages);
+    setCurrentId(r.id);
+    setError("");
+    setDraft("");
+    setShowHistory(false);
+  }
+
+  function removeReading(id: string, e: React.MouseEvent) {
+    e.stopPropagation();
+    haptic(12);
+    deleteReading(id);
+    setHistory(loadHistory());
+    if (id === currentId) newReading();
   }
 
   function lock() {
     haptic(12);
     clearAdmin();
     setMessages([]);
+    setShowHistory(false);
     setUnlocked(false);
   }
 
@@ -104,11 +162,26 @@ export function Admin() {
         <button type="button" className="icon-btn" onClick={() => navigate("/")} aria-label="Voltar">
           <ChevronLeft size={24} />
         </button>
-        <span className="detail-pos">Administrador</span>
+        <span className="detail-pos">{showHistory ? "Histórico" : "Administrador"}</span>
         {unlocked ? (
-          <button type="button" className="icon-btn" onClick={lock} aria-label="Terminar sessão">
-            <LogOut size={19} />
-          </button>
+          <div className="detail-actions">
+            <button
+              type="button"
+              className={"icon-btn" + (showHistory ? " on" : "")}
+              onClick={() => {
+                haptic(8);
+                setHistory(loadHistory());
+                setShowHistory((v) => !v);
+              }}
+              aria-label="Histórico de análises"
+              aria-pressed={showHistory}
+            >
+              <History size={20} />
+            </button>
+            <button type="button" className="icon-btn" onClick={lock} aria-label="Terminar sessão">
+              <LogOut size={19} />
+            </button>
+          </div>
         ) : (
           <span className="detail-bar-spacer" />
         )}
@@ -140,6 +213,38 @@ export function Admin() {
             Entrar
           </button>
           {loginError && <p className="admin-error">{loginError}</p>}
+        </div>
+      ) : showHistory ? (
+        <div className="admin-history">
+          <button type="button" className="gold-btn admin-hist-new" onClick={newReading}>
+            <Sparkles size={16} /> Nova análise
+          </button>
+          {history.length === 0 ? (
+            <p className="admin-hist-empty">
+              Ainda não há análises guardadas. As que fizeres ficam aqui, só neste dispositivo.
+            </p>
+          ) : (
+            <ul className="admin-hist-list">
+              {history.map((r) => (
+                <li key={r.id}>
+                  <button type="button" className="hist-item" onClick={() => openReading(r)}>
+                    <span className="hist-title">{r.title}</span>
+                    <span className="hist-meta">
+                      {whenLabel(r.updated)} · {r.messages.length} mensagens
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    className="hist-del icon-btn"
+                    onClick={(e) => removeReading(r.id, e)}
+                    aria-label="Apagar análise"
+                  >
+                    <Trash2 size={17} />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       ) : (
         <div className="admin-chat">
