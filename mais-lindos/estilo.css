@@ -126,6 +126,13 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; margin: 0; }
   margin-bottom: 8px;
 }
 .lista-jogo .codigo-jogo { font-family: var(--display); font-weight: 700; font-size: 17px; }
+.jogo-perdido {
+  border: 1px solid rgba(179, 48, 63, 0.45);
+  border-radius: var(--raio);
+  background: rgba(142, 34, 48, 0.12);
+  padding: 10px 12px; margin-bottom: 10px;
+}
+.jogo-perdido .lista-jogo { margin-bottom: 2px; opacity: 0.75; }
 .lista-jogo .detalhe {
   flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   font-size: 12px; color: rgba(236, 227, 210, 0.6);

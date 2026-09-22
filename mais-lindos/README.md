@@ -36,6 +36,10 @@ sem desconfiar que está a cumprir a missão de alguém.
 - **Ninguém perde a sala:** o telemóvel guarda os últimos oito jogos e
   mostra-os no ecrã de entrada, e o código no topo é um botão que copia a
   ligação do jogo para qualquer jogador, não só para o administrador.
+- **A casa não se perde:** cada telemóvel guarda uma cópia da casa (nomes,
+  espaços e objectos, com as marcas de difícil). Se o servidor já não tiver o
+  jogo, o ecrã de entrada diz isso e oferece recriar a casa num jogo novo, com
+  um toque. As missões antigas não voltam, mas a parte trabalhosa sim.
 
 ## Como se joga num fim de semana
 
@@ -92,8 +96,10 @@ Para experimentar com telemóveis na mesma rede, usar o IP do computador
 4. Deploy.
 
 Sem base de dados ligada, a app funciona na mesma, mas o jogo vive na memória
-da instância e desaparece num reinício. Nesse caso a app avisa no topo do
-ecrã. Cada jogo fica guardado 60 dias depois da última alteração.
+da instância e desaparece a cada reinício ou publicação nova. Nesse caso a app
+avisa no topo do ecrã, e quando o jogo desaparecer oferece recriar a casa a
+partir da cópia guardada no telemóvel. Com base de dados, cada jogo fica
+guardado 60 dias depois da última alteração.
 
 ## Modo local (sem servidor)
 
