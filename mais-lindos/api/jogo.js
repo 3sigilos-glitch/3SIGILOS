@@ -99,6 +99,7 @@ async function criar(corpo) {
       pin: corpo.pin,
       nome: corpo.nome,
       jogadores: corpo.jogadores,
+      casa: corpo.casa,
       exemplo: corpo.exemplo !== false,
     });
     const guardou = await guardar(id, "", JSON.stringify(estado));

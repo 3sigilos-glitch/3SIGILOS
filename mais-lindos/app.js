@@ -8,6 +8,7 @@ const API = "/api/jogo";
 const CHAVE_SESSAO = "maislindos.sessao";
 const CHAVE_LOCAL = "maislindos.local.";
 const CHAVE_HISTORICO = "maislindos.jogos";
+const CHAVE_CASA = "maislindos.casa.";
 const INTERVALO = 3000;
 
 const ESTADO = {
@@ -22,6 +23,7 @@ const ESTADO = {
   ocupado: false,
   viradas: new Set(),
   revelar: null,
+  casaPendente: null,
   rascunhos: {},
 };
 
@@ -78,6 +80,44 @@ function guardaHistorico(vistaNova) {
   });
   try {
     localStorage.setItem(CHAVE_HISTORICO, JSON.stringify(lista.slice(0, 8)));
+  } catch (e) {
+    void e;
+  }
+}
+
+// Cópia da casa (nomes, espaços e objectos) em cada telemóvel. É tudo
+// informação pública do jogo, nunca missões. Serve para recriar o jogo se o
+// servidor se esquecer dele, sem ter de escrever tudo de novo.
+function guardaCasa(vistaNova) {
+  if (!vistaNova || !vistaNova.id || !vistaNova.espacos) return;
+  try {
+    localStorage.setItem(
+      CHAVE_CASA + vistaNova.id,
+      JSON.stringify({
+        nome: vistaNova.nome || "",
+        jogadores: (vistaNova.jogadores || []).map((j) => j.nome),
+        espacos: (vistaNova.espacos || []).map((i) => ({ nome: i.nome, dificil: i.dificil })),
+        objetos: (vistaNova.objetos || []).map((i) => ({ nome: i.nome, dificil: i.dificil })),
+        guardado: Date.now(),
+      })
+    );
+  } catch (e) {
+    void e;
+  }
+}
+
+function leCasa(id) {
+  try {
+    return JSON.parse(localStorage.getItem(CHAVE_CASA + id) || "null");
+  } catch (e) {
+    return null;
+  }
+}
+
+function marcaPerdido(id, perdido) {
+  const lista = leHistorico().map((j) => (j.id === id ? { ...j, perdido } : j));
+  try {
+    localStorage.setItem(CHAVE_HISTORICO, JSON.stringify(lista));
   } catch (e) {
     void e;
   }
@@ -188,6 +228,12 @@ async function correr(tarefa, { silencioso = false } = {}) {
       const texto = erro.message || "";
       if (erro.codigo === 404 && ESTADO.jogoId) {
         if (/código/i.test(texto)) {
+          const perdido = ESTADO.jogoId;
+          marcaPerdido(perdido, true);
+          if (leCasa(perdido)) {
+            ESTADO.erro =
+              "O servidor já não tem este jogo. A casa está guardada neste telemóvel: podes recriá-la em baixo.";
+          }
           sair();
         } else if (/jogador/i.test(texto)) {
           ESTADO.euId = null;
@@ -217,9 +263,12 @@ function aceitaVista(v) {
   }
   guardaSessao();
   guardaHistorico(v);
+  guardaCasa(v);
+  if (v.id) marcaPerdido(v.id, false);
 }
 
 function sair() {
+  ESTADO.casaPendente = null;
   ESTADO.jogoId = null;
   ESTADO.euId = null;
   ESTADO.pin = null;
@@ -252,15 +301,44 @@ function ecraEntrada() {
          <h2>Jogos neste telemóvel</h2>
          <p class="nota">Toca para voltar a entrar, sem escrever o código.</p>
          ${historico
-           .map(
-             (j) => `
-           <button class="b-largo lista-jogo" data-ac="retomar" data-id="${esc(j.id)}">
-             <span class="codigo-jogo">${esc(j.id)}</span>
-             <span class="detalhe">${esc(j.nome || "sem nome")}${
+           .map((j) => {
+             const casa = j.perdido ? leCasa(j.id) : null;
+             const detalhe = `${esc(j.nome || "sem nome")}${
                j.euNome ? " · " + esc(j.euNome) : ""
-             }${j.local ? " · neste telemóvel" : ""}</span>
-           </button>`
-           )
+             }${j.local ? " · neste telemóvel" : ""}`;
+             if (!j.perdido) {
+               return `
+                 <button class="b-largo lista-jogo" data-ac="retomar" data-id="${esc(j.id)}">
+                   <span class="codigo-jogo">${esc(j.id)}</span>
+                   <span class="detalhe">${detalhe}</span>
+                 </button>`;
+             }
+             return `
+               <div class="jogo-perdido">
+                 <div class="lista-jogo">
+                   <span class="codigo-jogo">${esc(j.id)}</span>
+                   <span class="detalhe">${detalhe}</span>
+                 </div>
+                 <p class="nota" style="margin:2px 0 8px">
+                   O servidor já não tem este jogo.${
+                     casa
+                       ? " A casa ficou guardada aqui: " +
+                         casa.espacos.length +
+                         " espaços e " +
+                         casa.objetos.length +
+                         " objectos."
+                       : ""
+                   }
+                 </p>
+                 ${
+                   casa
+                     ? `<button class="b-largo b-ouro b-fino" data-ac="recriar" data-id="${esc(j.id)}">
+                          Recriar esta casa num jogo novo
+                        </button>`
+                     : `<button class="b-largo b-fino" data-ac="retomar" data-id="${esc(j.id)}">Tentar outra vez</button>`
+                 }
+               </div>`;
+           })
            .join("")}
        </div>`
     : "";
@@ -280,8 +358,18 @@ function ecraEntrada() {
       <button class="b-largo b-ouro" data-ac="entrar" style="margin-top:12px">Entrar</button>
     </div>
     <div class="cartao">
-      <h2>Criar jogo novo</h2>
-      <p class="nota">Ficas administrador deste jogo. O PIN serve para gerir a casa.</p>
+      <h2>${ESTADO.casaPendente ? "Recriar a casa" : "Criar jogo novo"}</h2>
+      <p class="nota">
+        ${
+          ESTADO.casaPendente
+            ? "Vai nascer um jogo novo, com código novo, já com os " +
+              ESTADO.casaPendente.espacos.length +
+              " espaços e os " +
+              ESTADO.casaPendente.objetos.length +
+              " objectos da casa antiga. As missões antigas não voltam."
+            : "Ficas administrador deste jogo. O PIN serve para gerir a casa."
+        }
+      </p>
       <label for="campo-nome-jogo">Nome do jogo (opcional)</label>
       <input id="campo-nome-jogo" type="text" placeholder="Fim de semana na Nazaré" maxlength="44">
       <label for="campo-pin-novo">PIN de administrador (4 a 8 dígitos)</label>
@@ -291,11 +379,22 @@ function ecraEntrada() {
       </p>
       <label for="campo-jogadores">Jogadores, um por linha (opcional)</label>
       <textarea id="campo-jogadores" placeholder="Ana&#10;Bruno&#10;Carla"></textarea>
-      <div class="linha-opcao">
-        <input id="campo-exemplo" type="checkbox" checked>
-        <label for="campo-exemplo" style="margin:0">Começar com espaços e objectos de exemplo</label>
-      </div>
-      <button class="b-largo b-ouro" data-ac="criar" style="margin-top:14px">Criar jogo</button>
+      ${
+        ESTADO.casaPendente
+          ? ""
+          : `<div class="linha-opcao">
+               <input id="campo-exemplo" type="checkbox" checked>
+               <label for="campo-exemplo" style="margin:0">Começar com espaços e objectos de exemplo</label>
+             </div>`
+      }
+      <button class="b-largo b-ouro" data-ac="criar" style="margin-top:14px">
+        ${ESTADO.casaPendente ? "Recriar o jogo" : "Criar jogo"}
+      </button>
+      ${
+        ESTADO.casaPendente
+          ? `<button class="b-nu b-largo" data-ac="esquecer-casa">Afinal começar do zero</button>`
+          : ""
+      }
     </div>
     <div class="rodape">
       Estado partilhado entre todos os telemóveis. As missões de cada um ficam só com ele.
@@ -695,23 +794,28 @@ async function criarJogo() {
     .split("\n")
     .map((l) => l.trim())
     .filter(Boolean);
-  const exemplo = document.getElementById("campo-exemplo")
+  const casa = ESTADO.casaPendente;
+  const exemplo = casa
+    ? false
+    : document.getElementById("campo-exemplo")
     ? document.getElementById("campo-exemplo").checked
     : true;
   if (!/^\d{4,8}$/.test(pin)) throw new ErroJogo("O PIN tem de ser um número de 4 a 8 dígitos.");
 
   if (ESTADO.local) {
-    const estado = jogoNovo({ id: codigoNovo(), pin, nome, jogadores, exemplo });
+    const estado = jogoNovo({ id: codigoNovo(), pin, nome, jogadores, casa, exemplo });
     guardarLocal(estado);
     ESTADO.jogoId = estado.id;
     ESTADO.pin = pin;
+    ESTADO.casaPendente = null;
     const v = vista(estado, null);
     v.local = true;
     return v;
   }
-  const v = await pedirServidor("POST", { acao: "criar", pin, nome, jogadores, exemplo });
+  const v = await pedirServidor("POST", { acao: "criar", pin, nome, jogadores, casa, exemplo });
   ESTADO.jogoId = v.id;
   ESTADO.pin = pin;
+  ESTADO.casaPendente = null;
   ["campo-pin-novo", "campo-nome-jogo", "campo-jogadores"].forEach(limpaCampo);
   return v;
 }
@@ -828,6 +932,25 @@ function trataClique(evento) {
     ESTADO.local = Boolean(escolhido.local);
     ESTADO.pin = sessao.jogoId === ESTADO.jogoId ? sessao.pin || null : null;
     correr(sincronizar);
+    return;
+  }
+  if (ac === "recriar") {
+    const casa = leCasa(alvo.dataset.id);
+    if (!casa) return;
+    ESTADO.casaPendente = casa;
+    ESTADO.rascunhos["campo-nome-jogo"] = casa.nome || "";
+    ESTADO.rascunhos["campo-jogadores"] = (casa.jogadores || []).join("\n");
+    ESTADO.recado = "Escolhe um PIN e carrega em Recriar o jogo.";
+    desenhar();
+    const cartao = document.querySelector("[data-ac='criar']");
+    if (cartao && cartao.scrollIntoView) cartao.scrollIntoView({ block: "center" });
+    return;
+  }
+  if (ac === "esquecer-casa") {
+    ESTADO.casaPendente = null;
+    ESTADO.rascunhos["campo-nome-jogo"] = "";
+    ESTADO.rascunhos["campo-jogadores"] = "";
+    desenhar();
     return;
   }
   if (ac === "criar") return void correr(criarJogo);

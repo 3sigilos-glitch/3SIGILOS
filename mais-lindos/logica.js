@@ -93,6 +93,22 @@ function novoItem(entrada) {
   return { id: novoId(), nome: limpaNome(bruto.nome), dificil: Boolean(bruto.dificil) };
 }
 
+// A casa do jogo novo: uma copia guardada num telemovel, a de exemplo, ou
+// nenhuma. Serve para recriar um jogo sem escrever tudo outra vez.
+function escolheCasa(opcoes) {
+  const dada = opcoes.casa;
+  if (dada && (Array.isArray(dada.espacos) || Array.isArray(dada.objetos))) {
+    const limpa = (lista) =>
+      (Array.isArray(lista) ? lista : [])
+        .map((i) => (typeof i === "string" ? { nome: i } : i || {}))
+        .filter((i) => String(i.nome || "").trim())
+        .map((i) => ({ nome: i.nome, dificil: Boolean(i.dificil) }));
+    return { espacos: limpa(dada.espacos), objetos: limpa(dada.objetos) };
+  }
+  if (opcoes.exemplo === false) return { espacos: [], objetos: [] };
+  return CASA_EXEMPLO;
+}
+
 export function jogoNovo(opcoes = {}) {
   const pin = String(opcoes.pin == null ? "" : opcoes.pin).trim();
   if (!/^\d{4,8}$/.test(pin)) {
@@ -118,9 +134,9 @@ export function jogoNovo(opcoes = {}) {
     if (jogo.jogadores.length >= LIMITES.jogadores) break;
     jogo.jogadores.push({ id: novoId(), nome: limpaNome(limpo), entrouEm: agora });
   }
-  const casa = opcoes.exemplo === false ? { espacos: [], objetos: [] } : CASA_EXEMPLO;
-  jogo.espacos = casa.espacos.map(novoItem);
-  jogo.objetos = casa.objetos.map(novoItem);
+  const casa = escolheCasa(opcoes);
+  jogo.espacos = casa.espacos.slice(0, LIMITES.espacos).map(novoItem);
+  jogo.objetos = casa.objetos.slice(0, LIMITES.objetos).map(novoItem);
   return jogo;
 }
 
