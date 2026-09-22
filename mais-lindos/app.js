@@ -1,12 +1,12 @@
-// SIGILUDO, aplicação de uma só página. Sem compilação, sem dependências.
+// Os Mais Lindos, aplicação de uma só página. Sem compilação, sem dependências.
 // Fala com /api/jogo para o estado partilhado. Se não houver servidor,
 // joga em modo local (só neste telemóvel) com a mesma lógica.
 
 import { jogoNovo, aplicar, vista, codigoNovo, ErroJogo } from "./logica.js";
 
 const API = "/api/jogo";
-const CHAVE_SESSAO = "sigiludo.sessao";
-const CHAVE_LOCAL = "sigiludo.local.";
+const CHAVE_SESSAO = "maislindos.sessao";
+const CHAVE_LOCAL = "maislindos.local.";
 const INTERVALO = 3000;
 
 const ESTADO = {
@@ -209,8 +209,8 @@ function ecraEntrada() {
   return `
     <div class="marca">
       <div class="selo">✦</div>
-      <div class="titulo">SIGILUDO</div>
-      <div class="sub">missões secretas em casa</div>
+      <div class="titulo">Os Mais Lindos</div>
+      <div class="sub">um jogo de missões secretas</div>
       <p class="lema">Uma pessoa. Um espaço. Um objecto.<br>Ninguém pode saber.</p>
     </div>
     ${voltar}

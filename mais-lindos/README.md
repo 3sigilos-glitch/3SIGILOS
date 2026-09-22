@@ -1,8 +1,8 @@
-# SIGILUDO
+# Os Mais Lindos
 
 Jogo social de missões secretas para jogar presencialmente, em casa, entre
-amigos. O nome é o que o Cluedo fez ao inglês (*clue* + *ludo*), feito ao
-português: **sigilo** + **ludo**.
+amigos, num fim de semana. É um Cluedo ao contrário: em vez de descobrir quem
+fez o quê e onde, é fazer acontecer.
 
 Cada jogador cria as suas missões, uma a uma. Uma missão é sempre a mesma
 combinação:
@@ -73,7 +73,7 @@ Para experimentar com telemóveis na mesma rede, usar o IP do computador
 É um projecto separado do Tarot, na mesma repositório.
 
 1. Vercel > Add New > Project > escolher este repositório.
-2. Em **Root Directory** escolher `sigiludo`. Framework: *Other*. Sem comando
+2. Em **Root Directory** escolher `mais-lindos`. Framework: *Other*. Sem comando
    de build.
 3. Storage > criar uma base **Upstash Redis** (plano grátis chega e sobra) e
    ligá-la ao projecto. A Vercel injecta sozinha `KV_REST_API_URL` e

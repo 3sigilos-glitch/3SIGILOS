@@ -59,5 +59,5 @@ createServer(async (req, res) => {
     res.end("Não encontrado");
   }
 }).listen(PORTA, () => {
-  console.log("Sigiludo em http://localhost:" + PORTA);
+  console.log("Os Mais Lindos em http://localhost:" + PORTA);
 });

@@ -1,4 +1,4 @@
-// Estado partilhado do SIGILUDO: um jogo por código, guardado em Redis
+// Estado partilhado dos Mais Lindos: um jogo por código, guardado em Redis
 // (Vercel KV ou Upstash, via REST, sem dependências). Sem Redis configurado
 // cai para memória da instância, que serve para testar mas não sobrevive a
 // reinícios: a app avisa.
@@ -17,7 +17,7 @@ const MAX_TENTATIVAS = 6;
 const memoria = new Map();
 
 function chave(id) {
-  return "sigiludo:jogo:" + id;
+  return "maislindos:jogo:" + id;
 }
 
 async function comandoRedis(comando) {
@@ -187,7 +187,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ erro: "Método não suportado." });
   } catch (erro) {
     const codigo = erro && erro.codigo ? erro.codigo : 500;
-    if (codigo >= 500) console.error("sigiludo:", erro);
+    if (codigo >= 500) console.error("mais-lindos:", erro);
     return res.status(codigo).json({
       erro: codigo >= 500 ? "Falhou do lado do servidor. Tenta outra vez." : erro.message,
     });

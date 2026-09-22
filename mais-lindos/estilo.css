@@ -1,4 +1,4 @@
-/* SIGILUDO, folha de estilo única. Escuro, ouro velho, serifa de livro.
+/* Os Mais Lindos, folha de estilo única. Escuro, ouro velho, serifa de livro.
    Pensado primeiro para telemóvel, na mão, com pouca luz. */
 
 :root {
@@ -50,9 +50,9 @@ h1, h2, h3 { font-family: var(--serifa); font-weight: 600; margin: 0; }
 .marca { text-align: center; padding: 26px 0 18px; }
 .marca .titulo {
   font-family: var(--serifa);
-  font-size: 38px;
-  letter-spacing: 0.14em;
-  text-indent: 0.14em;
+  font-size: clamp(26px, 7.8vw, 40px);
+  line-height: 1.12;
+  letter-spacing: 0.04em;
   color: var(--creme);
 }
 .marca .selo {

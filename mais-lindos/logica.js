@@ -1,4 +1,4 @@
-// Lógica do SIGILUDO, partilhada pelo servidor (api/jogo.js) e pelo modo
+// Lógica dos Mais Lindos, partilhada pelo servidor (api/jogo.js) e pelo modo
 // local do browser (app.js). Só funções puras: recebem o estado, devolvem
 // estado novo. Nada de rede, nada de DOM, nada de armazenamento.
 
