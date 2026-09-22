@@ -115,6 +115,21 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; margin: 0; }
   color: rgba(236, 227, 210, 0.6); text-transform: uppercase;
 }
 .codigo-jogo { color: var(--latao-claro); letter-spacing: 0.18em; }
+.barra-accoes { display: flex; gap: 6px; flex: 0 0 auto; }
+.codigo-botao {
+  font-family: var(--display); font-weight: 700; font-size: 15px;
+  letter-spacing: 0.16em; color: var(--latao-claro);
+  border-color: rgba(198, 162, 83, 0.55);
+}
+.lista-jogo {
+  display: flex; align-items: baseline; gap: 10px; text-align: left;
+  margin-bottom: 8px;
+}
+.lista-jogo .codigo-jogo { font-family: var(--display); font-weight: 700; font-size: 17px; }
+.lista-jogo .detalhe {
+  flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-size: 12px; color: rgba(236, 227, 210, 0.6);
+}
 
 /* ---------- painéis escuros (a maquinaria) ---------- */
 

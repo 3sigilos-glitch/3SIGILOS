@@ -7,6 +7,7 @@ import { jogoNovo, aplicar, vista, codigoNovo, ErroJogo } from "./logica.js";
 const API = "/api/jogo";
 const CHAVE_SESSAO = "maislindos.sessao";
 const CHAVE_LOCAL = "maislindos.local.";
+const CHAVE_HISTORICO = "maislindos.jogos";
 const INTERVALO = 3000;
 
 const ESTADO = {
@@ -49,6 +50,36 @@ function leSessao() {
     return JSON.parse(localStorage.getItem(CHAVE_SESSAO) || "null");
   } catch (e) {
     return null;
+  }
+}
+
+// Os últimos jogos vistos neste telemóvel, para ninguém ficar de fora por
+// ter perdido o código de quatro letras.
+function leHistorico() {
+  try {
+    const lista = JSON.parse(localStorage.getItem(CHAVE_HISTORICO) || "[]");
+    return Array.isArray(lista) ? lista : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function guardaHistorico(vistaNova) {
+  if (!ESTADO.jogoId) return;
+  const eu = ((vistaNova && vistaNova.jogadores) || []).find((j) => j.id === ESTADO.euId);
+  const lista = leHistorico().filter((j) => j && j.id !== ESTADO.jogoId);
+  lista.unshift({
+    id: ESTADO.jogoId,
+    nome: (vistaNova && vistaNova.nome) || "",
+    euId: ESTADO.euId || null,
+    euNome: eu ? eu.nome : "",
+    local: Boolean(ESTADO.local),
+    visto: Date.now(),
+  });
+  try {
+    localStorage.setItem(CHAVE_HISTORICO, JSON.stringify(lista.slice(0, 8)));
+  } catch (e) {
+    void e;
   }
 }
 
@@ -185,6 +216,7 @@ function aceitaVista(v) {
     ESTADO.ecra = ESTADO.euId ? "missoes" : "identidade";
   }
   guardaSessao();
+  guardaHistorico(v);
 }
 
 function sair() {
@@ -214,13 +246,24 @@ function campoPin(id, marcador) {
 }
 
 function ecraEntrada() {
-  const guardada = leSessao();
-  const voltar =
-    guardada && guardada.jogoId
-      ? `<button class="b-largo b-ouro" data-ac="retomar" style="margin-bottom:14px">
-           Voltar ao jogo ${esc(guardada.jogoId)}
-         </button>`
-      : "";
+  const historico = leHistorico();
+  const voltar = historico.length
+    ? `<div class="cartao">
+         <h2>Jogos neste telemóvel</h2>
+         <p class="nota">Toca para voltar a entrar, sem escrever o código.</p>
+         ${historico
+           .map(
+             (j) => `
+           <button class="b-largo lista-jogo" data-ac="retomar" data-id="${esc(j.id)}">
+             <span class="codigo-jogo">${esc(j.id)}</span>
+             <span class="detalhe">${esc(j.nome || "sem nome")}${
+               j.euNome ? " · " + esc(j.euNome) : ""
+             }${j.local ? " · neste telemóvel" : ""}</span>
+           </button>`
+           )
+           .join("")}
+       </div>`
+    : "";
   return `
     <div class="marca">
       <div class="selo">✦</div>
@@ -291,6 +334,10 @@ function ecraIdentidade() {
   `;
 }
 
+function ligacaoDoJogo(id) {
+  return location.origin + location.pathname + "?jogo=" + (id || "");
+}
+
 function barra(comTroca = true) {
   const v = ESTADO.vista || {};
   const eu = (v.jogadores || []).find((j) => j.id === ESTADO.euId);
@@ -298,15 +345,17 @@ function barra(comTroca = true) {
     <div class="barra">
       <div class="quem">
         <b>${esc(v.nome || "Jogo")}</b>
-        <span>código <span class="codigo-jogo">${esc(v.id || "")}</span>${
-          eu ? " · sou " + esc(eu.nome) : ""
-        }</span>
+        <span>${eu ? "sou " + esc(eu.nome) : "sem nome escolhido"}</span>
       </div>
-      ${
-        comTroca
-          ? `<button class="b-fino" data-ac="trocar">Trocar</button>`
-          : `<button class="b-fino" data-ac="sair">Sair</button>`
-      }
+      <div class="barra-accoes">
+        <button class="b-fino codigo-botao" data-ac="copiar" data-texto="${esc(ligacaoDoJogo(v.id))}"
+                title="Copiar a ligação do jogo">${esc(v.id || "")}</button>
+        ${
+          comTroca
+            ? `<button class="b-fino" data-ac="trocar">Trocar</button>`
+            : `<button class="b-fino" data-ac="sair">Sair</button>`
+        }
+      </div>
     </div>
   `;
 }
@@ -495,7 +544,7 @@ function ecraAdmin() {
       </div>
     `;
   }
-  const ligacao = location.origin + location.pathname + "?jogo=" + (v.id || "");
+  const ligacao = ligacaoDoJogo(v.id);
   return `
     ${barra()}
     <div class="cartao">
@@ -771,12 +820,13 @@ function trataClique(evento) {
     return;
   }
   if (ac === "retomar") {
-    const s = leSessao();
-    if (!s) return;
-    ESTADO.jogoId = s.jogoId;
-    ESTADO.euId = s.euId || null;
-    ESTADO.pin = s.pin || null;
-    ESTADO.local = Boolean(s.local);
+    const escolhido = leHistorico().find((j) => j.id === alvo.dataset.id) || leSessao();
+    if (!escolhido) return;
+    const sessao = leSessao() || {};
+    ESTADO.jogoId = escolhido.id || escolhido.jogoId;
+    ESTADO.euId = escolhido.euId || null;
+    ESTADO.local = Boolean(escolhido.local);
+    ESTADO.pin = sessao.jogoId === ESTADO.jogoId ? sessao.pin || null : null;
     correr(sincronizar);
     return;
   }

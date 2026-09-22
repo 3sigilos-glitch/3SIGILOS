@@ -33,6 +33,9 @@ sem desconfiar que está a cumprir a missão de alguém.
   objectos a qualquer momento, e marcar quais são difíceis.
 - **Estado partilhado:** todos os telemóveis vêem o mesmo jogo, com
   actualização automática de três em três segundos.
+- **Ninguém perde a sala:** o telemóvel guarda os últimos oito jogos e
+  mostra-os no ecrã de entrada, e o código no topo é um botão que copia a
+  ligação do jogo para qualquer jogador, não só para o administrador.
 
 ## Como se joga num fim de semana
 
