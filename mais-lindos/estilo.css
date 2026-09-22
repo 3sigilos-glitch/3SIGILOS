@@ -1,0 +1,534 @@
+/* Os Mais Lindos. Mesa de jogo: feltro verde, cartas de papel, carimbos a
+   tinta encarnada e latão. Tudo desenhado para a mão, num telemóvel. */
+
+:root {
+  --feltro: #10241b;
+  --feltro-fundo: #0a1710;
+  --feltro-claro: #173425;
+  --papel: #f0e5cf;
+  --papel-sombra: #ddceb0;
+  --tinta: #1d1a15;
+  --tinta-fraca: #6c6355;
+  --sangue: #8e2230;
+  --sangue-vivo: #b3303f;
+  --latao: #c6a253;
+  --latao-claro: #e6cd8b;
+  --creme: #ece3d2;
+  --verde-vivo: #4f9c6a;
+
+  --display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --maquina: "Special Elite", "Courier New", Courier, monospace;
+  --corpo: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --raio: 6px;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  min-height: 100dvh;
+  color: var(--creme);
+  font-family: var(--corpo);
+  font-size: 16.5px;
+  line-height: 1.5;
+  overscroll-behavior-y: contain;
+  background-color: var(--feltro-fundo);
+  /* Feltro: trama fina em diagonal, luz ao centro, cantos escurecidos. */
+  background-image:
+    radial-gradient(120% 70% at 50% 0%, rgba(90, 160, 120, 0.16), transparent 62%),
+    radial-gradient(100% 60% at 50% 100%, rgba(0, 0, 0, 0.45), transparent 60%),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.022) 0 2px, transparent 2px 4px),
+    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.05) 0 2px, transparent 2px 4px),
+    linear-gradient(180deg, var(--feltro), var(--feltro-fundo));
+  background-attachment: fixed;
+}
+
+#app {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 16px 16px calc(104px + env(safe-area-inset-bottom));
+}
+
+h1, h2, h3 { font-family: var(--display); font-weight: 700; margin: 0; }
+
+/* ---------- tampa da caixa ---------- */
+
+.marca { text-align: center; padding: 30px 0 22px; }
+.marca .selo {
+  display: block;
+  margin: 0 auto 14px;
+  width: 54px; height: 54px; line-height: 50px;
+  border: 2px solid var(--latao);
+  border-radius: 50%;
+  color: var(--latao);
+  font-size: 24px;
+  box-shadow: 0 0 0 4px rgba(198, 162, 83, 0.16);
+}
+.marca .titulo {
+  font-family: var(--display);
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(38px, 12vw, 60px);
+  line-height: 0.98;
+  color: var(--papel);
+  text-shadow: 2px 3px 0 var(--sangue), 4px 6px 0 rgba(0, 0, 0, 0.45);
+}
+.marca .sub {
+  margin: 14px auto 0;
+  max-width: 300px;
+  font-family: var(--maquina);
+  font-size: 11.5px;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  text-transform: uppercase;
+  color: var(--latao);
+  border-top: 1px solid rgba(198, 162, 83, 0.4);
+  border-bottom: 1px solid rgba(198, 162, 83, 0.4);
+  padding: 7px 0;
+}
+.marca .lema {
+  margin: 16px 0 0;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 17px;
+  color: rgba(236, 227, 210, 0.72);
+}
+
+/* ---------- barra de jogo ---------- */
+
+.barra {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 12px;
+  margin-bottom: 18px;
+  background: rgba(0, 0, 0, 0.26);
+  border: 1px solid rgba(198, 162, 83, 0.32);
+  border-radius: var(--raio);
+}
+.barra .quem { min-width: 0; }
+.barra .quem b {
+  display: block;
+  font-family: var(--display); font-size: 19px; color: var(--papel);
+}
+.barra .quem span {
+  font-family: var(--maquina); font-size: 11px; letter-spacing: 0.06em;
+  color: rgba(236, 227, 210, 0.6); text-transform: uppercase;
+}
+.codigo-jogo { color: var(--latao-claro); letter-spacing: 0.18em; }
+
+/* ---------- painéis escuros (a maquinaria) ---------- */
+
+.cartao {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(23, 52, 37, 0.92), rgba(10, 23, 16, 0.92));
+  border: 1px solid rgba(198, 162, 83, 0.34);
+  border-radius: var(--raio);
+  padding: 18px 16px;
+  margin-bottom: 16px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35), 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+/* Cantos de esquadria, como num tabuleiro antigo. */
+.cartao::before, .cartao::after {
+  content: ""; position: absolute; width: 12px; height: 12px; pointer-events: none;
+  border: 2px solid var(--latao); opacity: 0.55;
+}
+.cartao::before { top: 6px; left: 6px; border-right: 0; border-bottom: 0; }
+.cartao::after { bottom: 6px; right: 6px; border-left: 0; border-top: 0; }
+.cartao h2 {
+  font-size: 21px; color: var(--papel);
+  display: flex; align-items: center; gap: 10px;
+}
+.cartao h2::after {
+  content: ""; flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(198, 162, 83, 0.55), transparent);
+}
+.nota {
+  font-family: var(--maquina);
+  color: rgba(236, 227, 210, 0.66);
+  font-size: 12.5px; line-height: 1.55; margin: 8px 0 14px;
+}
+
+/* ---------- botões ---------- */
+
+button {
+  font-family: var(--maquina);
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid rgba(198, 162, 83, 0.45);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--creme);
+  padding: 13px 14px;
+  transition: transform 0.08s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+button:active { transform: translate(2px, 2px); }
+button[disabled] { opacity: 0.45; cursor: default; }
+.b-largo { display: block; width: 100%; }
+.b-ouro, .b-dificil {
+  border: 0; color: #2a1c05; font-weight: 700; text-transform: uppercase;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+}
+.b-ouro { background: linear-gradient(180deg, var(--latao-claro), var(--latao)); }
+.b-dificil {
+  background: linear-gradient(180deg, var(--sangue-vivo), var(--sangue));
+  color: var(--papel);
+}
+.b-ouro:active, .b-dificil:active { box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5); }
+.b-fino { padding: 9px 12px; font-size: 13px; }
+.b-nu { background: none; border: none; color: var(--latao-claro); padding: 8px 4px; text-decoration: underline; }
+.b-perigo { border-color: rgba(179, 48, 63, 0.7); color: #e3a397; background: rgba(142, 34, 48, 0.2); }
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.duo button { padding: 15px 8px; line-height: 1.25; }
+.duo small { display: block; font-weight: 400; font-size: 11px; opacity: 0.78; margin-top: 3px; }
+
+/* ---------- campos ---------- */
+
+label {
+  display: block; margin: 14px 0 6px;
+  font-family: var(--maquina); font-size: 11.5px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--latao);
+}
+input[type="text"], input[type="number"], input[type="password"], textarea {
+  font-family: var(--corpo); font-size: 16px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--creme);
+  border: 1px solid rgba(198, 162, 83, 0.35);
+  border-radius: 4px;
+  padding: 13px 12px;
+}
+input::placeholder, textarea::placeholder { color: rgba(236, 227, 210, 0.3); }
+input:focus, textarea:focus { outline: 2px solid var(--latao); outline-offset: 1px; }
+textarea { min-height: 96px; resize: vertical; }
+.codigo-entrada {
+  text-align: center;
+  font-family: var(--display); font-weight: 900;
+  font-size: 34px; letter-spacing: 0.34em; text-indent: 0.34em;
+  text-transform: uppercase; color: var(--latao-claro);
+}
+.linha-opcao { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+.linha-opcao label { margin: 0; text-transform: none; letter-spacing: 0.02em; font-size: 12.5px; color: rgba(236, 227, 210, 0.75); }
+.linha-opcao input { width: 22px; height: 22px; accent-color: var(--sangue); }
+
+/* ---------- contador de apanhado ---------- */
+
+.contador {
+  position: relative;
+  text-align: center;
+  padding: 18px 14px;
+  margin-bottom: 16px;
+  border: 2px solid rgba(179, 48, 63, 0.55);
+  border-radius: var(--raio);
+  background: rgba(142, 34, 48, 0.14);
+}
+.contador .n {
+  font-family: var(--display); font-weight: 900; font-size: 52px; line-height: 1;
+  color: var(--sangue-vivo);
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+}
+.contador .t {
+  font-family: var(--maquina); font-size: 11.5px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: rgba(236, 227, 210, 0.7); margin-top: 6px;
+}
+
+/* ---------- cartas de missão ---------- */
+
+.tira-titulo {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  margin: 24px 2px 12px;
+}
+.tira-titulo h2 { font-size: 20px; color: var(--papel); }
+.tira-titulo .direita { font-family: var(--maquina); font-size: 12px; }
+
+.carta { perspective: 1200px; margin-bottom: 14px; }
+.carta-interior {
+  position: relative;
+  transition: transform 0.55s cubic-bezier(0.3, 0.8, 0.3, 1);
+  transform-style: preserve-3d;
+}
+.carta.virada .carta-interior { transform: rotateY(180deg); }
+.carta-face {
+  position: relative;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Frente: a ficha em papel. Está rodada, só aparece com a carta virada. */
+.carta-frente {
+  transform: rotateY(180deg);
+  background: var(--papel);
+  color: var(--tinta);
+  padding: 14px 15px 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--papel-sombra);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.014) 0 1px, transparent 1px 3px);
+}
+.carta-frente::before {
+  content: ""; position: absolute; inset: 6px; pointer-events: none;
+  border: 1px solid rgba(29, 26, 21, 0.28);
+  border-radius: 4px;
+}
+.carta.dificil .carta-frente::before { border-color: rgba(142, 34, 48, 0.5); }
+
+/* Verso: padrão de baralho. */
+.carta-tras {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px;
+  background-color: var(--sangue);
+  background-image:
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.16) 0 7px, transparent 7px 14px),
+    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.16) 0 7px, transparent 7px 14px);
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45), inset 0 0 0 5px var(--sangue), inset 0 0 0 6px rgba(240, 229, 207, 0.55);
+  color: var(--papel);
+}
+/* As difíceis distinguem-se de longe: preto e latão, em vez do encarnado. */
+.carta.dificil .carta-tras {
+  background-color: #15110c;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(198, 162, 83, 0.22) 0 7px, transparent 7px 14px),
+    repeating-linear-gradient(-45deg, rgba(198, 162, 83, 0.22) 0 7px, transparent 7px 14px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45), inset 0 0 0 5px #15110c,
+    inset 0 0 0 6px rgba(198, 162, 83, 0.7);
+  color: var(--latao-claro);
+}
+.carta.dificil .carta-tras .emblema { border-color: rgba(230, 205, 139, 0.8); }
+.carta-tras .emblema {
+  width: 46px; height: 46px; line-height: 42px; text-align: center;
+  border: 2px solid rgba(240, 229, 207, 0.75); border-radius: 50%;
+  font-size: 20px;
+}
+.carta-tras .diz {
+  font-family: var(--maquina); font-size: 10.5px; letter-spacing: 0.22em;
+  text-transform: uppercase; opacity: 0.86;
+}
+.carta-tras .marca-verso {
+  font-family: var(--display); font-style: italic; font-size: 13px; opacity: 0.7;
+}
+
+/* Cabeçalho da ficha */
+.ficha-topo {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  border-bottom: 2px solid rgba(29, 26, 21, 0.22);
+  padding-bottom: 8px; margin-bottom: 4px;
+}
+.ficha-topo .tipo {
+  font-family: var(--maquina); font-size: 10.5px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--tinta-fraca);
+}
+.pontuacao {
+  font-family: var(--display); font-weight: 900; font-size: 15px;
+  color: var(--sangue); white-space: nowrap;
+}
+
+/* Linhas quem / onde / objecto */
+.frase { display: grid; gap: 2px; margin: 10px 0 4px; }
+.frase .campo {
+  display: grid; grid-template-columns: 84px 1fr; align-items: baseline; gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px dotted rgba(29, 26, 21, 0.28);
+}
+.frase .campo:last-child { border-bottom: 0; }
+.frase .rotulo {
+  font-family: var(--maquina); font-size: 10px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--tinta-fraca);
+}
+.frase .valor {
+  font-family: var(--display); font-weight: 700; font-size: 21px; line-height: 1.2;
+  color: var(--tinta); overflow-wrap: anywhere;
+}
+.carta.dificil .frase .valor { color: #6d1a24; }
+
+.accoes { display: flex; gap: 8px; margin-top: 12px; }
+.accoes button { flex: 1; }
+.accoes .b-papel {
+  background: rgba(29, 26, 21, 0.06); border: 1px solid rgba(29, 26, 21, 0.35);
+  color: var(--tinta);
+}
+.accoes .b-papel.principal { background: var(--sangue); border-color: var(--sangue); color: var(--papel); }
+
+/* Carimbo de cumprida, batido de fresco em cima da ficha */
+.carimbo {
+  display: inline-block;
+  transform: rotate(-3.5deg);
+  font-family: var(--maquina); font-size: 12.5px; letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(53, 122, 77, 0.95);
+  border: 2.5px solid rgba(53, 122, 77, 0.75);
+  border-radius: 4px; padding: 2px 9px;
+}
+.carta.cumprida .carta-frente { background: #e8dfc9; }
+.carta.cumprida .frase .valor { color: rgba(29, 26, 21, 0.62); }
+
+/* ---------- placar em papel ---------- */
+
+.papel-bloco {
+  background: var(--papel);
+  color: var(--tinta);
+  border-radius: 8px;
+  padding: 18px 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--papel-sombra);
+}
+.papel-bloco h2 {
+  font-size: 24px; color: var(--tinta);
+  display: flex; align-items: center; gap: 10px;
+}
+.papel-bloco h2::after {
+  content: ""; flex: 1; height: 2px; background: rgba(142, 34, 48, 0.4);
+}
+.papel-bloco .nota { color: var(--tinta-fraca); }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 10px 5px; text-align: right; }
+th:first-child, td:first-child { text-align: left; }
+th {
+  font-family: var(--maquina); font-size: 9.5px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--tinta-fraca);
+  border-bottom: 2px solid rgba(29, 26, 21, 0.35); font-weight: 400;
+}
+td { border-bottom: 1px dotted rgba(29, 26, 21, 0.3); font-family: var(--maquina); font-size: 15px; }
+td.nome { font-family: var(--display); font-weight: 700; font-size: 18px; }
+td.pontos { font-family: var(--display); font-weight: 900; font-size: 22px; color: var(--sangue); }
+tr.eu td { background: rgba(198, 162, 83, 0.18); }
+tr.eu td.nome::after {
+  content: "tu"; font-family: var(--maquina); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--sangue); margin-left: 7px; vertical-align: middle;
+}
+.lugar {
+  display: inline-block; width: 20px; color: var(--tinta-fraca);
+  font-family: var(--maquina); font-size: 12px;
+}
+
+/* ---------- títulos ---------- */
+
+.titulo-premio {
+  display: flex; gap: 14px; align-items: center;
+  border: 1px solid rgba(198, 162, 83, 0.35);
+  border-left: 4px solid var(--latao);
+  border-radius: var(--raio);
+  background: rgba(0, 0, 0, 0.24);
+  padding: 13px; margin-bottom: 10px;
+}
+.titulo-premio .sinal {
+  width: 42px; height: 42px; flex: 0 0 42px; line-height: 38px; text-align: center;
+  border: 2px solid var(--latao); border-radius: 50%;
+  color: var(--latao); font-size: 19px;
+}
+.titulo-premio b { font-family: var(--display); font-size: 19px; color: var(--papel); }
+.titulo-premio .quem { display: block; color: var(--latao-claro); font-size: 15px; }
+.titulo-premio .porque {
+  font-family: var(--maquina); color: rgba(236, 227, 210, 0.55); font-size: 11px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+/* ---------- listas de administração ---------- */
+
+.item-lista {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0; border-bottom: 1px dotted rgba(198, 162, 83, 0.28);
+}
+.item-lista .nome { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.item-lista:last-of-type { border-bottom: 0; }
+.interruptor {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--maquina); font-size: 10.5px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(236, 227, 210, 0.6);
+}
+.interruptor input { width: 19px; height: 19px; accent-color: var(--sangue-vivo); }
+.juntar { display: flex; gap: 8px; margin-top: 14px; }
+.juntar input { flex: 1; }
+
+/* ---------- navegação ---------- */
+
+#nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  display: flex; justify-content: center; gap: 6px;
+  padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, rgba(10, 23, 16, 0.82), rgba(10, 23, 16, 0.98));
+  backdrop-filter: blur(8px);
+  border-top: 2px solid rgba(198, 162, 83, 0.4);
+}
+#nav button {
+  flex: 1; max-width: 170px;
+  background: none; border: 1px solid transparent; color: rgba(236, 227, 210, 0.55);
+  font-family: var(--maquina); font-size: 10.5px; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 7px 4px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+#nav button .ic { font-size: 18px; line-height: 1; }
+#nav button.activo {
+  color: var(--latao-claro);
+  border-color: rgba(198, 162, 83, 0.45);
+  background: rgba(198, 162, 83, 0.12);
+  border-radius: 4px;
+}
+
+/* ---------- avisos ---------- */
+
+.alerta {
+  font-family: var(--maquina); font-size: 12.5px; line-height: 1.5;
+  border: 1px solid rgba(179, 48, 63, 0.6);
+  border-left: 4px solid var(--sangue-vivo);
+  background: rgba(142, 34, 48, 0.2);
+  color: #f0c0b6; border-radius: 4px; padding: 11px 12px; margin-bottom: 14px;
+}
+.alerta.bom { border-color: rgba(79, 156, 106, 0.6); border-left-color: var(--verde-vivo); background: rgba(79, 156, 106, 0.14); color: #b7dfc2; }
+.alerta.discreto {
+  border-color: rgba(198, 162, 83, 0.35); border-left-color: var(--latao);
+  background: rgba(0, 0, 0, 0.25); color: rgba(236, 227, 210, 0.62);
+}
+.rodape {
+  text-align: center; font-family: var(--maquina); font-size: 11.5px;
+  color: rgba(236, 227, 210, 0.5); padding: 20px 0 4px; line-height: 1.7;
+}
+
+/* ---------- carta dada na mesa (revelação) ---------- */
+
+.veu {
+  position: fixed; inset: 0; z-index: 40;
+  background: rgba(4, 10, 7, 0.9);
+  display: flex; align-items: center; justify-content: center;
+  padding: 18px;
+  animation: escurecer 0.2s ease both;
+}
+.veu .papel {
+  position: relative;
+  background: var(--papel); color: var(--tinta);
+  border: 1px solid var(--papel-sombra);
+  border-radius: 10px;
+  padding: 26px 20px 20px;
+  max-width: 420px; width: 100%;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
+  animation: dar-carta 0.45s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+.veu .papel::before {
+  content: ""; position: absolute; inset: 8px; border: 1px solid rgba(29, 26, 21, 0.3);
+  border-radius: 6px; pointer-events: none;
+}
+.veu .papel.dificil::before { border-color: rgba(142, 34, 48, 0.55); }
+.veu .papel .chapeu {
+  text-align: center;
+  font-family: var(--maquina); font-size: 11px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--sangue);
+}
+.veu .papel .frase .valor { font-size: 25px; }
+.veu .papel .nota { color: var(--tinta-fraca); text-align: center; margin: 14px 0 16px; }
+.veu .papel .b-ouro { box-shadow: 3px 3px 0 rgba(29, 26, 21, 0.35); }
+
+@keyframes escurecer { from { opacity: 0; } }
+@keyframes dar-carta {
+  from { opacity: 0; transform: translateY(26px) rotate(-4deg) scale(0.94); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, .carta-interior { animation: none !important; transition: none !important; }
+}

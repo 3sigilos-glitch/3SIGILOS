@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Os Mais Lindos">
+  <rect width="512" height="512" rx="96" fill="#10241b"/>
+  <rect x="112" y="78" width="288" height="356" rx="26" fill="#8e2230" stroke="#f0e5cf" stroke-width="10"/>
+  <g fill="none" stroke="#f0e5cf" stroke-width="9" opacity="0.55">
+    <path d="M136 150 L376 150 M136 220 L376 220 M136 290 L376 290 M136 360 L376 360"/>
+  </g>
+  <circle cx="256" cy="256" r="74" fill="#8e2230" stroke="#f0e5cf" stroke-width="10"/>
+  <path d="M256 206 L269 243 L306 256 L269 269 L256 306 L243 269 L206 256 L243 243 Z" fill="#e6cd8b"/>
+</svg>
