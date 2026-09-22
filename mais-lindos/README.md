@@ -22,8 +22,9 @@ sem desconfiar que está a cumprir a missão de alguém.
   responsabilidade é de quem pede.
 - **Regras garantidas no servidor:** o alvo nunca é o próprio jogador e nunca
   sai a mesma combinação que já se tem em mão.
-- **Missões tapadas** por defeito (desfocadas) para ninguém espreitar por cima
-  do ombro. Abrem com um toque e voltam a tapar sozinhas ao fim de 30 segundos.
+- **As missões são cartas**, viradas para baixo em cima da mesa. Toca para
+  virar, toca outra vez para esconder, e ao fim de 30 segundos viram-se
+  sozinhas. As difíceis têm verso preto e latão, as normais encarnado.
 - **Contador de apanhado:** cada um vê quantas vezes já foi alvo de uma missão
   cumprida. Nunca vê por quem, onde, nem com o quê.
 - **Placar e títulos**, visíveis a todos: Assassino Silencioso, Fantasma, Alvo
@@ -49,11 +50,17 @@ sem desconfiar que está a cumprir a missão de alguém.
 ```
 index.html            página única
 estilo.css            folha de estilo
+fontes.css, fontes/   Playfair Display e Special Elite, alojadas aqui
 app.js                interface e sincronização
 logica.js             regras do jogo, funções puras, partilhadas
 api/jogo.js           função de servidor (estado partilhado)
 servidor-local.mjs    servidor de desenvolvimento
 ```
+
+O aspecto é de jogo de tabuleiro: feltro verde, fichas em papel, carimbos a
+tinta e tipografia de dossiê. Os tipos de letra estão no próprio projecto
+(licença SIL Open Font License), por isso a app não chama o Google nem
+precisa de rede para se ver bem.
 
 `logica.js` é o mesmo ficheiro dos dois lados: o servidor usa-o para aplicar
 as acções, e o browser usa-o no modo local. As regras estão escritas uma vez

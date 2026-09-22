@@ -19,7 +19,7 @@ const ESTADO = {
   erro: null,
   recado: null,
   ocupado: false,
-  tapado: true,
+  viradas: new Set(),
   revelar: null,
   rascunhos: {},
 };
@@ -295,27 +295,41 @@ function barra(comTroca = true) {
 }
 
 function cartaoMissao(m) {
-  const tapar = ESTADO.tapado ? " tapado" : "";
+  const cumprida = m.estado === "cumprida";
   const classe =
-    "missao" + (m.dificil ? " dificil" : "") + (m.estado === "cumprida" ? " cumprida" : "") + tapar;
-  const accoes =
-    m.estado === "ativa"
-      ? `<div class="accoes">
-           <button class="b-fino b-ouro" data-ac="cumprir" data-id="${esc(m.id)}">Cumprida</button>
-           <button class="b-fino b-perigo" data-ac="apagar" data-id="${esc(m.id)}">Desistir</button>
-         </div>`
-      : `<div class="accoes">
-           <button class="b-fino" data-ac="anular" data-id="${esc(m.id)}">Afinal não</button>
-         </div>`;
+    "carta" +
+    (m.dificil ? " dificil" : "") +
+    (cumprida ? " cumprida" : "") +
+    (ESTADO.viradas.has(m.id) ? " virada" : "");
+  const accoes = cumprida
+    ? `<div class="accoes">
+         <button class="b-fino b-papel" data-ac="anular" data-id="${esc(m.id)}">Afinal não</button>
+       </div>`
+    : `<div class="accoes">
+         <button class="b-fino b-papel principal" data-ac="cumprir" data-id="${esc(m.id)}">Cumprida</button>
+         <button class="b-fino b-papel" data-ac="apagar" data-id="${esc(m.id)}">Desistir</button>
+       </div>`;
   return `
-    <div class="${classe}">
-      <div class="meta">
-        <span class="etiqueta ${m.dificil ? "dificil" : "normal"}">${m.dificil ? "difícil" : "normal"}</span>
-        <span>${m.pontos} ${plural(m.pontos, "ponto", "pontos")}</span>
-        ${m.estado === "cumprida" ? "<span>✓ cumprida</span>" : ""}
+    <div class="${classe}" data-ac="virar" data-id="${esc(m.id)}">
+      <div class="carta-interior">
+        <div class="carta-face carta-frente">
+          <div class="ficha-topo">
+            ${
+              cumprida
+                ? '<span class="carimbo">cumprida</span>'
+                : `<span class="tipo">${m.dificil ? "missão difícil" : "missão"}</span>`
+            }
+            <span class="pontuacao">${m.pontos} ${plural(m.pontos, "ponto", "pontos")}</span>
+          </div>
+          ${ficha(m)}
+          ${accoes}
+        </div>
+        <div class="carta-face carta-tras">
+          <div class="emblema">${m.dificil ? "✷" : "✦"}</div>
+          <div class="diz">toca para ver</div>
+          <div class="marca-verso">Os Mais Lindos</div>
+        </div>
       </div>
-      ${ficha(m)}
-      ${accoes}
     </div>
   `;
 }
@@ -337,6 +351,12 @@ function ecraMissoes() {
   const activas = v.minhasMissoes.filter((m) => m.estado === "ativa");
   const cumpridas = v.minhasMissoes.filter((m) => m.estado === "cumprida");
   const meu = v.placar.find((p) => p.jogadorId === ESTADO.euId);
+  const algumaVirada = v.minhasMissoes.some((m) => ESTADO.viradas.has(m.id));
+  const botaoVirar = v.minhasMissoes.length
+    ? `<button class="b-nu direita" data-ac="${algumaVirada ? "tapar-todas" : "virar-todas"}">
+         ${algumaVirada ? "tapar todas" : "virar todas"}
+       </button>`
+    : "";
   return `
     ${barra()}
     <div class="contador">
@@ -350,10 +370,10 @@ function ecraMissoes() {
       }</div>
     </div>
     <div class="cartao">
-      <h2>Nova missão</h2>
+      <h2>Tirar missão</h2>
       <p class="nota">
         ${meu ? meu.pontos + " " + plural(meu.pontos, "ponto", "pontos") + " · " : ""}
-        ${activas.length} ${plural(activas.length, "missão em mão", "missões em mão")}.
+        ${activas.length} ${plural(activas.length, "carta em mão", "cartas em mão")}.
         Pede as difíceis que quiseres: a responsabilidade é tua.
       </p>
       <div class="duo">
@@ -363,19 +383,18 @@ function ecraMissoes() {
     </div>
     ${
       activas.length
-        ? `<div style="display:flex;justify-content:space-between;align-items:center;margin:20px 0 10px">
-             <h2 style="font-size:17px">As minhas missões</h2>
-             <button class="b-nu" data-ac="tapar">${ESTADO.tapado ? "Mostrar" : "Tapar"}</button>
+        ? `<div class="tira-titulo">
+             <h2>A minha mão</h2>
+             ${botaoVirar}
            </div>
-           ${ESTADO.tapado ? '<p class="aviso-tapado">Tapadas para ninguém espreitar por cima do ombro.</p>' : ""}
            ${activas.map(cartaoMissao).join("")}`
         : `<div class="cartao"><p class="nota" style="margin:0">
-             Ainda não tens missões. Pede uma acima e começa a puxar os cordelinhos.
+             Ainda não tens missões. Tira uma carta aqui em cima e começa a puxar os cordelinhos.
            </p></div>`
     }
     ${
       cumpridas.length
-        ? `<h2 style="font-size:17px;margin:22px 0 10px">Cumpridas (${cumpridas.length})</h2>
+        ? `<div class="tira-titulo"><h2>Arrumadas (${cumpridas.length})</h2></div>
            ${cumpridas.map(cartaoMissao).join("")}`
         : ""
     }
@@ -386,9 +405,9 @@ function ecraEstatisticas() {
   const v = ESTADO.vista;
   const linhas = v.placar
     .map(
-      (p) => `
+      (p, i) => `
       <tr class="${p.jogadorId === ESTADO.euId ? "eu" : ""}">
-        <td class="nome">${esc(p.nome)}</td>
+        <td class="nome"><span class="lugar">${i + 1}.</span>${esc(p.nome)}</td>
         <td class="pontos">${p.pontos}</td>
         <td>${p.cumpridas}</td>
         <td>${p.apanhado}</td>
@@ -412,11 +431,11 @@ function ecraEstatisticas() {
     : `<p class="nota" style="margin:0">Os títulos aparecem assim que houver missões cumpridas.</p>`;
   return `
     ${barra()}
-    <div class="cartao">
+    <div class="papel-bloco">
       <h2>Placar</h2>
       <p class="nota">Visível a toda a gente. O que ninguém vê é o quê, onde e com quem.</p>
       <table>
-        <thead><tr><th>Jogador</th><th>Pontos</th><th>Cumpridas</th><th>Apanhado</th></tr></thead>
+        <thead><tr><th>Jogador</th><th>Pontos</th><th>Feitas</th><th>Apanhado</th></tr></thead>
         <tbody>${linhas || '<tr><td colspan="4">Sem jogadores.</td></tr>'}</tbody>
       </table>
     </div>
@@ -511,7 +530,7 @@ function navegacao() {
     `<button data-ac="ecra" data-ecra="${ecra}" class="${ESTADO.ecra === ecra ? "activo" : ""}">
        <span class="ic">${ic}</span>${texto}
      </button>`;
-  return botao("missoes", "✦", "Missões") + botao("estatisticas", "♛", "Placar") + botao("admin", "⚙", "Casa");
+  return botao("missoes", "✦", "A minha mão") + botao("estatisticas", "♛", "Placar") + botao("admin", "⌂", "A casa");
 }
 
 function veuRevelacao() {
@@ -520,7 +539,7 @@ function veuRevelacao() {
   return `
     <div class="veu" data-ac="fechar-veu">
       <div class="papel${m.dificil ? " dificil" : ""}">
-        <div class="chapeu">${m.dificil ? "missão difícil · 2 pontos" : "missão nova · 1 ponto"}</div>
+        <div class="chapeu">${m.dificil ? "carta difícil · 2 pontos" : "carta nova · 1 ponto"}</div>
         ${ficha(m)}
         <p class="nota">Faz com que esta pessoa pegue neste objecto, neste espaço, sem perceber
         que está a cumprir uma missão tua.</p>
@@ -593,6 +612,16 @@ function limpaCampo(id) {
 
 let relogioTapar = null;
 
+// Cartas à vista voltam a virar-se sozinhas ao fim de meio minuto.
+function reprogramaTapar() {
+  clearTimeout(relogioTapar);
+  if (!ESTADO.viradas.size) return;
+  relogioTapar = setTimeout(() => {
+    ESTADO.viradas = new Set();
+    desenhar();
+  }, 30000);
+}
+
 async function criarJogo() {
   const pin = valor("campo-pin-novo");
   const nome = valor("campo-nome-jogo");
@@ -658,16 +687,25 @@ function trataClique(evento) {
     desenhar();
     return;
   }
-  if (ac === "tapar") {
-    ESTADO.tapado = !ESTADO.tapado;
-    clearTimeout(relogioTapar);
-    // Ao fim de meio minuto à vista, tapa sozinho outra vez.
-    if (!ESTADO.tapado) {
-      relogioTapar = setTimeout(() => {
-        ESTADO.tapado = true;
-        desenhar();
-      }, 30000);
+  if (ac === "virar") {
+    const id = alvo.dataset.id;
+    // Mexer na classe em vez de redesenhar, para a carta virar de verdade.
+    if (ESTADO.viradas.has(id)) {
+      ESTADO.viradas.delete(id);
+      alvo.classList.remove("virada");
+    } else {
+      ESTADO.viradas.add(id);
+      alvo.classList.add("virada");
     }
+    reprogramaTapar();
+    return;
+  }
+  if (ac === "virar-todas" || ac === "tapar-todas") {
+    const virar = ac === "virar-todas";
+    ESTADO.viradas = new Set(
+      virar ? (ESTADO.vista.minhasMissoes || []).map((m) => m.id) : []
+    );
+    reprogramaTapar();
     desenhar();
     return;
   }
@@ -742,10 +780,7 @@ function trataClique(evento) {
         v.resultado && v.resultado.missaoId
           ? v.minhasMissoes.find((m) => m.id === v.resultado.missaoId)
           : v.minhasMissoes.filter((m) => m.estado === "ativa")[0];
-      if (nova) {
-        ESTADO.revelar = nova;
-        ESTADO.tapado = true;
-      }
+      if (nova) ESTADO.revelar = nova;
       return v;
     });
   }

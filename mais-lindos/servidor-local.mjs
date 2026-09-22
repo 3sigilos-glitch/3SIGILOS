@@ -18,6 +18,7 @@ const TIPOS = {
   ".svg": "image/svg+xml",
   ".webmanifest": "application/manifest+json",
   ".json": "application/json; charset=utf-8",
+  ".woff2": "font/woff2",
 };
 
 function adaptaResposta(res) {
