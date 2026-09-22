@@ -198,6 +198,21 @@ function sair() {
 
 /* ---------- ecrãs ---------- */
 
+// O PIN do jogo não é uma password: se for um campo type="password", o
+// Chrome oferece-se para o guardar e depois avisa que apareceu em fugas de
+// dados. Fica um campo de texto normal, tapado por CSS, com botão de ver.
+function campoPin(id, marcador) {
+  return `
+    <div class="campo-pin">
+      <input id="${id}" class="pin-tapado" type="text" inputmode="numeric"
+             pattern="[0-9]*" autocomplete="off" autocorrect="off"
+             autocapitalize="off" spellcheck="false" data-lpignore="true"
+             maxlength="8" placeholder="${marcador}">
+      <button class="b-fino" type="button" data-ac="ver-pin" data-alvo="${id}">ver</button>
+    </div>
+  `;
+}
+
 function ecraEntrada() {
   const guardada = leSessao();
   const voltar =
@@ -227,8 +242,10 @@ function ecraEntrada() {
       <label for="campo-nome-jogo">Nome do jogo (opcional)</label>
       <input id="campo-nome-jogo" type="text" placeholder="Fim de semana na Nazaré" maxlength="44">
       <label for="campo-pin-novo">PIN de administrador (4 a 8 dígitos)</label>
-      <input id="campo-pin-novo" type="password" inputmode="numeric" autocomplete="new-password"
-             maxlength="8" placeholder="••••">
+      ${campoPin("campo-pin-novo", "1234")}
+      <p class="nota" style="margin:6px 0 0">
+        Inventa um número só para este jogo. Nunca uses uma password tua.
+      </p>
       <label for="campo-jogadores">Jogadores, um por linha (opcional)</label>
       <textarea id="campo-jogadores" placeholder="Ana&#10;Bruno&#10;Carla"></textarea>
       <div class="linha-opcao">
@@ -473,7 +490,7 @@ function ecraAdmin() {
         <h2>Administração</h2>
         <p class="nota">Só quem criou o jogo. Gere jogadores, espaços e objectos.</p>
         <label for="campo-pin">PIN</label>
-        <input id="campo-pin" type="password" inputmode="numeric" maxlength="8" placeholder="••••">
+        ${campoPin("campo-pin", "1234")}
         <button class="b-largo b-ouro" data-ac="admin-entrar" style="margin-top:12px">Entrar</button>
       </div>
     `;
@@ -698,6 +715,15 @@ function trataClique(evento) {
       alvo.classList.add("virada");
     }
     reprogramaTapar();
+    return;
+  }
+  if (ac === "ver-pin") {
+    const campo = document.getElementById(alvo.dataset.alvo);
+    if (campo) {
+      const tapado = campo.classList.toggle("pin-tapado");
+      alvo.textContent = tapado ? "ver" : "tapar";
+      campo.focus();
+    }
     return;
   }
   if (ac === "virar-todas" || ac === "tapar-todas") {

@@ -106,7 +106,10 @@ passando o telemóvel de mão em mão. Nada sai do aparelho.
 - Quem não estiver na lista pode acrescentar-se a si próprio ao entrar. O
   administrador remove depois, se for caso disso.
 - O PIN do administrador fica guardado em claro no jogo e no telemóvel de quem
-  o usou. Serve para gerir a casa, não para guardar segredos.
+  o usou. Serve para gerir a casa, não para guardar segredos. Por isso o campo
+  do PIN não é um campo de password: é texto tapado por CSS, para os gestores
+  de passwords do browser não o guardarem nem o compararem com fugas de dados.
+  Inventa um número só para o jogo, nunca uses uma password verdadeira.
 - Remover um jogador, um espaço ou um objecto apaga as missões **activas** que
   dependiam dele. As cumpridas ficam, porque já contam para o placar.
 - Missões difíceis usam os objectos marcados como difíceis. Se houver espaços
