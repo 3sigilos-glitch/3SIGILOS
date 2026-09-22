@@ -1,0 +1,15 @@
+{
+  "name": "SIGILUDO",
+  "short_name": "Sigiludo",
+  "description": "Missões secretas para jogar em casa entre amigos.",
+  "lang": "pt-PT",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0c14",
+  "theme_color": "#0b0c14",
+  "icons": [
+    { "src": "./icone.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
