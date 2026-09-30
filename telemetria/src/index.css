@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: #05070a;
+    color: #e8e6e1;
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+    font-family: theme("fontFamily.tech");
+  }
+}
+
+@layer components {
+  /* Textura de carbono: duas grelhas diagonais sobrepostas, barata de
+     compor e sem imagens externas (o carro pode nao ter rede). */
+  .carbon {
+    background-color: #070a0e;
+    background-image:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.035) 25%, transparent 25%),
+      linear-gradient(225deg, rgba(255, 255, 255, 0.035) 25%, transparent 25%),
+      linear-gradient(315deg, rgba(0, 0, 0, 0.45) 25%, transparent 25%),
+      linear-gradient(45deg, rgba(0, 0, 0, 0.45) 25%, transparent 25%);
+    background-size: 6px 6px;
+  }
+
+  /* Linhas de varrimento tenues, ao estilo de um ecra tecnico dos anos 2000. */
+  .scanlines::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0px,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(0, 0, 0, 0.16) 3px
+    );
+    mix-blend-mode: multiply;
+  }
+
+  .label {
+    @apply font-mono text-[10px] uppercase tracking-[0.22em] text-bone/45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
