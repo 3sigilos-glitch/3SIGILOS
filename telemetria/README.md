@@ -95,7 +95,7 @@ carro chumba na inspeccao ate voltar a rodar umas dezenas de quilometros).
 
 **Nao le o ESP, nem o ABS, nem o BAS, nem o airbag, nem os modulos SAM.** O
 OBD2 normalizado so obriga a expor o que diz respeito a emissoes, que e motor
-e caixa, com codigos P. No W203 o ESP e uma unidade Bosch separada no
+e caixa, com codigos P. No W203 o ESP e uma unidade de comando separada, no
 barramento CAN interno da Mercedes, com codigos C que se leem por protocolo
 proprietario. Para esses e preciso XENTRY/DAS, um iCarsoft MB II ou
 equivalente. Nenhum ELM327 generico la chega, por muito que a luz do ESP
